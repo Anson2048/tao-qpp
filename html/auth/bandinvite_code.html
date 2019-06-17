@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<meta name="format-detection" content="telephone=yes" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+			.mui-content .mui-input-row input {
+    background-color: transparent;
+    color: #979797;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+    padding-top: 1.3rem;
+}
+		</style>
+
+	</head>
+
+	<body style="background-color: #f7f7f7;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">绑定邀请码</h1>
+		</header>
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">邀请码</div>
+				<div style="float:left;display:inline;width: 75%;"><input id='referrer' class="mui-input-clear mui-input" type="text"
+					 placeholder="邀请码" style="color: #555555;" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value = value.replace(/[^\d]/g, '')"></div>
+			</div>
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd; display: none;"><textarea id="test" name="reworkmes" rows="4"></textarea></div>
+			<div class="mui-content-padded">
+				<button id='btnbang' class="mui-btn mui-btn-block mui-btn-primary">下一步</button>
+			</div>
+
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			var unionid;
+			var openid;
+			var type;
+			var access_token;
+
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				self.setStyle({ //关闭首页侧滑返回功能
+					'popGesture': 'none'
+				});
+				unionid = self.unionid;
+				openid = self.openid;
+				type = self.type;
+				access_token = self.access_token;
+				//绑定事件
+				mui('.mui-content').on('tap', '#btnbang', function() {
+					//mui.toast("unionid：" + unionid+",openid：" + openid+",access_token：" + access_token);
+					//document.getElementById('test').innerHTML="unionid：" + unionid+",openid：" + openid+",access_token：" + access_token;
+					
+					var data = {};
+					var referrer = document.getElementById('referrer').value.replace(/\s*/g, "");
+					if (!referrer) {
+						plus.nativeUI.toast('请输入邀请码!');
+					} else {
+						console.log(openid)
+						console.log(unionid)
+						console.log(referrer)
+						console.log(type)
+						var waiting = plus.nativeUI.showWaiting();
+						data['userinfo'] = {};
+						data['userinfo']['openid'] = openid;
+						data['userinfo']['unionid'] = unionid;
+						data['userinfo']['access_token'] = access_token;
+						data.invite_code = referrer;
+						data.type = type;
+						Http.post({
+							api: 'NEW-LOGIN',
+							data: data,
+							success: function(res) {
+								waiting.close();
+								type = res.data.type;
+								console.log(JSON.stringify(res.data));
+								if (type == 'mobile') {
+									mui.openWindow({
+										url: 'bangmobile.html',
+										id: 'bangmobile',
+										extras: {
+											openid: openid,
+											type: type,
+											unionid: unionid,
+											access_token: access_token
+										}
+									})
+								}
+
+							},
+							one: function(res) {
+								mui.toast(res.msg)
+								//console.log(res.msg)
+								waiting.close();
+							},
+							 error: function(xhr,type,errorThrown){
+								 waiting.close();
+								 mui.toast('接口错误')
+							}
+						})
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

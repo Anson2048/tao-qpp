@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<meta name="format-detection" content="telephone=yes"/>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+				<style>
+				.table {
+		            border: 1px solid #f7f7f7;
+		            color: #666;
+					background-color: #ffffff;
+		        }
+		
+		        .table th {
+		            background-repeat: repeat-x;
+		            height: 30px;
+		        }
+		
+		        .table td,
+		        .table th {
+		            border: 1px solid #f7f7f7;
+		            padding: 0 1em 0;
+					text-align: center;
+		        }
+		
+		        .table tr.alter {
+		            background-color: #ffffff;
+		        }
+				.btn {
+					width: 80%;
+					position: fixed;
+					margin-top: 3rem;
+					left: 50%;
+					margin-left: -40%;
+				}
+				
+				.btn .mui-btn-block {
+					padding: 5px 0;
+					border-radius: 20px;
+				}
+		</style>
+	</head>
+
+	<body style="background-color: #ffffff;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+		    <h1 class="mui-title">订单提交成功</h1>
+		</header>
+		<div class="content">
+			<table width="100%" class="table">
+				<tr>
+					<th width="25%" align="right">产品名称:</th>
+					<th id="productname">aaa</th>
+				</tr>
+				<tr>
+					<th width="25%" align="right">支付价格:</th>
+					<th id="price">aaa</th>
+				</tr>
+				<tr>
+					<th width="25%" align="right">收件人:</th>
+					<th id="buyname">aaa</th>
+				</tr>
+				<tr>
+					<th width="25%" align="right">手机号码:</th>
+					<th id="phone">aaa</th>
+				</tr>
+				<tr>
+					<th width="25%" align="right">收货地址:</th>
+					<th id="address">aaa</th>
+				</tr>
+				<tr>
+					<th width="25%" align="right">代理电话:</th>
+					<th style="color: red;"><span id="mobile"></span> <span id="copy" style="display: none;"></span></th>
+				</tr>
+			</table>
+			<div class="btn">
+				<button class="mui-btn mui-btn-block mui-btn-danger sub">返回并复制代理电话</button>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({swipeBack:true});
+			window.addEventListener('getOrderdetail',function(event){
+				userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				if (!userinfo) {
+					var child = plus.webview.create('html/auth/login.html', 'login'); //直接用H5+API创建窗口
+					child.show();
+					}
+				var productname = event.detail.productname;
+				var buyname = event.detail.buyname;
+				var address = event.detail.address;
+				var price = event.detail.price;
+				var phone=event.detail.phone;
+				var mobile=event.detail.mobile;
+				document.getElementById('price').innerHTML = price;
+				document.getElementById('productname').innerHTML = productname;
+				document.getElementById('buyname').innerHTML = buyname;
+				document.getElementById("address").innerHTML = address;
+				document.getElementById("phone").innerHTML = phone;
+				document.getElementById("copy").innerHTML = mobile;
+				document.getElementById("mobile").innerHTML = mobile+"&nbsp;&nbsp;<a href='tel:"+mobile+"' style='color: #0D9347;'>拨打</a>";
+			});
+			mui('.content').on('tap', 'button', function() {
+				var copy_content = document.getElementById("copy").innerHTML;
+				if (mui.os.ios) {
+					//ios
+					var UIPasteboard = plus.ios.importClass("UIPasteboard");
+					var generalPasteboard = UIPasteboard.generalPasteboard();
+					//设置/获取文本内容:
+					generalPasteboard.plusCallMethod({
+						setValue: copy_content,
+						forPasteboardType: "public.utf8-plain-text"
+					});
+					generalPasteboard.plusCallMethod({
+						valueForPasteboardType: "public.utf8-plain-text"
+					});
+				} else {
+					//安卓
+					var context = plus.android.importClass("android.content.Context");
+					var main = plus.android.runtimeMainActivity();
+					var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+					plus.android.invoke(clip, "setText", copy_content);
+				}
+				plus.nativeUI.toast('代理电话复制成功');
+				mui.back();
+			});
+		</script>
+	</body>
+
+</html>

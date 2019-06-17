@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>推荐码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			h4{
+				color: #fff;
+				font-size: 14px;
+				margin-bottom: 20px
+			}
+			.header{
+				top: 25px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+
+						<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">推荐码</h1>
+		    
+		</header>
+		<div style="position: fixed; top: 43px; left: 0; right: 0; bottom: 0;">
+			<!--内容-->
+			<img class="qrcode-bg" src="../../images/qrcode-bg.jpg" alt="" />
+			<div class="qrcode-det">
+				<!-- <h4 class="title">推荐码填写</h4>
+				<input id="key" type="text" name="" id="" value="" placeholder="请输入推荐码"/>
+				<button class="mui-btn mui-btn-block mui-btn-danger sub">确 定</button> -->
+				<div class="qrcode-con">
+					<img src="../../images/qrcode-img_03.jpg" alt="" />
+					<h3>您的推荐码</h3>
+					<img class="qrcode-img" src="../../images/qrcode.jpg"/>
+					<div class="qrcode-bot">
+						<span class="qrcode-lock"></span>
+						<button class="copy">复制</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var copy_content = '';
+			mui.plusReady(function(){
+				var currentView = plus.webview.currentWebview();
+				Http.post({
+					api:'QRCODE',
+					success:function(res){
+						
+						currentView.show('slide-in-right', 300);
+						plus.nativeUI.closeWaiting();
+						document.getElementsByClassName('qrcode-img')[0].setAttribute('src',res.data.invite_qrcode);
+						document.getElementsByClassName('qrcode-lock')[0].innerText = res.data.invite_code;
+						copy_content = res.data.invite_code;
+					},
+					one:function(res){
+						mui.alert(res);
+					}
+				});
+				mui('.qrcode-det').on('tap','.copy',function(){
+					if(mui.os.ios){
+						//ios
+						var UIPasteboard = plus.ios.importClass("UIPasteboard");
+					    var generalPasteboard = UIPasteboard.generalPasteboard();
+					    //设置/获取文本内容:
+					    generalPasteboard.plusCallMethod({
+					        setValue:copy_content,
+					        forPasteboardType: "public.utf8-plain-text"
+					    });
+					    generalPasteboard.plusCallMethod({
+					        valueForPasteboardType: "public.utf8-plain-text"
+					    });
+					}else{
+						//安卓
+						var context = plus.android.importClass("android.content.Context");
+					  	var main = plus.android.runtimeMainActivity();
+					  	var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+					  	plus.android.invoke(clip,"setText",copy_content);
+					}
+					plus.nativeUI.toast('复制成功');
+				});
+				mui('.qrcode-det').on('tap','button.sub',function(){
+					var key = document.getElementById('key').value;
+					
+					if(key.length < 2){
+						mui.toast('请输入正确的推荐码');
+						return;
+					};
+					Http.post({
+						api:'BIND-RECOMMEND',
+						data:{
+							code:key
+						},
+						success:function(res){
+							mui.toast(res.msg);
+							document.getElementById('key').value = '';
+						}
+					})
+					
+				})
+			})
+
+		</script>
+	</body>
+</html>
+

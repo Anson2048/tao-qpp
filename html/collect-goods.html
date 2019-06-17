@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>收藏</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.shops{
+				display: none;
+			}
+			.col-goods-tit img{
+				width: 18px;
+				vertical-align: -3px;
+			}
+			.nomore{
+				width: 280px;
+				margin: auto;
+				text-align: center;
+			}
+			.nomore img{
+				width: 100%;
+				margin: 30px 0;
+			}
+			div.img{
+				width: 100%;
+				text-align: center;
+			}
+			div.img img{
+				width: 160px;
+				height: 160px;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+		    <h1 class="mui-title">我的收藏</h1>
+		</header>
+		<div class="content">
+			<!--商品-->
+			<div id="pullrefresh">
+				<div class="goods" id="goods_box">
+					<script type="text/template" id="goods">
+						{{if goods.length < 1}}
+						<div class="nomore">
+							<img src="../images/nomore.png"/>
+							<p>这里还什么都没有，快去收藏吧！</p>
+						</div>
+						{{/if}}
+					<ul class="col-goods-list">
+						{{each goods as value i}}
+						<li class="col-goods-item" type="{{value.good_type}}" data="{{value.goods.origin_id}}" profit="{{value.forecast_money}}" data-id="{{value.id}}">
+							<a href="javascript:;">
+								<div class="img">
+									<img src="{{value.goods.thumb}}" alt="" />
+								</div>
+								<p class="mui-ellipsis col-goods-tit">
+									{{if value.good_type == 11}}
+									<img src="../images/taobao@2x.png"/>
+									{{else if value.good_type == 12}}
+									<img src="../images/tianmao.png"/>
+									{{else if value.good_type == 21}}
+									<img src="../images/jingdong@2x.png"/>
+									{{else if value.good_type == 31}}
+									<img src="../images/pinduoduo@2x.png"/>
+									{{/if}}
+									{{value.goods.title}}
+								</p>
+								<div class="col-goods-item-bot">
+									<span>券后：<span class="col-goods-price">￥{{value.goods.coupon_price}}</span></span>
+									<span class="col-goods-coupon">
+										<span>券</span>
+										<i>{{value.goods.coupon_money}}元</i>
+									</span>
+								</div>
+							</a>
+						</li>
+						{{/each}}
+					</ul>
+					</script>
+				</div>
+				<div class="shops" id="goods_box">
+					<script type="text/template" id="goods">
+					<ul class="col-goods-list">
+						<li class="col-goods-item">
+							<a href="javascript:;">
+								<img src="../images/col-goods.jpg" alt="" />
+								<p class="mui-ellipsis col-goods-tit">夏季粉色链条单肩斜挎包包夏季粉色链条单肩斜挎包包</p>
+								<div class="col-goods-item-bot">
+									<span>券后：<span class="col-goods-price">￥59</span></span>
+									<span class="col-goods-coupon">
+										<span>券</span>
+										<i>30元</i>
+									</span>
+								</div>
+							</a>
+						</li>
+					</ul>
+					</script>
+				</div>
+			</div>
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var type = 1;
+			var page = {"1":0,"2":0};
+			var list = [];
+			mui.init({
+				gestureConfig:{
+					longtap:true
+				},
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						 style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				page[type] = 0;
+				Http.post({
+					api:'CLT-LIST',
+					data:{type:type,page:page[type]},
+					success:function(res){
+						list = {goods:res.data};
+						var info = template('goods',list);
+						document.getElementById('goods_box').innerHTML = info;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:'CLT-LIST',
+					data:{type:type,page:++page[type]},
+					success:function(res){
+						list.goods = list.goods.concat(res.data);
+						var info = template('goods',list);
+						document.getElementById('goods_box').innerHTML = info;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+					},
+					one:function(res){
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast('没有更多了');
+					}
+				})
+			};
+			mui.plusReady(function(){
+
+				var getInfo = function(type,page){
+					Http.post({
+						api:'CLT-LIST',
+						data:{
+							type:type,    //1商品   2店铺
+							page:page
+						},
+						success:function(res){
+							list = {goods:res.data}
+							var info = template('goods',list);
+							document.getElementById('goods_box').innerHTML = info;
+						},
+						one:function(){
+							list = {goods:[]};
+							var info = template('goods',list);
+							document.getElementById('goods_box').innerHTML = info;
+						}
+					})
+				}
+				getInfo(type,page[type]);
+				//商品详情页面跳转
+				mui('#goods_box').on('tap', 'li', function(e) {
+					var type = this.getAttribute('type');
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html');//获取预加载的b页面id  
+				    var id = this.getAttribute('data');//获取要传的参数
+				    var profit = this.getAttribute('profit');
+				    mui.fire(goodswebview,'getItem',{
+					    id:id,
+					    profit:profit,
+					    type:type
+					});
+				    mui.openWindow({
+					  id:'goods-webview.html'
+					});
+				}); 
+				mui('#goods_box').on('longtap', 'li', function(e) {
+				    var id = this.getAttribute('data-id');//获取要传的参数
+				    var btnArray = ['确认', '取消'];
+				    mui.confirm('确认取消该商品收藏？', '收藏', btnArray, function(e) {
+						if (e.index == 0) {
+							Http.post({
+								api:'RM-COLL',
+								data:{
+									id:id	
+								},
+								success:function(res){
+									if(res.code == 0){
+										mui.toast('取消成功')
+										location.reload();
+									}
+								}
+							})
+//							elem.parentNode.removeChild(elem);
+						} else {
+//							setTimeout(function() {
+//								$.swipeoutClose(elem);
+//							}, 0);
+						}
+					});
+				}); 
+				
+			})
+
+		</script>
+	</body>
+</html>

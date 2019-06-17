@@ -1,0 +1,1551 @@
+{
+    "@platforms" : [ "android", "iPhone", "iPad" ],
+    "id" : "H5F21DD4B",
+    /*应用的标识，创建应用时自动生成，勿手动修改*/
+    "name" : "苦瓜",
+    /*应用名称，程序桌面图标名称*/
+    "version" : {
+        "name" : "1.2.3",
+        /*应用版本名称*/
+        "code" : "110527"
+    },
+    "description" : "苦瓜，一款购物不剁手，躺着赚钱的神器。大额优建券让你领到手软，分享赚钱让你全年无休收钱，真正一款为你省钱，帮你赚钱的APP。",
+    /*应用描述信息*/
+    "icons" : {
+        "72" : "icon.png"
+    },
+    "launch_path" : "tab-webview-main.html",
+    /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+    "developer" : {
+        "name" : "科技有限公司",
+        /*开发者名称*/
+        "email" : "",
+        /*开发者邮箱地址*/
+        "url" : ""
+    },
+    "permissions" : {
+        "Accelerometer" : {
+            "description" : "访问加速度感应器"
+        },
+        "Audio" : {
+            "description" : "访问麦克风"
+        },
+        "Cache" : {
+            "description" : "管理应用缓存"
+        },
+        "Camera" : {
+            "description" : "访问摄像头"
+        },
+        "Console" : {
+            "description" : "跟踪调试输出日志"
+        },
+        "Device" : {
+            "description" : "访问设备信息"
+        },
+        "Downloader" : {
+            "description" : "文件下载管理"
+        },
+        "Events" : {
+            "description" : "应用扩展事件"
+        },
+        "File" : {
+            "description" : "访问本地文件系统"
+        },
+        "Gallery" : {
+            "description" : "访问系统相册"
+        },
+        "Geolocation" : {
+            "description" : "访问位置信息"
+        },
+        "Invocation" : {
+            "description" : "使用Native.js能力"
+        },
+        "Orientation" : {
+            "description" : "访问方向感应器"
+        },
+        "Proximity" : {
+            "description" : "访问距离感应器"
+        },
+        "Storage" : {
+            "description" : "管理应用本地数据"
+        },
+        "Uploader" : {
+            "description" : "管理文件上传任务"
+        },
+        "Runtime" : {
+            "description" : "访问运行期环境"
+        },
+        "XMLHttpRequest" : {
+            "description" : "跨域网络访问"
+        },
+        "Zip" : {
+            "description" : "文件压缩与解压缩"
+        },
+        "Barcode" : {
+            "description" : "管理二维码扫描插件"
+        },
+        "Webview" : {
+            "description" : "窗口管理"
+        },
+        "NativeUI" : {
+            "description" : "原生UI控件"
+        },
+        "Navigator" : {
+            "description" : "浏览器信息"
+        },
+        "NativeObj" : {
+            "description" : "原生对象"
+        },
+        "Payment" : {},
+        "Share" : {},
+        "OAuth" : {}
+    },
+    "plus" : {
+        "launchwebview" : {
+            /* "titleNView": {
+            	"backgroundcolor": "#f7f7f7",
+            	"titletext": "",
+            	"titlecolor": "#000000",
+            	"height":"1px"
+            }, */
+            "bottom" : "0px",
+            "background" : "#fff",
+            "subNViews" : [
+                {
+                    "id" : "tabBar",
+                    "styles" : {
+                        "bottom" : "0px",
+                        "left" : "0",
+                        "height" : "55px",
+                        "width" : "100%",
+                        "backgroundColor" : "#fff"
+                    },
+                    "tags" : [
+                        {
+                            "tag" : "font",
+                            "id" : "indexIcon",
+                            "text" : "", //\ue500
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "0%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/mui.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "indexText",
+                            "text" : "首页",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "0%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "11px",
+                                "weight" : "bold"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "classIcon",
+                            "text" : "", //\ue560
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "20%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/mui.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "classText",
+                            "text" : "产品分类",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "20%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "11px",
+                                "weight" : "bold"
+                            }
+                        }, //产品分类
+                        {
+                            "tag" : "font",
+                            "id" : "searchIcon",
+                            "text" : "", //\ue466
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "40%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/mui.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "searchText",
+                            "text" : "超级搜索",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "40%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "11px",
+                                "weight" : "bold"
+                            }
+                        }, //升级权益
+                        {
+                            "tag" : "font",
+                            "id" : "contactIcon",
+                            "text" : "", //\ue406
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "60%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/mui.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "contactText",
+                            "text" : "一键分享",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "60%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "11px",
+                                "weight" : "bold"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "personIcon",
+                            "text" : "", //\ue100
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "80%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/mui.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "personText",
+                            "text" : "个人中心",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "80%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "11px",
+                                "weight" : "bold"
+                            }
+                        },
+                        {
+                            "tag" : "rect",
+                            "id" : "tabBorder",
+                            "position" : {
+                                "top" : "0",
+                                "left" : "0",
+                                "width" : "100%",
+                                "height" : "1px"
+                            },
+                            "rectStyles" : {
+                                "color" : "#ccc"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "statusbar" : {
+            "background" : "#000000"
+        },
+        //"immersed": true
+        "splashscreen" : {
+            "autoclose" : true,
+            /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
+            "waiting" : false,
+            "delay" : "0"
+        },
+        //"popGesture" : "close",
+        "popGesture" : "hide",
+        /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
+        "runmode" : "normal",
+        /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
+        "signature" : "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",
+        /*可选，保留给应用签名，暂不使用*/
+        "distribute" : {
+            "splashscreen" : {
+                "android" : {
+                    "hdpi" : "main/640 960.png",
+                    "xhdpi" : "main/640 1136.png",
+                    "xxhdpi" : "main/1080 1920 .png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "retina35" : "main/640 960.png",
+                        "retina40" : "main/640 1136.png",
+                        "retina47" : "main/750 1334.png",
+                        "iphonex" : "main/1125 2436.png",
+                        "portrait-896h@3x" : "main/1536 2048.png",
+                        "portrait-896h@2x" : "main/1080 1920 .png",
+                        "retina55" : "main/1125 2436.png"
+                    }
+                }
+            },
+            "plugins" : {
+                "payment" : {
+                    "weixin" : {
+                        "appid" : "wx11d85ee3eff18311"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx11d85ee3eff18311",
+                        "appsecret" : "63872809983888323e5ffa36ee882c67"
+                    }
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx11d85ee3eff18311",
+                        "appsecret" : "63872809983888323e5ffa36ee882c67"
+                    }
+                }
+            },
+            //android
+            //"appid" : "wx11d85ee3eff18311",
+            //"appsecret" : "e04cb87835c55fe421e46f7adb5f3af2"
+            //ios
+            //"appid" : "wx11d85ee3eff18311",
+            //"appsecret" :"e04cb87835c55fe421e46f7adb5f3af2"
+            "apple" : {
+                "appid" : "com.kugua.app",
+                /*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
+                "mobileprovision" : "",
+                /*iOS应用打包配置文件*/
+                "password" : "",
+                /*iOS应用打包个人证书导入密码*/
+                "p12" : "",
+                /*iOS应用打包个人证书，打包配置文件关联的个人证书*/
+                "devices" : "universal",
+                /*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
+                "frameworks" : [],
+                "urltypes" : [
+                    {
+                        "urlidentifier" : "com.taobao.taobao",
+                        "urlschemes" : [ "taobao" ]
+                    }
+                ]
+            },
+            "google" : {
+                "packagename" : "com.kuguayouhui.app",
+                /*Android应用包名，如io.dcloud.HelloH5*/
+                "keystore" : "",
+                /*Android应用打包使用的密钥库文件*/
+                "password" : "",
+                /*Android应用打包使用密钥库中证书的密码*/
+                "aliasname" : "",
+                /*Android应用打包使用密钥库中证书的别名*/
+                "schemes" : [ "jtsp" ],
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"
+                ]
+            },
+            "orientation" : [ "portrait-primary" ],
+            /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
+            "icons" : {
+                "ios" : {
+                    "prerendered" : true,
+                    /*应用图标是否已经高亮处理，在iOS6及以下设备上有效*//*应用图标，分辨率：512x512，用于自动生成各种尺寸程序图标*/
+                    "iphone" : {
+                        "normal" : "",
+                        /*iPhone3/3GS程序图标，分辨率：57x57*/
+                        "retina" : "",
+                        /*iPhone4程序图标，分辨率：114x114*//*iPhone4S/5/6程序图标，分辨率：120x120*//*iPhone6 Plus程序图标，分辨率：180x180*/
+                        "spotlight-normal" : "",
+                        /*iPhone3/3GS Spotlight搜索程序图标，分辨率：29x29*/
+                        "spotlight-retina" : "",
+                        /*iPhone4 Spotlight搜索程序图标，分辨率：58x58*//*iPhone4S/5/6 Spotlight搜索程序图标，分辨率：80x80*/
+                        "settings-normal" : "",
+                        /*iPhone4设置页面程序图标，分辨率：29x29*//*iPhone4S/5/6设置页面程序图标，分辨率：58x58*/
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png"
+                    },
+                    "ipad" : {
+                        "normal" : "",
+                        /*iPad普通屏幕程序图标，分辨率：72x72*/
+                        "retina" : "",
+                        /*iPad高分屏程序图标，分辨率：144x144*//*iPad iOS7程序图标，分辨率：76x76*//*iPad iOS7高分屏程序图标，分辨率：152x152*/
+                        "spotlight-normal" : "",
+                        /*iPad Spotlight搜索程序图标，分辨率：50x50*/
+                        "spotlight-retina" : "",
+                        /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*//*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*//*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*//*iPad设置页面程序图标，分辨率：29x29*/
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png"
+                    },
+                    "appstore" : "images/1080x1080.png"
+                },
+                "android" : {
+                    "mdpi" : "unpackage/res/icons/48x48.png",
+                    /*普通屏程序图标，分辨率：48x48*/
+                    "ldpi" : "unpackage/res/icons/48x48.png",
+                    /*大屏程序图标，分辨率：48x48*/
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    /*高分屏程序图标，分辨率：72x72*/
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    /*720P高分屏程序图标，分辨率：96x96*/
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                }
+            },
+            "debug" : false
+        },
+        "ads" : {
+            "rp" : false,
+            "splash" : false,
+            "push" : false
+        },
+        "adid" : ""
+    },
+    "dependencies" : {
+        "pages" : {
+            "index.html" : {
+                "resources" : [
+                    "js/mui.min.js",
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "fonts/iconfont.ttf",
+                    "css/app.css",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/service-bg_02.png",
+                    "js/template-web.js",
+                    "js/mui.lazyload.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "images/top.png",
+                    "images/fff.png",
+                    "images/goods.png",
+                    "images/search.png",
+                    "images/tao.png",
+                    "images/message.png",
+                    "images/taobao@2x.png",
+                    "images/taobao.png",
+                    "images/jingdong@2x.png",
+                    "images/jingdong.png",
+                    "images/pinduoduo@2x.png",
+                    "images/pinduoduo.png",
+                    "images/tianmao.png"
+                ],
+                "refer" : [
+                    "html/goods-webview.html",
+                    "html/home-search.html",
+                    "html/tab-webview-my.html",
+                    "html/list-calss.html",
+                    "html/list-col.html",
+                    "html/buy.html",
+                    "html/tao-xuan.html",
+                    "html/message.html",
+                    "html/auth/login.html",
+                    "html/pop/pop.html",
+                    "html/pop/update.html"
+                ],
+                "priority" : 0
+            },
+            "launch.html" : {
+                "resources" : [
+                    "js/mui.min.js",
+                    "css/mui.min.css",
+                    "html/tab-webview-subpage-about.html"
+                ],
+                "refer" : [
+                    "html/tab-webview-subpage-setting.html",
+                    "html/tab-webview-subpage-chat.html",
+                    "html/tab-webview-subpage-contact.html"
+                ],
+                "priority" : 0
+            },
+            "html/tab-webview-subpage-setting.html" : {
+                "resources" : [ "fonts/mui.ttf", "css/mui.min.css", "js/mui.min.js" ],
+                "refer" : [],
+                "priority" : 0
+            },
+            "html/tab-webview-subpage-about.html" : {
+                "resources" : [ "css/mui.min.css", "js/mui.min.js", "js/util.js" ],
+                "refer" : [],
+                "priority" : 0
+            },
+            "html/tab-webview-subpage-chat.html" : {
+                "resources" : [ "fonts/mui.ttf", "js/mui.min.js", "css/mui.min.css" ],
+                "refer" : [],
+                "priority" : 0
+            },
+            "html/tab-webview-subpage-contact.html" : {
+                "resources" : [ "images/60x60.gif", "js/mui.min.js", "css/mui.min.css" ],
+                "refer" : [],
+                "priority" : 0
+            },
+            "html/new-webview.html" : {
+                "resources" : [ "css/mui.min.css", "js/mui.min.js", "fonts/mui.ttf" ],
+                "refer" : [ "html/collect-goods.html", "html/list-col.html", "html/my-order.html" ],
+                "priority" : 0
+            },
+            "html/collect-goods.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/nomore.png",
+                    "images/taobao@2x.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png",
+                    "images/col-goods.jpg"
+                ],
+                "refer" : [ "html/collect-shop.html", "html/goods-webview.html" ],
+                "priority" : 0
+            },
+            "html/collect-shop.html" : {
+                "resources" : [],
+                "refer" : [ "html/collect-goods.html" ],
+                "priority" : 0
+            },
+            "html/list-col.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "images/sanjiao.png",
+                    "images/sup.png",
+                    "images/sdown.png",
+                    "js/mui.js",
+                    "js/template-web.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "images/top.png",
+                    "images/taobao@2x.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png"
+                ],
+                "refer" : [ "html/list-row.html", "html/goods-webview.html" ],
+                "priority" : 0
+            },
+            "html/list-row.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "images/list-row.png",
+                    "images/col-goods.jpg"
+                ],
+                "refer" : [ "html/list-col.html", "html/my-order.html" ],
+                "priority" : 0
+            },
+            "tab-webview-main.html" : {
+                "resources" : [
+                    "index.html",
+                    "html/tab-webview-course.html",
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "js/mui.min.js",
+                    "images/01.png",
+                    "images/10.png",
+                    "images/20.png",
+                    "images/30.png",
+                    "images/40.png"
+                ],
+                "refer" : [
+                    "html/tab-webview-subpage-chat.html",
+                    "html/tab-webview-my.html",
+                    "html/tab-webview-subpage-contact.html",
+                    "html/tab-webview-buy.html",
+                    "html/tao-order.html",
+                    "html/tab-webview-find.html",
+                    "html/tab-webview-upgrade.html",
+                    "index.html",
+                    "html/tab-webview-course.html"
+                ],
+                "priority" : 0
+            },
+            "html/tab-webview-my.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "images/v1.png",
+                    "images/v2.png",
+                    "images/v3.png",
+                    "images/v4.png",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "images/my-head.jpg",
+                    "images/my-girl.png",
+                    "images/my-boy.png",
+                    "images/my-order.png",
+                    "images/my-cart.png",
+                    "images/my-buy.png",
+                    "images/my-qrcode.png",
+                    "images/my-fans.png",
+                    "images/my-share.png",
+                    "images/my-collect.png",
+                    "images/my-shop.png",
+                    "images/my-shareBg.png",
+                    "images/my-problem.png",
+                    "images/my-new.png",
+                    "images/my-train.png",
+                    "images/my-serve.png"
+                ],
+                "refer" : [
+                    "html/list-col.html",
+                    "html/my-order.html",
+                    "html/collect-goods.html",
+                    "html/user/set-up.html",
+                    "html/user/qrcode.html",
+                    "html/user/share.html",
+                    "html/user/my-fans.html",
+                    "html/user/income.html",
+                    "html/user/service.html",
+                    "html/user/problem.html",
+                    "html/user/upgrade.html",
+                    "html/auth/login.html",
+                    "html/no.html",
+                    "html/user/notice.html",
+                    "html/user/notice-detail.html",
+                    "html/tao-order.html"
+                ],
+                "priority" : 0
+            },
+            "html/auth/login.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/style.css",
+                    "css/iconfont.css",
+                    "js/http.js",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "images/login-bg.png",
+                    "images/login-logo.png"
+                ],
+                "refer" : [
+                    "tab-webview-main.html",
+                    "html/auth/reg.html",
+                    "html/auth/forget_password.html",
+                    "html/auth/inviteCode.html",
+                    "html/auth/login.html",
+                    "html/tab-webview-my.html"
+                ],
+                "priority" : 0
+            },
+            "html/home-search.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js"
+                ],
+                "refer" : [ "html/list-col.html" ],
+                "priority" : 0
+            },
+            "html/my-order.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/logo-tao.png",
+                    "images/logo-jd.png",
+                    "images/logo-pin.png"
+                ],
+                "refer" : [ "html/tao-order.html", "html/list-row.html" ],
+                "priority" : 0
+            },
+            "html/tab-webview-course.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/template-web.js",
+                    "images/top.png",
+                    "images/course-head_03.jpg"
+                ],
+                "refer" : [ "html/detail.html" ],
+                "priority" : 0
+            },
+            "html/user/set-up.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js"
+                ],
+                "refer" : [
+                    "html/user/modify-psd.html",
+                    "html/user/modify-tel.html",
+                    "html/tab-webview-my.html",
+                    "html/user/user-info.html"
+                ],
+                "priority" : 0
+            },
+            "html/user/user-info.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/my-head.jpg"
+                ],
+                "refer" : [ "html/user/set-up.html" ],
+                "priority" : 0
+            },
+            "html/user/modify-psd.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js"
+                ],
+                "refer" : [ "html/user/set-up.html" ],
+                "priority" : 0
+            },
+            "html/user/modify-tel.html" : {
+                "resources" : [],
+                "refer" : [ "html/user/set-up.html" ],
+                "priority" : 0
+            },
+            "html/user/my-fans.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "images/v1.png",
+                    "images/v2.png",
+                    "images/v3.png",
+                    "images/v4.png",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/http.js",
+                    "images/nomore.png",
+                    "images/my-head.jpg"
+                ],
+                "refer" : [ "html/user/my-direct-fans.html", "html/user/fans-list.html" ],
+                "priority" : 0
+            },
+            "html/user/my-direct-fans.html" : {
+                "resources" : [],
+                "refer" : [ "html/user/my-fans.html" ],
+                "priority" : 0
+            },
+            "html/auth/reg.html" : {
+                "resources" : [
+                    "css/iconfont.css",
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/style.css",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js"
+                ],
+                "refer" : [ "html/auth/reg.html", "html/barcode.html" ],
+                "priority" : 0
+            },
+            "html/auth/login1.html" : {
+                "resources" : [],
+                "refer" : [ "tab-webview-main.html" ],
+                "priority" : 0
+            },
+            "html/user/income.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js"
+                ],
+                "refer" : [
+                    "html/user/income-statement.html",
+                    "html/forward.html",
+                    "html/user/draw-list.html",
+                    "html/user/bind.html",
+                    "html/user/mission-listl.html"
+                ],
+                "priority" : 0
+            },
+            "html/user/income-statement.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js"
+                ],
+                "refer" : [ "html/user/income.html" ],
+                "priority" : 0
+            },
+            "html/goods-webview.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/collect.png",
+                    "images/collect01.png",
+                    "images/taobao@2x.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png",
+                    "images/share.png"
+                ],
+                "refer" : [ "html/buy.html", "html/auth/login.html", "html/create-share.html" ],
+                "priority" : 0
+            },
+            "html/create-share.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/mui.zoom.js",
+                    "js/mui.previewimage.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "images/60x60.png"
+                ],
+                "refer" : [ "html/auth/login.html" ],
+                "priority" : 0
+            },
+            "html/tao-order.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/nomore.png",
+                    "images/taobao@2x.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png"
+                ],
+                "refer" : [ "html/my-order.html" ],
+                "priority" : 0
+            },
+            "html/user/notice.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/template-web.js"
+                ],
+                "refer" : [ "html/user/notice-detail.html" ],
+                "priority" : 0
+            },
+            "html/forward.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "css/iconfont.css",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "images/balance_02.png",
+                    "images/alipay.png",
+                    "images/money.png"
+                ],
+                "refer" : [ "html/user/income.html", "html/forward.html", "html/user/bind.html" ],
+                "priority" : 0
+            },
+            "html/user/draw-list.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/template-web.js",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "images/nomore.png"
+                ],
+                "refer" : [ "html/user/income.html" ],
+                "priority" : 0
+            },
+            "html/user/bind.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js"
+                ],
+                "refer" : [ "html/forward.html" ],
+                "priority" : 0
+            },
+            "html/user/mission-listl.html" : {
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/nomore.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png"
+                ],
+                "refer" : [ "html/user/income.html" ],
+                "priority" : 0
+            },
+            "html/tab-webview-buy.html" : {
+                "href" : "html/tab-webview-buy.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/app.js",
+                    "images/shanbuy.jpg",
+                    "images/top.png",
+                    "images/fe.png",
+                    "images/team.png",
+                    "images/logo.png",
+                    "images/yuantiao.jpg",
+                    "images/muwu.jpg",
+                    "images/shuijiao.jpg"
+                ],
+                "priority" : 0,
+                "refer" : []
+            },
+            "html/tab-webview-find.html" : {
+                "href" : "html/tab-webview-find.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/mui.pullToRefresh.material.js",
+                    "js/app.js",
+                    "js/template-web.js",
+                    "images/jtfind.jpg",
+                    "images/top.png",
+                    "images/course-head_03.jpg"
+                ],
+                "priority" : 1,
+                "refer" : []
+            },
+            "html/barcode.html" : {
+                "href" : "html/barcode.html",
+                "resources" : [ "css/mui.min.css", "fonts/mui.ttf", "js/mui.min.js", "js/util.js" ],
+                "priority" : 2,
+                "refer" : []
+            },
+            "html/buy.html" : {
+                "href" : "html/buy.html",
+                "resources" : [ "css/mui.min.css", "fonts/mui.ttf", "js/mui.min.js" ],
+                "refer" : [ "html/buy.html" ],
+                "priority" : 3
+            },
+            "html/pop/pop.html" : {
+                "href" : "html/pop/pop.html",
+                "resources" : [ "css/mui.min.css", "fonts/mui.ttf", "js/mui.min.js", "js/vue.js" ],
+                "priority" : 6,
+                "refer" : []
+            },
+            "html/tao-xuan.html" : {
+                "href" : "html/tao-xuan.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/template-web.js",
+                    "images/tbbanner.jpg",
+                    "images/jdbanner.jpg",
+                    "images/pddbanner.jpg",
+                    "images/search.png",
+                    "images/taobao@2x.png",
+                    "images/tianmao.png",
+                    "images/jingdong@2x.png",
+                    "images/pinduoduo@2x.png",
+                    "images/course-jd_03.jpg"
+                ],
+                "refer" : [ "html/goods-webview.html" ],
+                "priority" : 8
+            },
+            "html/message.html" : {
+                "href" : "html/message.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/nomore.png"
+                ],
+                "priority" : 9,
+                "refer" : []
+            },
+            "html/user/qrcode.html" : {
+                "href" : "html/user/qrcode.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "js/http.js",
+                    "images/qrcode-bg.jpg",
+                    "images/qrcode-img_03.jpg",
+                    "images/qrcode.jpg"
+                ],
+                "priority" : 3,
+                "refer" : []
+            },
+            "html/user/share.html" : {
+                "href" : "html/user/share.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "css/swiper.min.css",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "js/swiper.min.js"
+                ],
+                "priority" : 4,
+                "refer" : []
+            },
+            "html/user/notice-detail.html" : {
+                "href" : "html/user/notice-detail.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/list-to-detail.css",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/app.js"
+                ],
+                "priority" : 5,
+                "refer" : []
+            },
+            "html/no.html" : {
+                "href" : "html/no.html",
+                "resources" : [ "css/mui.min.css", "fonts/mui.ttf", "js/mui.min.js", "images/no.png" ],
+                "priority" : 8,
+                "refer" : []
+            },
+            "html/user/fans-list.html" : {
+                "href" : "html/user/fans-list.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "images/v1.png",
+                    "images/v2.png",
+                    "images/v3.png",
+                    "images/v4.png",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/http.js",
+                    "images/nomore.png",
+                    "images/my-head.jpg"
+                ],
+                "priority" : 13,
+                "refer" : []
+            },
+            "html/user/upgrade.html" : {
+                "href" : "html/user/upgrade.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "images/lbg.png",
+                    "images/l_team.png",
+                    "js/mui.min.js",
+                    "js/app.js",
+                    "js/http.js",
+                    "js/template-web.js",
+                    "images/card.png",
+                    "images/my-head.jpg",
+                    "images/pro1.png",
+                    "images/pro2.png",
+                    "images/pro3.png",
+                    "images/pro4.png",
+                    "images/lv0.png",
+                    "images/l1.png",
+                    "images/l2.png",
+                    "images/l3.png",
+                    "images/l4.png"
+                ],
+                "priority" : 15,
+                "refer" : []
+            },
+            "html/user/problem.html" : {
+                "href" : "html/user/problem.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js",
+                    "images/pro-order.png",
+                    "images/pro-money.png",
+                    "images/pro-coupon.png",
+                    "images/pro-share.png",
+                    "images/pro-other.png"
+                ],
+                "priority" : 16,
+                "refer" : []
+            },
+            "html/user/service.html" : {
+                "href" : "html/user/service.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/app.css",
+                    "images/my-bg.jpg",
+                    "images/my-spacail.png",
+                    "images/col-shop-icon.png",
+                    "images/shop.png",
+                    "images/icon-share.png",
+                    "images/fans-bg.png",
+                    "images/supVip.png",
+                    "images/lock.png",
+                    "images/service-bg_02.png",
+                    "js/mui.min.js"
+                ],
+                "priority" : 17,
+                "refer" : []
+            },
+            "html/detail.html" : {
+                "href" : "html/detail.html",
+                "resources" : [
+                    "css/mui.min.css",
+                    "fonts/mui.ttf",
+                    "css/list-to-detail.css",
+                    "js/mui.min.js",
+                    "js/template-web.js",
+                    "js/app.js"
+                ],
+                "priority" : 4,
+                "refer" : []
+            }
+        },
+        "idle" : {
+            "resources" : [
+                "images/lv3.png",
+                "images/tuijian.png",
+                "images/tit.png",
+                "images/41.png",
+                "images/checked.png",
+                "images/shares.png",
+                "images/loginbg.png",
+                "images/course-tao_03.jpg",
+                "images/smallquan.png",
+                "images/weixin.png",
+                "images/qq.png",
+                "images/balance.png",
+                "images/lv1.png",
+                "js/mui.lazyload.img.js",
+                "images/check.png",
+                "images/list-col.png",
+                "images/share-bg_02.jpg",
+                "js/webviewGroup.js",
+                "images/sinaweibo.png",
+                "images/kefu.png",
+                "images/indexbanner.jpg",
+                "fonts/iconfont-diy.ttf",
+                "images/col-shop-goods.jpg",
+                "fonts/iconfont-diy.svg",
+                "README.md",
+                "js/mui.pullToRefresh.js",
+                "images/480.png",
+                "images/31.png",
+                "images/order-goods_03.jpg",
+                "images/col-shop-head.jpg",
+                "css/mui.css",
+                "html/fonts/mui.ttf",
+                "images/wechat.png",
+                "js/immersed.js",
+                "images/quan.png",
+                "images/1080.png",
+                "images/sign-btn.png",
+                "images/yzm.png",
+                "images/ma.png",
+                "images/21.png",
+                "images/course-pin_03.jpg",
+                "images/720.png",
+                "images/lv2.png",
+                "images/00.png",
+                "images/11.png",
+                "fonts/iconfont-diy.eot"
+            ]
+        }
+    },
+    "unpackage" : [ "README.md" ]
+}

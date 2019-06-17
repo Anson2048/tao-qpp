@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>升级产品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style>
+			.footer{
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+			.footer .foot{
+			    width: 100%;
+			    height: 50px;
+			    text-align: center;
+			    background: #f8f8f8;
+			    display: -webkit-box;
+				display: box;
+				vertical-align: baseline;
+			}
+			.getquan{
+				background: #dd524d;
+				color: #fff;
+			}
+			.foot button{
+				width: 100%;
+				display: block;
+				border: none;
+				border-radius: initial;
+				font-size: 16px;
+			}
+			img{margin:0;}
+			
+			
+		</style>
+	</head>
+
+	<body style="background-color: #ffffff;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">升级产品</h1>
+		</header>
+		<div class="mui-content" id="details" style="height: 100%;">
+
+			<div style="background: #fff;" style="height: 100%;">
+				<span id="img"></span>
+				<div class="ind-tuijian-con" style="left: 0;">
+					<span class="col-goods-price" style="font-size: 0.9rem;color: #ff5402;font-weight: 600;">权益价格￥<span id="price"></span></span>
+
+					<p class="ind-tuijian-tit mui-ellipsis-2">
+						<span id="title"></span>
+					</p>
+
+				</div>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse">
+						<a>宝贝详情</a>
+						<div class="mui-collapse-content" style="display: block;">
+
+							<span id="description"></span>
+
+						</div>
+					</li>
+				</ul>
+				<div class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse"><a>填写快递信息</a></li>
+
+					<div style="height: 15rem;">
+						<div class="mui-input-row">
+							<label>收件人：</label>
+							<input type="text" id="buyname" placeholder="请填写收件人">
+						</div>
+						<div class="mui-input-row">
+							<label>手机号码：</label>
+							<input type="number" id="phone" placeholder="请填写电话号码" oninput="if(value.length>11)value=value.slice(0,11)"
+							 onkeyup="value = value.replace(/[^\d{2}\.]/g, '').replace(/(\.\d{2}).*/g, '$1')">
+						</div>
+						<div class="mui-input-row">
+							<label>收货地址：</label>
+							<textarea cols="2" rows="8" style="OVERFLOW:hidden" id="address" placeholder="请填写收货地址"></textarea>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="foot">
+				<button class="getquan">
+					成为店长
+				</button>
+
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+
+			var productid;
+			var userinfo;
+			mui.plusReady(function() {
+				window.addEventListener('getItem', function(event) {
+					
+					productid = event.detail.productid;
+					var productname = event.detail.productname;
+					var productimg = event.detail.productimg;
+					var description = event.detail.description;
+					var price = event.detail.price;
+					console.log(description);
+					document.getElementById('img').innerHTML = "<img src='" + productimg + "' style='width: 100%;'/>";
+					document.getElementById('price').innerHTML = price;
+					document.getElementById('title').innerHTML = productname;
+					var imgs = description.split('|');
+					var imgstr = "";
+					//console.log(description);
+					for (var i = 0; i < imgs.length; i++) {
+						imgstr += "<img src='" + imgs[i] + "' style='width: 100%;'/>";
+						//console.log(i);
+					}
+					document.getElementById('description').innerHTML = imgstr;
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if(userinfo){
+					document.getElementById("phone").value = userinfo.mobile;
+					}
+
+				});
+
+				mui.preload({
+					url: 'order_detail.html',
+					id: 'order_detail',
+				});
+				var productview = null;
+				mui('.footer').on('tap', '.getquan', function() {
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					var btnArray = ['否', '是'];
+					if (!userinfo) {
+						
+						mui.confirm('现在登录？', '登录苦瓜', btnArray, function(e) {
+							if (e.index == 1) {
+								plus.nativeUI.closeWaiting();
+								var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+								child.show();
+							} else {
+								plus.nativeUI.closeWaiting();
+								//location.reload();
+								return;
+							}
+						});
+					}
+					/* if (!userinfo.mobile) {
+						
+						mui.confirm('您的用户信息不全，现在完善信息？', '完善用户信息', btnArray, function(e) {
+							if (e.index == 1) {
+								plus.nativeUI.closeWaiting();
+								var child = plus.webview.create('band.html', 'band'); //直接用H5+API创建窗口
+								child.show();
+							} else {
+								plus.nativeUI.closeWaiting();
+								//location.reload();
+								return;
+							}
+						});
+					} else if (!userinfo.openid) {
+						
+						mui.confirm('您没有授权微信，现在授权？', '微信授权', btnArray, function(e) {
+							if (e.index == 1) {
+								plus.nativeUI.closeWaiting();
+								var child = plus.webview.create('bangwechat.html', 'bangwechat'); //直接用H5+API创建窗口
+								child.show();
+							} else {
+								plus.nativeUI.closeWaiting();
+								//location.reload();
+								return;
+							}
+						});
+					} */else {
+						
+						var buyname = document.getElementById('buyname').value.replace(/\s*/g, "");
+						var phone = document.getElementById('phone').value.replace(/\s*/g, "");
+						var address = document.getElementById('address').value.replace(/\s*/g, "");
+						if (!buyname) {
+							mui.toast('收件人不能为空！');
+							plus.nativeUI.closeWaiting();
+							return;
+						} else if (!phone) {
+							mui.toast('手机号码不能为空！');
+							plus.nativeUI.closeWaiting();
+							return;
+						} else if (!address) {
+							mui.toast('收货地址不能为空！');
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+						Http.post({
+							api: 'ADDORDER',
+							data: {
+								buyname: buyname,
+								phone: phone,
+								address: address,
+								product_id: productid
+							},
+							success: function(res) {
+								plus.nativeUI.closeWaiting();
+								if (res.code == '0') {
+									plus.nativeUI.toast('订单提交成功');
+									if (!productview) {
+										productview = plus.webview.getWebviewById('order_detail');
+									};
+									mui.fire(productview, 'getOrderdetail', {
+										productname: res.data.productname,
+										buyname: res.data.buyname,
+										address: res.data.address,
+										price: '¥ ' + res.data.registerprice,
+										phone: res.data.phone,
+										mobile: res.data.mobile,
+									});
+									setTimeout(function() {
+										mui.openWindow({
+											id: 'order_detail'
+										});
+									}, 500)
+								} else {
+									mui.toast(res.msg);
+								}
+
+							},
+							one: function(res) {
+								plus.nativeUI.closeWaiting();
+								mui.toast(res.msg)
+							},
+							error: function(xhr, type, errorThrown) {
+								plus.nativeUI.closeWaiting();
+								mui.toast("提交服务器出错")
+							}
+						})
+					}
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

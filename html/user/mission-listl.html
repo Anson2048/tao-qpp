@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>佣金明细</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		<style type="text/css">
+			.mt1 li{
+				padding: 10px 20px;
+				border-bottom: 1px solid transparent;
+			}
+			.order-tab .active a{
+				color: #fe5b08;
+			}
+			.nomore{
+				width: 280px;
+				margin: auto;
+				text-align: center;
+			}
+			.nomore img{
+				width: 100%;
+				margin: 30px 0;
+			}
+			.hide{
+				display: none;
+			}
+			.order-det img{
+				width: 100%;
+			}
+			.img{
+				width: 36%;
+			}
+			.box{
+				width: 60%;
+			}
+			.col-goods-tit img.logo{
+				width: 18px;
+				vertical-align: -3px;
+				margin-right: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+	
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">佣金明细</h1>
+		    <a href="income-statement.html" style="position:absolute;right:0;"> 
+		    	<span class="mui-icon mui-icon-help"></span>&nbsp;&nbsp;
+		    </a>
+		</header>
+		<div class="content">
+			<ul class="mt1 order-tab">
+				<li class="active" status="1"><a href="javascript:;">已结算佣金</a></li>
+				<li status="2"><a href="javascript:;">未结算佣金</a></li>
+			</ul>
+			<div class="nomore hide">
+				<img src="../../images/nomore.png"/>
+				<p>您还没有产生任何佣金，快去买买买吧！</p>
+			</div>
+			<ul class="" id="order_box">
+				<script type="text/template" id="order">
+					{{each orderlist as value i}}
+					<li class="col-shop-item">
+						<a href="javascript:;">
+							<div class="col-shop-img order-det">
+								<div class="img">
+					            	<img class="mui-pull-left" src="{{value.picUrl}}" alt="" />
+								</div>
+					            <div class="box">
+					                <p class="mui-ellipsis-2 col-goods-tit">
+					                	{{if value.type == 0}}
+										<img class="logo" src="....//images/taobao@2x.png"/>
+										{{else if value.type == 1}}
+										<img class="logo" src="../../images/tianmao.png"/>
+										{{else if value.type == 21}}
+										<img class="logo" src="../../images/jingdong@2x.png"/>
+										{{else if value.type == 31}}
+										<img class="logo" src="../../images/pinduoduo@2x.png"/>
+										{{/if}}
+					                	{{value.title}}
+					                </p>
+					                <div class="col-goods-item-bot order-det-bot">
+										<i>订单号：</i>
+										<i>{{value.trade_id}}</i>
+										<!--<i>销量:1268</i>-->
+									</div>
+									<div class="col-goods-item-bot order-det-bot">
+										<i>实付：<i class="col-goods-price">￥{{value.payment_price}}</i></i>
+										<i>x{{value.product_num}}</i>
+										<!--<i>销量:1268</i>-->
+									</div>
+									<div class="col-goods-item-bot order-det-bot">
+										<i>下单时间：</i>
+										<i>{{value.created_at}}</i>
+										<!--<i>销量:1268</i>-->
+									</div>
+					            </div>
+							</div>
+						</a>
+					</li>
+					{{/each}}
+				</script>
+			</ul>
+		</div>
+		
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 0;
+			var status = 1;
+			mui.init({
+				pullRefresh:{
+					container:"#order_box",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						 style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				var _this = this;
+				page = 0;
+				Http.post({
+					api:'COM-LIST',
+					data:{page:page,status:status},
+					success:function(res){
+						mui('.nomore')[0].classList.add('hide')
+						order = {orderlist:res.data};
+						var html = template('order',order);
+						document.getElementById('order_box').innerHTML = html;
+						mui('#order_box').pullRefresh().endPulldown();
+						mui('#order_box').pullRefresh().refresh(true);
+					},
+					one:function(){
+						order = {orderlist:[]};
+						var html = template('order',order);
+						document.getElementById('order_box').innerHTML = html;
+						mui('#order_box').pullRefresh().endPulldown();
+						mui('#order_box').pullRefresh().refresh(false);
+						mui('.nomore')[0].classList.remove('hide');
+						_this.endPullupToRefresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:'COM-LIST',
+					data:{page:++page,status:status},
+					success:function(res){
+						order.orderlist = order.orderlist.concat(res.data);
+						var html = template('order',order);
+						document.getElementById('order_box').innerHTML = html;
+						mui('#order_box').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+						
+					},
+					one:function(){
+						mui('#order_box').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+//						mui.toast('没有更多了');
+					}
+				})
+			};
+			
+			mui.plusReady(function(){
+				var currentView = plus.webview.currentWebview();
+				Http.post({
+					api:'COM-LIST',
+					data:{page:page,status:status},
+					success:function(res){
+						mui('.nomore')[0].classList.add('hide')
+						order = {orderlist:res.data};
+						var html = template('order',order);
+						document.getElementById('order_box').innerHTML = html;
+						plus.nativeUI.closeWaiting();
+						currentView.show('slide-in-right', 300);
+					},
+					one:function(){
+						currentView.show('slide-in-right', 300);
+						plus.nativeUI.closeWaiting();
+						mui('.nomore')[0].classList.remove('hide')
+					}
+				});
+				mui('.mt1').on('tap','li',function(){
+					plus.nativeUI.showWaiting();
+					page = 0;
+					status = this.getAttribute('status');
+					mui('.content .mt1 li').each(function(i,ele){
+						ele.classList.remove('active');
+					});
+					this.classList.add('active');
+					Http.post({
+						api:'COM-LIST',
+						data:{page:page,status:status},
+						success:function(res){
+							plus.nativeUI.closeWaiting();
+							mui('.nomore')[0].classList.add('hide')
+							order = {orderlist:res.data};
+							var html = template('order',order);
+							document.getElementById('order_box').innerHTML = html;
+						},
+						one:function(){
+							order = {orderlist:[]};
+							var html = template('order',order);
+							document.getElementById('order_box').innerHTML = html;
+							plus.nativeUI.closeWaiting();
+							mui('.nomore')[0].classList.remove('hide')
+						}
+					});
+					
+					
+				})
+			})
+		</script>
+	</body>
+
+</html>

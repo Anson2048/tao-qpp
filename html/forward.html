@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提现</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<style type="text/css">
+			.mui-table-view {
+				background: #fff;
+			}
+
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0;
+			}
+
+			.mui-input-group .mui-input-row {
+				height: auto;
+			}
+
+			.co-pay-info {
+				display: inline-block;
+				width: 200px;
+				vertical-align: 2px;
+			}
+
+			.co-pay-info h4 {
+				font-size: 16px;
+			}
+
+			.co-pay-info p {
+				font-size: 12px;
+				color: #ccc;
+				line-height: 24px;
+			}
+
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 20px;
+			}
+
+			.mui-radio input[type=radio]:checked:before {
+				content: '\e442';
+				color: #ff7801;
+			}
+
+			.btn {
+				width: 80%;
+				position: fixed;
+				/*bottom: 0;*/
+				left: 50%;
+				margin-left: -40%;
+				margin-top:3rem;
+			}
+
+			.btn .mui-btn-block {
+				padding: 5px 0;
+				border-radius: 20px;
+			}
+
+			.mui-bar {
+				background: #ff5933;
+				box-shadow: none;
+			}
+
+			.mui-title {
+				color: #fff;
+			}
+
+			.mui-bar-nav.mui-bar .mui-icon {
+				color: #fff;
+			}
+
+			.mui-table-view img {
+				width: 100%;
+			}
+
+			.mui-input-row img {
+				width: 24px;
+			}
+
+			.iconfont {
+				font-size: 24px;
+			}
+
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 50%;
+				float: left;
+				margin-top: 5px;
+			}
+
+			.mui-input-row label {
+				width: 20%;
+			}
+
+			.mui-input-row .mui-btn {
+				float: left;
+				text-align: center;
+				width: auto;
+				margin-top: 12px;
+				line-height: 1.0;
+				padding: 5px 7px 3px;
+			}
+
+			.zhanghao {
+				position: relative;
+				padding: 5px 15px;
+			}
+
+			.zhanghao img {
+				width: 26px;
+			}
+
+			.zhanghao span {
+				display: inline-block;
+				vertical-align: 7px;
+				margin-left: 27px;
+			}
+
+			.mui-btn-danger,
+			.mui-btn-negative,
+			.mui-btn-red {
+				background: #ff722d;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">提现</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-table-view">
+				<img src="../images/balance_02.png" />
+				<div class="zhanghao mui-navigate-right" href="user/bind.html">
+					<img src="../images/alipay.png" />
+					<span class="alipayid"></span>
+				</div>
+			</div>
+
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label><img src="../images/money.png" /></label>
+					<input type="number" class="mui-input-clear money" placeholder="提现金额">
+				</div>
+				<div class="mui-input-row">
+					<label><i class="iconfont icon-yanzhengma"></i></label>
+					<input type="text" class="sms" placeholder="请输入验证码">
+					<div class="mui-btn mui-btn-danger getsms">获取验证码</div>
+				</div>
+			</form>
+			<div class="btn">
+				<button class="mui-btn mui-btn-block mui-btn-danger sub">确 定</button>
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var userinfo;
+			var alipayid;
+			var realname;
+			var idcard;
+			var num = 60;
+			mui.init();
+			mui.plusReady(function() { 
+				userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				
+				 Http.post({
+				 	api: 'GETINFO',
+				 	success: function(res) {
+				 		
+						var currentWebview = plus.webview.currentWebview();
+						alipayid = currentWebview.alipayid;
+						document.getElementsByClassName('alipayid')[0].innerText = res.data.alipay;
+						alipayid=res.data.alipay;
+						realname=res.data.name;
+						idcard=res.data.idCard;
+				 	}
+				 })
+				
+				window.addEventListener("forwardrefresh", function(e) {
+					
+					alipayid = e.detail.alipayid;
+					document.getElementsByClassName('alipayid')[0].innerText = alipayid;
+					location.reload();
+				});
+				//跳转绑定页
+				mui('.mui-content').on('tap', '.zhanghao', function() {
+					var href = this.getAttribute('href');
+					/* Http.post({
+						api: 'GETINFO',
+						success: function(res) {*/
+							if (href) {
+								mui.openWindow({
+									url: href,
+									id: href,
+									extras: {
+										realname: realname,
+										alipayid: alipayid,
+										idcard: idcard
+									}
+								})
+							}
+						/*}
+					}) */
+
+				});
+				//获取验证码
+				mui('.mui-content').on('tap', '.getsms', function() {
+					var money = document.getElementsByClassName('money')[0].value;
+					if (!money) {
+						mui.toast('提现金额不能为空！');
+						return;
+					}
+					/* if (money%100!=0) {
+						mui.toast('提现金额为100的整数倍！');
+						return;
+					}
+					if(money<100){
+						mui.toast('提现金额必须100起！');
+						return;
+					} */
+					var that = this;
+					if (num < 60) {
+						return;
+					}
+					document.getElementsByClassName('sms')[0].focus();
+					Http.post({
+						api: 'SMS-VERIFY',
+						data: {
+							mobile: userinfo.mobile
+						},
+						success: function(res) {
+							mui.toast(res.msg)
+						}
+					})
+					var time = setInterval(function() {
+						if (num > 0) {
+							num--;
+							that.innerText = num;
+						} else {
+							num = 60;
+							that.innerText = '重新获取';
+							clearInterval(time)
+						}
+					}, 1000)
+
+				});
+				mui('.mui-content').on('tap', '.sub', function() {
+					plus.nativeUI.showWaiting();
+					var money = document.getElementsByClassName('money')[0].value;
+					var smsCode = document.getElementsByClassName('sms')[0].value;
+					if (!money) {
+						mui.toast('提现金额不能为空！');
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					/* if (money%100!=0) {
+						mui.toast('提现金额为100的整数倍！');
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if(money<100){
+						mui.toast('提现金额必须100起！');
+						plus.nativeUI.closeWaiting();
+						return;
+					} */
+					Http.post({
+						api: 'WITHDRAW',
+						data: {
+							money: money,
+							smsCode: smsCode,
+							alipay: alipayid,
+							type: 'submit'
+						},
+						success: function(res) {
+							mui.toast(res.msg)
+							plus.nativeUI.closeWaiting();
+							mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+						},
+						one: function(res) {
+							plus.nativeUI.closeWaiting();
+							plus.nativeUI.toast(res.msg);
+						},error: function(xhr, type, errorThrown) {
+							mui.toast('提现错误!');
+							plus.nativeUI.closeWaiting();
+						}
+					})
+				}) 
+			})
+		</script>
+	</body>
+
+</html>

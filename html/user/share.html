@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>分享赚钱</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/swiper.min.css"/>
+		<style type="text/css">
+			button{
+				width: 108px;
+				height: 35px;
+				line-height: 35px;
+				border-radius: 35px;
+				background-color: #ff3a13;
+				color: #fff;
+				border: none;
+				padding: 0;
+			}
+			.button{
+				display: flex;
+				justify-content: space-between;
+				width: 260px;
+				margin:30px auto;
+			}
+			.text{
+				padding: 10px 30px;
+			}
+			.text h4{
+				text-align: center;
+				margin-bottom: 20px;
+			}
+			.mui-content{
+				margin-top: 65px;
+			}
+			.header{
+				padding-top: 25px;
+			}
+			.mui-slider{
+				width: 300px;
+				margin: auto;
+			}
+			.swiper-container {
+		        width: 100%;
+		        padding-top: 30px;
+		        padding-bottom: 50px;
+		    }
+		    .swiper-slide {
+		        background-position: center;
+		        background-size: cover;
+		        width: 280px;
+		        height: 500px;
+		    }
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+
+						<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">分享赚钱</h1>
+		</header>
+		<div class="mui-content">
+			<div class="swiper-container">
+			    <div class="swiper-wrapper">
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+			<div class="mui-slider">  
+			    <div class="mui-slider-group"></div>  
+			</div>
+			<!--内容-->
+			
+			<div class="button">
+				<button class="share">分享</button>
+				<button class="download">保存图片</button>
+			</div>
+			<div class="text">
+				<h4 class="title">邀请规则</h4>
+				<p>1.专属海报中的二维码已包含您的邀请码信息</p>
+				<p>2.好友通过您的二维码海报下载APP并注册成为会员后，Ta即永久成为您的粉丝，未来Ta升级市场运营或领券下单时产生的奖励收入均计。</p>
+				<p>3.通过您注册的所有用户领券下单并确认收货后，您均将获得相应的消费佣金奖励。</p>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+			mui.init();
+			var div ='';
+			var picdata = [];
+			var swiper;
+			
+			mui.plusReady(function(){
+				var currentView = plus.webview.currentWebview();
+				var hh = plus.navigator.getStatusbarHeight();
+				currentView.show('slide-in-right', 300);
+				plus.nativeUI.closeWaiting();
+				Http.post({
+					api:'INVITE',
+					success:function(res){
+						picdata = res.data;
+						for(var i = 0;i < res.data.length;i ++){
+							div += "<div class='swiper-slide' style='background-image:url(" + res.data[i] +")'></div>";
+						}
+						document.getElementsByClassName('swiper-wrapper')[0].innerHTML = div;
+					 	swiper = new Swiper('.swiper-container', {
+							effect: 'coverflow',
+							grabCursor: true,
+							initialSlide :1,
+							centeredSlides: true,
+							slidesPerView: 'auto',
+							coverflowEffect: {
+								rotate: 50,
+								stretch: 0,
+								depth: 100,
+								modifier: 1,
+								slideShadows: true,
+							},
+							pagination: {
+								el: '.swiper-pagination',
+							},
+						});
+//						var gallery = mui('.mui-slider');
+//						gallery.slider({
+//						  interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+//						});
+					}
+				});
+				//分享服务
+				var shares={};
+				var sharedata = null;
+				plus.share.getServices(function(s) {
+				    for(var i in s){  
+	                    var t = s[i];  
+	                    shares[t.id] = t;  
+	                }  
+				}, function(e) {
+				    plus.nativeUI.alert("获取分享服务列表失败：" + e.message);
+				});
+				function shareAction(sb, bh,pic) {
+				    if(!sb||!sb.s){  
+		                console.log("无效的分享服务！");  
+		                return;  
+		            }  
+		           
+		            var msg={};
+		            msg = {content:'',extra:{scene:sb.x}};
+		            console.log(pic)
+		            if(mui.os.android){
+		            	if(pic){  
+		                    msg.thumbs=[pic];  
+		                    msg.pictures = [pic];
+		                } 
+		            }else{
+		            	msg.thumbs=[ 'file://' + pic];  
+	                    msg.pictures = [ 'file://' + pic];
+		            }
+		           
+		            
+		            // 发送分享  
+		            if ( sb.s.authenticated ) {  
+		            	plus.nativeUI.showWaiting('正在加载');
+		                console.log("---已授权---");  
+		                shareMessage(msg,sb.s);  
+		            } else {  
+		                console.log("---未授权---");  
+		                sb.s.authorize( function(){  
+	                		plus.nativeUI.showWaiting('正在加载');
+	                        shareMessage(msg,sb.s);  
+	                    },function(e){  
+	                        console.log("认证授权失败："+e.code+" - "+e.message );  
+		                      
+		                });  
+		            } 
+				};
+				function shareMessage(msg,s){
+					console.log('调用微信')
+					console.log(msg)
+					plus.nativeUI.closeWaiting();
+				    s.send( msg, function(){
+				        mui.toast( "分享到\""+s.description+"\"成功！ " );
+				    }, function(e){
+				        mui.toast( "分享到"+s.description+"失败");
+				    } );
+				};
+				mui('.button').on('tap','.share',function(){
+					var num = swiper.activeIndex;
+					var pic = picdata[num];
+					var filename = pic.substring(pic.lastIndexOf("/") + 1, pic.length);
+					var relativePath ='_downloads/'+ filename;
+					setImgFromNet (pic,relativePath,function(fileName){
+						var pic = plus.io.convertLocalFileSystemURL(fileName);
+						var shareBts=[];
+			            // 更新分享列表
+			            var ss=shares['weixin'];  
+			            ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),  
+			            shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));  
+			            // 弹出分享列表
+			            shareBts.length>0?plus.nativeUI.actionSheet({title:'分享海报',cancel:'取消',buttons:shareBts},function(e){
+			                (e.index>0)&&shareAction(shareBts[e.index-1],false,pic);
+			            }):plus.nativeUI.alert('当前环境无法支持分享链接操作!');
+					});
+				});
+				
+				mui('.button').on('tap','.download',function(){
+					var num = swiper.activeIndex;
+					var pic = picdata[num];
+					var filename = pic.substring(pic.lastIndexOf("/") + 1, pic.length);
+					var relativePath ='_downloads/'+ filename;
+					setImgFromNet (pic,relativePath,function(){
+						mui.confirm("下载成功", "", ["确定"], function(event) {})
+					});
+					
+				});
+				function setImgFromNet (loadUrl,relativePath,callback) {
+		            //创建下载任务
+		            var downLoader = plus.downloader.createDownload(loadUrl, {
+				    method: 'GET',
+				    filename: '_downloads/' + relativePath
+					}, function(download, status) {
+					    var fileName = download.filename;
+					    console.log('文件名:' + fileName);
+					    console.log(download);
+					    plus.gallery.save(fileName, function() {
+					    	callback(fileName);
+						});
+					});
+					downLoader.start();
+		        }
+			})
+		</script>
+	</body>
+</html>
+

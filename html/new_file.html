@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+		</style>
+
+	</head>
+
+	<body style="background-color: #f7f7f7;">
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div style="padding-top:10rem;">
+				<img src="../images/480*480.png" width="100rem">
+				<div>
+					<div class="mui-content-padded" style="padding-top:5rem;">
+						<button id='loginwx' class="mui-btn mui-btn-block mui-btn-primary">微信授权登入</button>
+						<button id='login' class="mui-btn mui-btn-block mui-btn-primary2">手机号码登入</button>
+					</div>
+					<div class="mui-content-padded oauth-area">
+
+					</div>
+				</div>
+				<script src="../js/mui.js"></script>
+				<script src="../js/app.js"></script>
+				<script>
+					(function($, doc) {
+						$.init({
+							statusBarBackground: '#f7f7f7',
+							swipeBack: false
+						});
+						$.plusReady(function() {
+							plus.webview.currentWebview().setStyle({ //关闭首页侧滑返回功能
+								'popGesture': 'none'
+							});
+							all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log(all[i].id);
+							}
+							//第三方登录
+							var authBtns = ['weixin']; //配置业务支持的第三方登录
+							var auths = {};
+							//点击登录授权事件
+							mui('.loginwx').on('tap', 'button', function() {
+								console.log("aaaa");
+							})
+						});
+
+					}(mui, document));
+				</script>
+	</body>
+
+</html>

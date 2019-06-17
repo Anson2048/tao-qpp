@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>首页</title>
+		<link href="css/layui.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/style2.css">
+		<link rel="stylesheet" href="css/layer.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/lib.js"></script>
+		<style>
+			.row-h1{border:none;}
+		</style>
+		<link href="css/swiper.min.css" rel="stylesheet" />
+		<script src="js/swiper.min.js"></script>
+	</head>
+
+	<body class="body-idx cms kutuiyun" style="background: rgb(255, 255, 255);">
+		<!-- 今日精选好券列表css -->
+		<link rel="stylesheet" href="css/ul-prolist.css">
+		<!-- 今日精选好券列表css end-->
+		<!-- 分类一优惠券1 -->
+		<link rel="stylesheet" href="css/ul-quan1.css">
+		<!-- 分类一优惠券1 end-->
+		<!-- 分类二优惠券2 -->
+		<link rel="stylesheet" href="css/ul-quan2.css">
+		<!-- 分类二优惠券2 end-->
+		<!-- 分类一优惠券3 -->
+		<link rel="stylesheet" href="css/ul-quan3.css">
+		<!-- 分类一优惠券3 end-->
+		<div class="main">
+			<div class="row-h1" style="background: top center no-repeat #ccc;background-image: url(images/hb3.png); ">
+				<div class="wp ht">
+					<!-- 搜索 -->
+					<div class="m-ht1">
+						<div class="s1">
+							<a href="#">
+								<i></i>
+								<span>收藏</span>
+							</a>
+						</div>
+						<div class="s3">
+							<a href="#">
+								<i style="background-image:url(images/xin.png) "></i>消息
+							</a>
+						</div>
+						<div class="s2" style="background: #fff;">
+
+							<input type="text" placeholder="输入你要的商品名称" name="key" id="key" style="width: 80%;background:  none;background: #fff;">
+							<input type="submit" class="submit" id="indexsearch" value="" style="width:  20%;right: 0;left: initial;background-position: 70% 50%;
+">
+						</div>
+					</div>
+				</div>
+
+				<div class="m-ht2 fix">
+					<!-- 展开按钮 -->
+					<!-- <div class="btn js-btn"></div> -->
+					<!-- 显示菜单 -->
+					<div class="show-box">
+						<div class="wp" style="padding-right: 0.1rem;">
+							<div class="chose">
+								今日精选
+							</div>
+							<ul class="ul-ht1" id='NAV'>
+								<script type="text/template" id="s_category">
+									{{each categorylist as value k}}
+								<li><a data="{{k}}">{{value.title}}</a></li>
+								{{/each}}
+								</script>
+							</ul>
+						</div>
+						<h3 class="tit"><em>选择分类</em></h3>
+					</div>
+				</div>
+				<!-- 展开菜单 -->
+				<!-- <div class="wp"> -->
+				<div class="chc-box">
+					<div class="mask"></div>
+					<ul class="ul-ht2">
+
+						<li>
+							<a href="./index.php?i=2&amp;c=entry&amp;type=1&amp;px=&amp;pid=mm_338020111_359700140_100098250184&amp;dluid=&amp;do=Newcat&amp;m=tiger_newhu">
+								<i style="background-image: url(images/1nvzhuang.png);"></i>
+								<span>女装</span>
+							</a>
+						</li>
+					</ul>
+					<a href="javascript:;" class="a-close">
+						<img src="images/a-close.png" alt="">
+					</a>
+				</div>
+				<!-- </div> -->
+				<!-- banner -->
+				<div class="wp">
+					<div class="h-ban2 swiper-container-horizontal">
+						<div class="swiper-wrapper" id="sliderbox">
+							<script type="text/template" id="s_box">
+								{{each slidelist as value i}}
+							<div class="swiper-slide">
+								<div class="pic">
+									<a href="{{value.url}}"><img src="{{value.img}}"
+										 alt="{{value.color}}"></a>
+								</div>
+							</div>
+							{{/each}}
+						</script>
+						</div>
+						<div class="swiper-pagination" style="bottom:20px !important;"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 图标列 -->
+			<div class="row-h2">
+				<ul class="ul-ht3" id='ico'>
+					<li>
+						<a href="html/large.html">
+							<i style="background-image: url(images/JXy0nN9WxlZ4zKklza4PiyMP0IK7an.png);"></i>
+							<span>淘好货</span>
+						</a>
+					</li>
+					<li>
+						<a href="html/pingtuan.html">
+							<i style="background-image: url(images/201804182245260693237.gif);"></i>
+							<span>淘拼团</span>
+						</a>
+					</li>
+					<li>
+						<a href="html/muying.html">
+							<i style="background-image: url(images/FtUidYERloIzIO4jrUrkxcnPrfQc-600.png);"></i>
+							<span>母婴专区</span>
+						</a>
+					</li>
+					<li>
+						<a href="html/brand.html">
+							<i style="background-image: url(images/FtxP13Ir2jluvJcTNjlJcOHpMph5-600.png);"></i>
+							<span>品牌专区</span>
+						</a>
+					</li>
+					<li>
+						<a href="html/special-price.html">
+							<i style="background-image: url(images/Hd9JlyzL5ubZNu5gbYzyhaHmSYlbMU.png);"></i>
+							<span>9.9包邮</span>
+						</a>
+					</li>
+					<!-- <li>
+						<a href="#">
+							<i style="background-image: url(images/201804182245260693237.gif);"></i>
+							<span>淘拼团</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i style="background-image: url(images/t055meVvZ0bj9e2RzaobeZJ04v770e.png);"></i>
+							<span>免费视频电影</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i style="background-image: url(images/FtUidYERloIzIO4jrUrkxcnPrfQc-600.png);"></i>
+							<span>母婴专题</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i style="background-image: url(images/FtxP13Ir2jluvJcTNjlJcOHpMph5-600.png);"></i>
+							<span>天猫福利</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i style="background-image: url(images/HS9zVkI5vEe49V5ZCDW59e944W9WW3.png);"></i>
+							<span>品牌专区</span>
+						</a>
+					</li> -->
+
+				</ul>
+			</div>
+
+			<!-- 公告 -->
+			<div class="row-h3">
+				<div class="m-ht3">
+					<div class="lb" style="background-image: url(images/lb.png)"></div>
+					<div class="swiper-pub swiper-container-vertical">
+						<div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, -62px, 0px);">
+							<div class="swiper-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"
+							 data-swiper-slide-index="0" style="height: 31px;">
+								<a href="#" class="txt">合伙人招募中，进入升级权益申请成为店长享受更多收益</a>
+							</div>
+							<div class="swiper-slide swiper-slide-duplicate-active swiper-slide-prev swiper-slide-duplicate-next"
+							 data-swiper-slide-index="0" style="height: 31px;">
+								<a href="#" class="txt">合伙人招募中，进入升级权益申请成为店长享受更多收益</a>
+							</div>
+							<div class="swiper-slide swiper-slide-duplicate swiper-slide-active swiper-slide-duplicate-prev"
+							 data-swiper-slide-index="0" style="height: 31px;">
+								<a href="#" class="txt">合伙人招募中，进入升级权益申请成为店长享受更多收益</a>
+							</div>
+						</div>
+						<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+					</div>
+				</div>
+			</div>
+			<!-- 专题分区 -->
+			<div class="row-h4">
+				<ul class="ul-ht4" style="padding-top:14px;" id="zhuanti">
+					<li>
+						<div class="con">
+							<a href="html/muying.html">
+								<div class="txt">
+									<span>母婴专区</span>
+									<em>全球母婴好货精选</em>
+								</div>
+								<div class="pic"><img src="images/hq1.png" alt=""></div>
+							</a>
+						</div>
+					</li>
+					<li>
+						<div class="con">
+							<a href="html/look.html">
+								<div class="txt">
+									<span>边买边看</span>
+									<em>触手可及的感觉</em>
+								</div>
+								<div class="pic"><img src="images/hq2.png" alt=""></div>
+							</a>
+						</div>
+					</li>
+					<li>
+						<div class="con">
+							<a href="html/pingtuan.html">
+								<div class="txt">
+									<span>拼团好货</span>
+									<em>每日购物更省心</em>
+								</div>
+								<div class="pic"><img src="images/hq3.png" alt=""></div>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 四个分类 -->
+			<div class="row-h6">
+				<ul class="ul-ht5" id="meun">
+					<li class="li1">
+						<div class="con">
+							<a href="html/special-price.html">
+								<div class="txt">
+									<em>9.9包邮</em>
+									<span>省钱不只是一点点</span>
+								</div>
+								<div class="pic1">
+									<img src="images/hf1.jpg" alt="">
+								</div>
+								<div class="pic2">
+									<img src="images/hf2.jpg" alt="">
+								</div>
+							</a>
+						</div>
+					</li>
+					<li class="li2">
+						<div class="con">
+							<a href="html/qianggou.html">
+								<div class="txt">
+									<em>限时抢购</em>
+									<span>限时限量</span>
+								</div>
+								<div class="pic1">
+									<img src="images/hf3.jpg" alt="">
+								</div>
+								<div class="pic2">
+									<img src="images/hf4.jpg" alt="">
+								</div>
+							</a>
+						</div>
+					</li>
+					<li class="li3">
+						<div class="con">
+							<a href="html/large.html">
+								<div class="txt">
+									<em>淘好货</em>
+									<span>低价让利促销</span>
+								</div>
+								<div class="pic1">
+									<img src="images/hf5.jpg" alt="">
+								</div>
+								<div class="pic2">
+									<img src="images/hf6.jpg" alt="">
+								</div>
+							</a>
+						</div>
+					</li>
+					<li class="li4">
+						<div class="con">
+							<a href="html/pingtuan.html">
+								<div class="txt">
+									<em>聚实惠</em>
+									<span>好品味从挑剔开始</span>
+								</div>
+								<div class="pic1">
+									<img src="images/hf7.jpg" alt="">
+								</div>
+								<div class="pic2">
+									<img src="images/hf8.jpg" alt="">
+								</div>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 今日值得买 -->
+			<div class="row-h8" id='todaybuy'>
+				<script type="text/template" id="Two_class">
+					{{each Twolist as value i}}
+				{{if value.goods.length > 0}}
+				<div class="wp">
+					<div class="m-ht5">
+						<div class="tit" style="background-image: url(images/bg2.png);">
+							<em>今日值得买，</em>
+							<span>限时抢购中</span>
+							<i style="background-image: url(images/clock.png);"></i>
+						</div>
+						<div class="swiper-buy swiper-container-horizontal swiper-container-ios">
+							<div class="swiper-wrapper" style="height:223px;">
+								{{each value.goods as val l}}
+								<div class="swiper-slide" data-swiper-slide-index="{{l}}">
+									<div class="pic"><img src="{{val.thumb}}" data="{{val.origin_id}}" profit="{{val.ratio_price}}" type="{{val.type}}"></div>
+									<div class="txt">
+										<h3 class="tit">{{val.title}}</h3>
+										<span>券后￥{{subduction(val.coupon_price,val.coupon_money)}}</span>
+										<div class="quan">
+											<em style="background-image: url(images/hi7.png);">券{{val.coupon_money}}</em>
+											<span>已售{{val.sales_num}}</span>
+										</div>
+									</div>
+								</div>
+								{{/each}}
+							</div>
+							<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+						</div>
+					</div>
+				</div>
+				{{/if}}	
+				{{/each}}
+				</script>
+			</div>
+			<!-- 边买边看 -->
+			<div class="row-h9" id="Threehtm">
+				<script type="text/template" id="Three_class">
+					{{each Threelist as value i}}
+					{{if value.goods.length > 1}}
+				<div class="tit-idx">
+					<span class="more">查看全部<i></i></span>
+					<h3 style="background-image: url(images/bg3.png);">边买边看</h3>
+				</div>
+				<div class="swiper-z1 swiper-container-horizontal" style="height:107.75px;" >
+					<ul class="ul-ht7 swiper-wrapper" style="transform: translate3d(-1406.25px, 0px, 0px); transition-duration: 0ms;">
+						{{each value.goods as val l}}
+						<li class="swiper-slide" data-swiper-slide-index="{{l}}" style="width: 93.75px;">
+							<a data="{{val.origin_id}}" profit="{{val.ratio_price}}" type="{{val.type}}">
+								<div class="pic">
+									<img src="{{val.thumb}}" alt="">
+									<div class="tips">
+										券￥{{val.coupon_money}}
+									</div>
+								</div>
+								<div class="txt">
+									<h3 class="tit">title</h3>
+									<div class="pric">
+										<span>券后￥{{subduction(val.coupon_price,val.coupon_money)}}</span>
+										<em>￥{{val.coupon_price}}</em>
+									</div>
+								</div>
+							</a>
+						</li>
+						{{/each}}
+					</ul>
+					<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+				</div>
+				{{/if}}	
+				{{/each}}
+				</script>
+			</div>
+
+			<!-- 今日精选好券 -->
+			<div class="row-h13">
+				<div class="m-ht7" id="table">
+
+
+					<div class="tit">
+						<i style="background-image: url(images/hi8.png)"></i>
+						<h3>今日精选好券</h3>
+						<em>EXPLOSION UPDATE TODAY</em>
+					</div>
+					<ul class="ul-ht9">
+						<li class="on"><a href="#">综合</a></li>
+						<li><a href="#">券后价</a></li>
+						<li><a href="#">销量</a></li>
+						<li><a href="#">券额</a></li>
+					</ul>
+
+					<!-- 样式2 -->
+					<ul class="ul-quan1" style="background: #f0f0f0;" id="goodsbox">
+						<script type="text/template" id="m_goods">
+							{{each list as value i}}
+						<li>
+							<div class="con"><a data="{{value.origin_id}}" profit="{{value.ratio_price}}" type="{{value.type}}">
+									<div class="pic"><img src="{{value.thumb}}"
+										 alt="">
+										<div class="tips">分享赚{{value.commission_money}}</div>
+									</div>
+									<div class="txt">
+										<h3 class="tit">{{if value.type=="12"}}
+														<i class='g-tm'></i>
+														{{else}}
+														<i class='g-tb'></i>
+														{{/if}}
+										{{value.title}}</h3>
+										<div class="s1">销量：{{value.volume}}</div>
+										<div class="s2"><em>券后</em><span style="font-weight: 700;">{{subduction(value.coupon_price,value.coupon_money)}}元</span></div>
+									</div>
+									<div class="quan">
+										<div class="q-con">
+											<div class="s1">优惠券</div>
+											<div class="s2">{{value.coupon_money}}元</div>
+											<div class="s3">领券购买</div>
+										</div>
+									</div>
+								</a></div>
+						</li>
+						{{/each}}
+						</script>
+
+					</ul>
+					<div class="layui-flow-more" id="jiazai"><a href="javascript:;"><cite>加载更多</cite></a></div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js" type="text/javascript"></script>
+		<script src="js/http.js" type="text/javascript"></script>
+		<script src="js/template-web.js"></script>
+		<script src="js/util.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			/**
+			 * 滑动控件
+			 */
+			var swiper = new Swiper('.swiper-pub', {
+				direction: 'vertical',
+				loop: true,
+				speed: 300,
+				autoplay: {
+					disableOnInteraction: false,
+					delay: 3000
+				},
+			});
+			var page = 1;
+			var goodslist;
+			mui.plusReady(function() {
+
+				//版本控制
+				getVersion();
+				//顶部分类
+				Http.post({
+					api: 'GET-MENU',
+					data: null,
+					success: function(res) {
+						var categorylist = {
+							categorylist: res.data
+						};
+						var html = template('s_category', categorylist);
+						document.getElementById('NAV').innerHTML = html;
+					}
+				});
+				//轮播
+				mui.post(http + 'taobao-buy/nav-index', function(res) {
+					if (res.code == 0) {
+						var slidelist = {
+							slidelist: res.data
+						};
+						//console.log(JSON.stringify(res.data));
+						var html = template('s_box', slidelist);
+						document.getElementById('sliderbox').innerHTML = html;
+
+						var swiper = new Swiper('.h-ban2', {
+							pagination: {
+								el: '.swiper-pagination',
+							},
+							loop: true,
+							speed: 300,
+							autoHeight: true,
+							autoplay: {
+								disableOnInteraction: false,
+								delay: 3000
+							},
+							on: {
+								slideChangeTransitionEnd: function() {
+									var clo = this.$wrapperEl.find("img").eq(this.activeIndex).attr("alt");
+									var bg = "background-image: url(images/hb3.png); background-size: 150% 100%;";
+									var bgstr = "background:top center no-repeat " + clo + ";";
+									$(".row-h1").attr("style", "" + bgstr + bg + "");
+
+								},
+								touchMove: function() {
+									var clo = this.$wrapperEl.find("img").eq(this.activeIndex).attr("alt");
+									var bg = "background-image: url(images/hb3.png); background-size: 150% 100%;";
+									var bgstr = "background:top center no-repeat " + clo + ";";
+									$(".row-h1").attr("style", "" + bgstr + bg + "");
+								}
+							}
+						});
+					}
+				});
+				//三个自定义菜单分类
+				mui.get(http + 'taobao-buy/get-custom-nav', function(res) {
+					if (res.code == 0) {
+						//var Onearray = [];
+						var Twoarray = [];
+						var threearray = [];
+						//var one = 0;
+						var two = 0;
+						var three = 0;
+						for (var i = 0; i < res.data.length; i++) {
+							// if (res.data[i].position == "1" && one < 5) {
+							// 	Onearray.push(res.data[i]);
+							// 	one++;
+							// }
+							if (res.data[i].position == "2") {
+								Twoarray.push(res.data[i]);
+								//two++;
+							}
+							if (res.data[i].position == "3" && three < 1) {
+								threearray.push(res.data[i]);
+								three++;
+								//document.getElementById("Threehtm").style.backgroundImage = 'url(' + res.data[i].img + ')';
+								//alert(res.data[i].goods[1].title)
+								//console.log(JSON.stringify(res.data[i].goods));
+							}
+						}
+						// var classlist = {
+						// 	classlist: Onearray
+						// };
+						var Twolist = {
+							Twolist: Twoarray
+						};
+						var Threelist = {
+							Threelist: threearray
+						};
+						// var html = template('in_class', classlist);
+						// document.getElementById('classhtm').innerHTML = html;
+						//限时抢购
+						var html2 = template('Two_class', Twolist);
+						document.getElementById('todaybuy').innerHTML = html2;
+						//获取推荐产品广告
+						// var html3 = template('Three_class', Threelist);
+						// document.getElementById('Threehtm').innerHTML = html3;
+						certifySwiper = new Swiper('.swiper-buy', {
+							watchSlidesProgress: true,
+							slidesPerView: 'auto',
+							centeredSlides: true,
+							loop: true,
+							speed: 300,
+							autoplay: {
+								disableOnInteraction: false,
+								delay: 3000
+							},
+							//loopedSlides: 3,
+							// autoplay: true,
+							on: {
+								progress: function(progress) {
+									//console.log(this.slides.length);
+									for (i = 0; i < this.slides.length; i++) {
+										var slide = this.slides.eq(i);
+										var slideProgress = this.slides[i].progress;
+										modify = 1;
+										if (Math.abs(slideProgress) > 1) {
+											modify = (Math.abs(slideProgress) - 1) * 0.3 + 1;
+										}
+										translate = slideProgress * modify * 25 + 'px';
+										scale = 1 - Math.abs(slideProgress) / 15;
+										zIndex = 999 - Math.abs(Math.round(10 * slideProgress));
+										slide.transform('translateX(' + translate + ') scale(' + scale + ')');
+										slide.css('zIndex', zIndex);
+										slide.css('opacity', 1);
+										if (Math.abs(slideProgress) > 3) {
+											slide.css('opacity', 0);
+										}
+									}
+
+
+								},
+								setTransition: function(transition) {
+									for (var i = 0; i < this.slides.length; i++) {
+										var slide = this.slides.eq(i)
+										slide.transition(transition);
+									}
+
+								}
+							}
+
+						})
+						//边买边看
+						var html3 = template('Three_class', Threelist);
+						document.getElementById('Threehtm').innerHTML = html3;
+						var swiper = new Swiper('.swiper-z1', {
+							loop: true,
+							speed: 300,
+							slidesPerView: 4,
+							slidesPerColumn: 1,
+							autoplay: {
+								disableOnInteraction: false,
+								delay: 3000
+							},
+						});
+					}
+				}, 'json');
+
+				//今日精选好券
+				Http.post({
+					api: 'INDEX',
+					data: {
+						type: 1,
+						page: 1
+					},
+					success: function(res) {
+						//rootdata.m_goods = res.data;
+						goodslist = {
+							list: res.data
+						};
+						//console.log(JSON.stringify(goodslist));
+						var goods = template('m_goods', goodslist);
+						document.getElementById('goodsbox').innerHTML = goods;
+					}
+				});
+
+				//菜单跳转
+				mui('#NAV').on('tap', 'a', function() {
+
+					var data = this.getAttribute('data');
+					mui.fire(plus.webview.getWebviewById('html/tab-nav-scroll.html'), 'scrollTo', {
+						data: data
+					});
+					mui.fire(plus.webview.getWebviewById(plus.webview.getLaunchWebview().id), 'change');
+					
+					
+					//nviewEvent.drawText(currTag.text, currTag.position, util.changeColor(currTag.textStyles, color), currTag.id);
+					
+				});
+
+				//限时抢购详细跳转
+				mui('#todaybuy').on('tap', 'img', function() {
+					var type = this.getAttribute('type');
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+					var id = this.getAttribute('data'); //获取要传的参数
+					var profit = this.getAttribute('profit');
+					//console.log(type+","+id+","+profit)
+					mui.fire(goodswebview, 'getItem', {
+						id: id,
+						profit: profit,
+						type: type
+					});
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'goods-webview.html'
+						})
+					}, 1000);
+
+				});
+
+				//边买边看跳转
+				mui('#Threehtm').on('tap', 'a', function() {
+					var type = this.getAttribute('type');
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+					var id = this.getAttribute('data'); //获取要传的参数
+					var profit = this.getAttribute('profit');
+					//console.log(type+","+id+","+profit)
+
+					mui.fire(goodswebview, 'getItem', {
+						id: id,
+						profit: profit,
+						type: type
+					});
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'goods-webview.html'
+						})
+					}, 1000);
+
+
+				});
+
+				//精选好券跳转详情
+				mui('#goodsbox').on('tap', 'a', function(e) {
+					var all = plus.webview.all();
+					// for (var i = 0; i < all.length; i++) {
+					// 	console.log( "窗口标识: "+all[i].id );
+					// 	console.log( "当前Webview窗口："+all[i].getURL());
+					// }
+					var type = this.getAttribute('type');
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+					var id = this.getAttribute('data'); //获取要传的参数
+					var profit = this.getAttribute('profit');
+
+					mui.fire(goodswebview, 'getItem', {
+						id: id,
+						profit: profit,
+						type: type
+					});
+
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'goods-webview.html'
+						})
+					}, 100);
+					/*var type = this.getAttribute('type');
+						
+					var id = this.getAttribute('data'); //获取要传的参数
+					var profit = this.getAttribute('profit');
+					mui.openWindow({
+						id: 'goods-webview',
+						url: 'html/goods-webview.html'
+					});
+					setTimeout(function(){
+						var goodswebview = plus.webview.getWebviewById('goods-webview'); //获取预加载的b页面id  
+						mui.fire(goodswebview, 'getItem', {
+						id: id,
+						profit: profit,
+						type: type
+						});
+					},100)
+					var all = plus.webview.all();
+						for (var i = 0; i < all.length; i++) {
+							console.log( "窗口标识: "+all[i].id );
+							console.log( "当前Webview窗口："+all[i].getURL());
+						}*/
+				});
+
+				//加载更多
+				mui('.layui-flow-more').on('tap', 'a', function(e) {
+					/* var all = plus.webview.all();
+						for (var i = 0; i < all.length; i++) {
+							console.log( "窗口标识: "+all[i].id );
+							console.log( "当前Webview窗口："+all[i].getURL());
+						} */
+					var jiazai = document.getElementById('jiazai');
+					jiazai.innerHTML = '<img src="images/100.gif">';
+					Http.post({
+						api: 'INDEX',
+						data: {
+							type: 1,
+							page: ++page
+						},
+						success: function(res) {
+							if(res.data.length>0){
+							goodslist.list = goodslist.list.concat(res.data);
+							var goods = template('m_goods', goodslist);
+							document.getElementById('goodsbox').innerHTML = goods;
+							}
+							jiazai.innerHTML = '<a href="javascript:;"><cite>加载更多</cite></a>';
+
+						},
+						one: function() {
+							jiazai.innerHTML = '<cite>没有更多数据了</cite>';
+						},
+						error: function(xhr, type, errorThrown) {
+							--page;
+							jiazai.innerHTML = '<a href="javascript:;"><cite>加载更多</cite></a>';
+						}
+					})
+				});
+				var listcolPage = null;
+				var type = 'TAOBAO-SEARCH';
+
+				function searchlist(data) {
+					//console.log(type)
+					if (!listcolPage) {
+						listcolPage = plus.webview.getWebviewById('list-col');
+					};
+					//触发搜索页面的getItem事件 
+					mui.fire(listcolPage, 'getsearch', {
+						data: data,
+						type: type
+					});
+					mui.openWindow({
+						id: 'list-col',
+						waiting: {
+							autoShow: true, //自动显示等待框，默认为true
+							title: '正在加载...', //等待对话框上显示的提示内容
+						},
+						cachemode: 'noCache'
+					});
+				};
+				mui('.s2').on('tap', '#indexsearch', function() {
+					var ele = document.getElementById('key');
+					var data = ele.value;
+					if (!data) {
+						mui.toast('查询不能为空');
+						return;
+					}
+					searchlist(data);
+				});
+				
+				mui('#Threehtm').on('tap', '.more', function() {
+					mui.fire(plus.webview.getWebviewById('list-class'), 'getclass', {
+							data:"边买边看",
+							type: "17"
+							});
+							mui.openWindow({
+								id: 'list-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+				});
+				//链接跳转图标
+				mui('#meun').on('tap', 'a', function() {
+					var href = this.getAttribute('href');
+					if (href) {
+						if(href=='html/qianggou.html'){
+							mui.fire(plus.webview.getWebviewById('list-class'), 'getclass', {
+							data:"限时抢购",
+							type: "15"
+							});
+							mui.openWindow({
+								id: 'list-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}
+						else if(href=='html/large.html'){
+							mui.fire(plus.webview.getWebviewById('meun-class'), 'getclass', {
+							data:"淘好货",
+							type: "coupon"
+							});
+							mui.openWindow({
+								id: 'meun-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}
+						else if(href=='html/pingtuan.html'){
+							plus.runtime.openURL('taobao://mo.m.taobao.com/optimus/jhspt2c?pid=mm_98877919_483450309_108800850320');
+						}
+						else{
+						mui.openWindow(href, href);
+						}
+					}
+				});
+				//链接跳转专题
+				mui('#zhuanti').on('tap', 'a', function() {
+					var href = this.getAttribute('href');
+					if (href) {
+						if(href=='html/look.html'){
+							mui.fire(plus.webview.getWebviewById('list-class'), 'getclass', {
+							data:"边买边看",
+							type: "17"
+							});
+							mui.openWindow({
+								id: 'list-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}
+						else if(href=='html/pingtuan.html'){
+							plus.runtime.openURL('taobao://mo.m.taobao.com/optimus/jhspt2c?pid=mm_98877919_483450309_108800850320');
+						}
+						else{
+						mui.openWindow(href, href);
+						}
+					}
+				});
+				//链接跳转
+				mui('#ico').on('tap', 'a', function() {
+					var href = this.getAttribute('href');
+					if (href) {
+						if(href=='html/brand.html'){
+							mui.fire(plus.webview.getWebviewById('meun-class'), 'getclass', {
+							data:"品牌专区",
+							type: "brand"
+							});
+							mui.openWindow({
+								id: 'meun-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}
+						else if(href=='html/large.html'){
+							mui.fire(plus.webview.getWebviewById('meun-class'), 'getclass', {
+							data:"淘好货",
+							type: "coupon"
+							});
+							mui.openWindow({
+								id: 'meun-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}
+						else if(href=='html/pingtuan.html'){
+							plus.runtime.openURL('taobao://mo.m.taobao.com/optimus/jhspt2c?pid=mm_98877919_483450309_108800850320');
+						}
+						else{
+						mui.openWindow(href, href);
+						}
+					}
+				});
+
+
+				// var all = plus.webview.all();
+				// for (var i = 0; i < all.length; i++) {
+				// 	console.log( "窗口标识: "+all[i].id );
+				// 	console.log( "当前Webview窗口："+all[i].getURL());
+				// }
+
+
+				function copyToClip() { ///获取粘贴板内容
+					if (mui.os.ios) {
+						//ios
+						var UIPasteboard = plus.ios.importClass("UIPasteboard");
+						var generalPasteboard = UIPasteboard.generalPasteboard();
+						return generalPasteboard.plusCallMethod({
+							valueForPasteboardType: "public.utf8-plain-text"
+						});
+					} else {
+						var Context = plus.android.importClass("android.content.Context");
+						var main = plus.android.runtimeMainActivity();
+						var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+						return plus.android.invoke(clip, "getText");
+					}
+
+				}
+				document.addEventListener("resume", function() {
+					var arr = copyToClip();
+					//console.log(arr[0]);
+					//console.log(arr)
+					if (arr && arr.length > 8) {
+
+						/*mui.openWindow({
+									url: 'html/pop/pop.html',
+									id: 'pop.html',
+									styles: {
+										background: 'transparent'
+									},
+									show: {
+										aniShow: 'fade-in'
+									},
+									extras: {
+										title: arr
+									}
+								})*/
+						//cleartext();
+						Http.post({
+							api: 'CREART-URL',
+							data: {
+								data: arr
+							},
+							success: function(res) {
+								var picurl = res.data.pict_url; //产品图
+								var title = res.data.title;
+								var url = res.data.coupon_short_url;
+								var shoptype = "";
+								//var price = (parseFloat(res.data.commission_rate) * parseFloat(res.data.zk_final_price) / 100).toFixed(2)
+								var price = res.data.commission_money;
+								setTimeout(function() {
+									cleartext();
+									console.log("成功")
+									mui.openWindow({
+										url: 'html/pop/pop.html',
+										id: 'pop.html',
+										styles: {
+											background: 'transparent'
+										},
+										show: {
+											aniShow: 'fade-in'
+										},
+										extras: {
+											picUrl: picurl,
+											title: title,
+											url: url,
+											shoptype: shoptype,
+											price: price
+										}
+									})
+								}, 3000);
+							},
+							one: function(res) {
+								mui.toast(res.msg);
+								//alert(res.msg);
+							}
+
+						})
+					}
+				}, false);
+
+				function getVersion() {
+					plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+						wgtVer = inf.version;
+						checkUpdate();
+					});
+				}
+
+				// 检测更新
+				function checkUpdate() {
+					var newVer;
+					var updateurl;
+					wgtVer = wgtVer.replace(/\./g, "")
+					Http.post({
+						api: 'UPDATE-T',
+						success: function(res) {
+							if (plus.os.name == "iOS") {
+								newVer = res.data.iosVersion;
+								updateurl = res.data.iosUrl;
+							} else {
+								newVer = res.data.version;
+								updateurl = res.data.url;
+							}
+							if (updateurl && wgtVer && newVer && (parseInt(wgtVer) < parseInt(newVer))) {
+								//if(updateurl){
+								mui.openWindow({
+									url: 'html/pop/update.html',
+									id: 'update.html',
+									styles: {
+										background: 'transparent'
+									},
+									show: {
+										aniShow: 'fade-in'
+									},
+									extras: {
+										url: updateurl
+									}
+								})
+							} else {
+								console.log(wgtVer + "," + newVer)
+								console.log('不需更新')
+
+							}
+						},
+						one: function(res) {
+							console.log("检测更新失败！", res.msg);
+							console.log(type + "," + wgtVer)
+						}
+					})
+				}
+
+				//清除粘贴板内容
+				function cleartext() {
+					if (mui.os.ios) { //ios
+						var UIPasteboard = plus.ios.importClass("UIPasteboard");
+						var generalPasteboard = UIPasteboard.generalPasteboard();
+						generalPasteboard.plusCallMethod({
+							setValue: '',
+							forPasteboardType: "public.utf8-plain-text"
+						});
+					} else {
+						var Context = plus.android.importClass("android.content.Context");
+						var main = plus.android.runtimeMainActivity();
+						var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+						plus.android.invoke(clip, "setText", '');
+					}
+				}
+			});
+			template.defaults.imports.subduction = function(str1, str2) {
+				return parseInt(str1) - parseInt(str2);
+			};
+		</script>
+		<!--回到顶部-->
+		<a class="gotop iconfont icon-shang" href="javascript:;"></a>
+	</body>
+</html>

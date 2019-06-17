@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>精选</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style type="text/css">
+			.mui-bar .mui-input-row .mui-input-clear~.mui-icon-clear, .mui-bar .mui-input-row .mui-input-speech~.mui-icon-speech{
+				top: 3px;
+			}
+			.mui-placeholder{
+				margin-top: 3px;
+			}
+			.mui-search .mui-placeholder{
+				text-align: left;
+				padding-left: 10px;
+			}
+			.mui-bar p.search{
+				display: inline-block;
+				padding: 4px 14px;
+				border-radius: 15px;
+				background: #fe5b00;
+				color: #fff;
+			}
+			.mui-bar div.mui-input-row{
+				width: 72%;
+				margin-left: 10px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.mui-bar div.mui-input-row input{
+				border-radius: 15px;
+				margin-top: 8px;
+			}
+			.mui-bar span.tao{
+				height: 44px;
+				line-height: 44px;
+				display: inline-block;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item{
+				border-bottom: 2px solid transparent;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+				color:#000;
+				font-weight: 600;
+				border-bottom-color:#000;
+			}
+			.col-goods-tit img{
+				width: 18px;
+				vertical-align: -3px;
+			}
+			.mui-plus-pullrefresh .mui-scroll{
+				position: absolute;
+			}
+			.mui-content{
+				overflow: hidden;
+			}
+			.mui-bar div.mui-input-row{
+				border: 1px solid #ddd;
+				border-radius: 19px;
+				line-height: 28px;
+			}
+			.mui-bar div.mui-input-row img{
+				width: 16px;
+				margin-left: 10px;
+				vertical-align: -3px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <span class="tao">淘宝</span>
+		    <div class="mui-input-row" >
+		    	<img src="../images/search.png" />
+		    	<spna>搜索关键词</spna>
+				<!--<input id="search" type="search" class="mui-input-clear" disabled="true"  placeholder="搜索关键词">-->
+			</div>
+		</header>
+		<div class="mui-content">
+			<div class="mui-slider">
+			    <div class="mui-slider-group">
+			    	<div class="mui-slider-item">
+			    		<a href="#">
+			    			<img class="xuanbg" src="../images/course-jd_03.jpg" />
+			    		</a>
+			    	</div>
+			    </div>
+			</div>
+			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			    <div class="mui-scroll" id="nav" style="">
+				        <!--<a class="mui-control-item">订单</a>-->
+			    </div>
+			</div>
+			<ul id="xuan_box">
+				<script type="text/template" id="xuan">
+					{{each list as value i}}
+					<li class="bgfff mui-table-view-cell mui-media mt10" data="{{value.origin_id}}" profit="{{value.commission_money}}" type="{{value.type}}">
+				        <a href="javascript:;">
+				        	<div class="mui-pull-left" style="width: 50%;">
+				            	<img width="100%" src="{{value.thumb}}" alt="" />
+				        	</div>
+				            <div class="list-content">
+				                <p class="mui-ellipsis-2 col-goods-tit">
+				                	{{if value.type == 11}}
+									<img src="../images/taobao@2x.png"/>
+									{{else if value.type == 12}}
+									<img src="../images/tianmao.png"/>
+									{{else if value.type == 21}}
+									<img src="../images/jingdong@2x.png"/>
+									{{else if value.type == 31}}
+									<img src="../images/pinduoduo@2x.png"/>
+									{{/if}}
+				                	{{value.title}}
+				                </p>
+								<div class="col-goods-item-bot">
+									<span class="col-goods-coupon">
+										<span>券</span>
+										<i>{{value.coupon_money}}元</i>
+									</span>
+									<span class="line-through">原价￥{{value.origin_price}}</span>
+									<span>销量{{value.volume}}</span>
+								</div>
+								<div class="col-goods-item-bot">
+									<span>券后:<span class="col-goods-price">￥{{value.coupon_price}}</span></span>
+									<span class="list-col-share">分享赚 {{value.commission_money}}</span>
+								</div>
+				            </div>
+				        </a>
+				    </li>
+					{{/each}}
+				</script>
+			    
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var cate = 0;
+			var url = null;
+			var page = 0;
+			var type;
+			var list = {};
+			mui.init({
+				pullRefresh:{
+					container:".mui-content",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				page = 0;
+				if(type == 'pinduoduo'){
+					page = 1
+				}
+				Http.post({
+					api:url,
+					data:{page:page,cate:cate},
+					success:function(res){
+						list = res.data;
+						var info = template('xuan',list);
+						document.getElementById('xuan_box').innerHTML = info;
+						mui('.mui-content').pullRefresh().endPulldown();
+						mui('.mui-content').pullRefresh().refresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:url,
+					data:{page:++page,cate:cate},
+					success:function(res){
+						list.list = list.list.concat(res.data.list);
+						var info = template('xuan',list);
+						document.getElementById('xuan_box').innerHTML = info;
+						mui('.mui-content').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+					},
+					one:function(){
+						mui('.mui-content').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast('没有更多了');
+					}
+				})
+			};
+			
+			
+			mui.plusReady(function(){
+				var currentWebview = plus.webview.currentWebview();
+				type = currentWebview.type;
+				if(type == 'taobao'){
+					url = 'TAO-XUAN';
+					mui('.tao')[0].innerText = '淘宝';
+					mui('.xuanbg')[0].setAttribute('src','../images/tbbanner.jpg');
+				}else if(type == 'jingdong'){
+					url = 'JD-XUAN';
+					mui('.tao')[0].innerText = '京东';
+					mui('.xuanbg')[0].setAttribute('src','../images/jdbanner.jpg');
+				}else if(type == 'pinduoduo'){
+					url = 'PDD-XUAN';
+					mui('.tao')[0].innerText = '拼多多';
+					mui('.xuanbg')[0].setAttribute('src','../images/pddbanner.jpg');
+					cate = 1;
+					page = 1
+				};
+				Http.post({
+					api:url,
+					data:{cate:cate,page:page},
+					success:function(res){
+						var a = '';
+						for(var i = 0;i < res.data.cateList.length;i ++){
+							a += '<a class="mui-control-item" data-id="' + res.data.cateList[i].id +'">' + res.data.cateList[i].title +'</a>'
+						}
+						cata = res.data.cateList[0];
+						currentWebview.show('slide-in-right', 300);
+						plus.nativeUI.closeWaiting();
+						document.getElementById('nav').innerHTML = a;
+						mui('#nav a')[0].classList.add('mui-active');
+						list = res.data;
+						var info = template('xuan',list);
+						document.getElementById('xuan_box').innerHTML = info;
+					}
+				})
+				mui('#nav').on('tap','a',function(){
+					plus.nativeUI.showWaiting();
+					cate = this.getAttribute('data-id');
+					Http.post({
+						api:url,
+						data:{page:1,cate:cate},
+						success:function(res){
+							list = res.data;
+							var	info = template('xuan',list);
+							document.getElementById('xuan_box').innerHTML = info;
+							plus.nativeUI.closeWaiting();
+						}
+					})
+				});
+				mui('#xuan_box').on('tap','li',function(){
+					var type = this.getAttribute('type');
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html');//获取预加载的b页面id  
+				    var id = this.getAttribute('data');//获取要传的参数
+				    var profit = this.getAttribute('profit');
+				    mui.fire(goodswebview,'getItem',{
+					    id:id,
+					    profit:profit,
+					    type:type
+					});
+				    mui.openWindow({
+					  id:'goods-webview.html'
+					});
+				});
+				var listcolPage = null;
+				mui('.mui-bar').on('tap','.mui-input-row',function(e){
+					if(!listcolPage){
+					    listcolPage = plus.webview.getWebviewById('search');
+					};
+					mui.fire(listcolPage,'getItem',{
+					    text:mui('.tao')[0].innerText,
+					});
+					setTimeout(function(){
+						mui.openWindow({
+							id:'search', 
+							
+							waiting:{
+						        autoShow:true,//自动显示等待框，默认为true
+						        title:'正在加载...',//等待对话框上显示的提示内容
+					    },
+					    cachemode: 'noCache'
+						});
+					},500)
+				})
+			})
+		</script>
+	</body>
+
+</html>

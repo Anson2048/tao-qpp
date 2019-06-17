@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--头部-->
+
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+		    <h1 class="mui-title">我的订单</h1>
+		</header>
+		<div class="content">
+			<!--商品-->
+			<ul class="col-shop-list" id="order_box">
+				<script type="text/template" id="order">
+				<li class="col-shop-item ord-item">
+					<a>
+						<div class="col-shop-tit ord-title" data-type="1">
+							<div class="col-shop-left">
+								<img src="../images/logo-tao.png" alt="" />
+								<span class="col-shop-det">淘宝订单</span>
+							</div>
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+						<div class="col-shop-img">
+							<span status="0">全部({{order[0].tbTotal}})</span>
+							<span status="2">已付款({{order[0].tbPaid}})</span>
+							<span status="1">已结算({{order[0].tbSettled}})</span>
+							<span status="3">已失效({{order[0].tbExpired}})</span>
+						</div>
+					</a>
+				</li>
+				<li class="col-shop-item ord-item" style="display: none;">
+					<a href="list-row.html">
+						<div class="col-shop-tit ord-title" data-type="2">
+							<div class="col-shop-left">
+								<img src="../images/logo-jd.png" alt="" />
+								<span class="col-shop-det">京东订单</span>
+							</div>
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+						<div class="col-shop-img">
+							<span status="0">全部({{order[1].jdTotal}})</span>
+							<span status="2">已付款({{order[1].jdPaid}})</span>
+							<span status="1">已结算({{order[1].jdSettled}})</span>
+							<span status="3">已失效({{order[1].jdExpired}})</span>
+						</div>
+					</a>
+				</li>
+				<li class="col-shop-item ord-item" style="display: none;">
+					<a href="javascript:;">
+						<div class="col-shop-tit ord-title" data-type="3">
+							<div class="col-shop-left">
+								<img style="height: 20px; width: 21px;" src="../images/logo-pin.png" alt="" />
+								<span class="col-shop-det">拼多多订单</span>
+							</div>
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+						<div class="col-shop-img">
+							<span status="0">全部({{order[2].pddTotal}})</span>
+							<span status="2">已付款({{order[2].pddPaid}})</span>
+							<span status="1">已结算({{order[2].pddSettled}})</span>
+							<span status="3">已失效({{order[2].pddExpired}})</span>
+						</div>
+					</a>
+				</li>
+				</script>
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var topoffset='25px';
+			mui.init();
+			mui.plusReady(function(){
+				if(plus.navigator.isImmersedStatusbar()){// 兼容immersed状态栏模式
+					topoffset=(Math.round(plus.navigator.getStatusbarHeight()))+'px';
+				}
+				Http.post({
+					api:'COUNT',
+					success:function(res){
+						var order = {order:res.data}
+						var html = template('order',order);
+						document.getElementById('order_box').innerHTML = html;
+					}
+				})
+				mui('.content').on('tap','.ord-title',function(){
+					plus.nativeUI.showWaiting();  
+					// 创建加载内容窗口
+					var type = this.getAttribute('data-type');
+					plus.webview.create('tao-order.html','tao-order.html',{top:topoffset},{type:type,status:0});
+				});
+				mui('.content').on('tap','.col-shop-img span',function(){
+					var type = this.parentNode.previousElementSibling.getAttribute('data-type');
+					var status = this.getAttribute('status');
+					plus.nativeUI.showWaiting();  
+					// 创建加载内容窗口
+					plus.webview.create('tao-order.html','tao-order.html',{top:topoffset},{type:type,status:status});
+				});
+			})
+/* 			mui.back = function(){
+				history.go(-1);
+			} */
+		</script>
+	</body>
+</html>
+

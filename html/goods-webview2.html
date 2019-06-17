@@ -1,0 +1,650 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style type="text/css">
+			img {
+				max-width: 100%;
+				width: 100%;
+			}
+
+			.mui-content {
+				margin-bottom: 50px;
+			}
+
+			.profit {
+				color: #fd5f16;
+			}
+
+			.ind-tuijian-con {
+				padding: 0;
+			}
+
+			.course-share {
+				margin-right: 20px;
+			}
+
+			.col-goods-item-bot {
+				padding: 10px 20px;
+				line-height: 26px;
+			}
+
+			.col-goods-item-bot span {
+				font-size: 14px;
+
+			}
+
+			.line-through {
+				margin-left: 30px;
+			}
+
+			.ind-tuijian-tit {
+				padding: 0 20px;
+			}
+
+			.item-share {
+				border-bottom: 1px solid #eee;
+				border-top: 1px solid #eee;
+			}
+
+			.title {
+				line-height: 40px;
+				text-align: center;
+				background: #f7f7f7;
+			}
+
+			.title img {
+				width: 56%;
+			}
+
+			.col-goods-item-bot .item img {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+			}
+
+			.col-goods-item-bot .item .shopname {
+				display: inline-block;
+				line-height: 40px;
+				margin-left: 5px;
+				max-width: 54%;
+			}
+
+			.col-goods-item-bot .item .btn {
+				display: inline-block;
+				padding: 3px 10px;
+				border-radius: 20px;
+				border: 1px solid #ff671e;
+				color: #ff671e;
+			}
+
+			.col-goods-item-bot .profit {
+				color: #ff671e;
+			}
+
+			.footer {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+
+			.footer .foot {
+				width: 100%;
+				height: 50px;
+				text-align: center;
+				background: #f8f8f8;
+				display: -webkit-box;
+				display: box;
+				vertical-align: baseline;
+			}
+
+			.collect {
+				width: 14%;
+				/*border-right: 1px solid #d7d7d7;*/
+			}
+
+			.foot .mui-icon {
+				font-size: 30px;
+				line-height: 50px;
+			}
+
+			.foot button {
+				width: 43%;
+				display: block;
+				border: none;
+				border-radius: initial;
+				font-size: 16px;
+			}
+
+			.shares {
+				background: #ffb415;
+				color: #fff;
+
+			}
+
+			.getquan {
+				background: #ff5311;
+				color: #fff;
+			}
+
+			.shares img {
+				width: 18px;
+				vertical-align: -4px;
+			}
+
+			button span {
+				font-size: 16px;
+			}
+
+			.collect p {
+				font-size: 12px;
+				margin-top: -3px;
+			}
+
+			.collect img {
+				width: 20px;
+				margin-top: 5px;
+			}
+
+			.mui-table-view-cell.mui-collapse.mui-active {
+				margin-top: 0;
+			}
+
+			.mui-table-view-cell p {
+				margin-bottom: 5px;
+			}
+
+			.ind-tuijian-tit img {
+				width: 18px;
+				vertical-align: -3px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">分享宝贝</h1>
+		</header>
+		<div class="mui-content" id="details">
+			<script type="text/template" id="d_box">
+
+
+				<div style="background: #fff;">
+						<img src="{{details.pict_url}}"/>
+						<div class="ind-tuijian-con">
+							<div class="col-goods-item-bot" style="justify-content:initial;">
+								<span class="col-goods-price">券后￥{{details.coupon_price}}</span>
+								<span class="line-through">原价：{{details.origin_price}}</span>
+							</div>
+							<p class="ind-tuijian-tit mui-ellipsis-2">
+								{{if type == 11}}
+								<img src="../images/taobao@2x.png"/>
+								{{else if type == 12}}
+								<img src="../images/tianmao.png"/>
+								{{else if type == 21}}
+								<img src="../images/jingdong@2x.png"/>
+								{{else if type == 31}}
+								<img src="../images/pinduoduo@2x.png"/>
+								{{/if}}
+								{{details.title}}
+							</p>
+							
+							<div class="col-goods-item-bot">
+								<span style="color: #ccc;">销量：{{details.volume}}</span>
+								{{if details.coupon_money>0}}
+								<span class="col-goods-coupon">
+									<span>券</span>
+									<i>{{details.coupon_money}}元</i>
+								</span>
+								{{/if}}
+							</div>
+							<div class="col-goods-item-bot item-share">
+								<span class="profit">分享赚 ￥{{details.commission_money}}</span>
+								<!--<span class="course-share"></span>-->
+							</div>
+							<!--<div class="title">
+								<img src="../images/tit.png" alt="" />
+							</div>-->
+						</div>
+						<ul class="mui-table-view">
+						    <li class="mui-table-view-cell mui-collapse">
+						        <a class="mui-navigate-right">查看宝贝详情</a>
+						        <div class="mui-collapse-content" style="display: block;">
+						            {{each details.small_images as value i}}
+						        		<img src="{{value}}"/>   
+						            {{/each}}
+						        </div>
+						    </li>
+						</ul>
+					</div>
+			</script>
+
+			<!-- <script id="profit" type="text/html">
+				<span class="profit">分享赚 ￥{{profit}}</span>
+			</script> -->
+		</div>
+		<div class="footer">
+			<div class="foot">
+				<div class="collect">
+					<img id="collimg" src="../images/collect.png" />
+					<p id="coll">收藏</p>
+				</div>
+				<button class="shares">
+					<!--<span class="course-share" style="padding-top: 4px;"></span>-->
+					<img src="../images/share.png" />
+					<span>分享宝贝</span>
+				</button>
+				<button class="getquan">
+					领券 ￥<span class="quan"></span>元
+				</button>
+
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //关闭-右滑关闭功能 
+			});
+			var userinfo = null;
+			var detailslist = {};
+			var pic = null;
+			var numid = null;
+			var gobuy = null;
+			var num;
+			var weburl;
+			var type;
+			var appurl;
+			var appapi;
+			var appname;
+			var coll = document.getElementById('coll');
+			var collimg = document.getElementById('collimg');
+
+			function refresh() {
+				location.reload();
+			}
+			mui.plusReady(function() {
+				var testLogin = function() {
+					var userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						return false;
+					} else {
+						return true;
+					}
+				}
+				//添加getItem自定义事件监听
+				window.addEventListener('getItem', function(event) {
+					// all = plus.webview.all();
+					// 		for (var i = 0; i < all.length; i++) {
+					// 			console.log(all[i].id);
+					// 		}
+					plus.nativeUI.showWaiting('正在加载');
+					//获得事件参数
+					var id = event.detail.id;
+					var profit = event.detail.profit;
+					type = event.detail.type;
+					console.log(id + "," + profit + "," + type);
+					var types = type;
+					var bb = document.getElementById('profit');
+					 var url = 'taobao-buy/item-info';
+					if (event.detail.list) { //list-col页面
+						if (type == 0 || type == 11 || type == 12 || type == 1) {
+							type = 1;
+						} else if (type == 21) {
+							type = 21;
+						} else if (type == 2 || type == 31) {
+							type = 31;
+						}
+					} else {
+						if (type == 0 || type == 11 || type == 12) {
+							type = 1;
+						} else if (type == 1) {
+							type = 21;
+						} else if (type == 2 || type == 31) {
+							type = 31;
+						}
+					}
+					Http.post({
+						api: 'INFO',
+						data: {
+							num_iid: id,
+							type: type
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							//console.log(JSON.stringify(res.data));
+							numid = res.data.num_iid;
+							if (res.data.collection == 1) {
+								num = 2;
+								coll.innerText = '已收藏';
+								collimg.setAttribute('src', '../images/collect01.png')
+							} else {
+								num = 1;
+								coll.innerText = '收藏';
+								collimg.setAttribute('src', '../images/collect.png')
+							}
+							detailslist = {
+								details: res.data,
+								profit: profit,
+								type: types
+							};
+							weburl = detailslist.details.item_url;
+							document.getElementsByClassName('quan')[0].innerText = res.data.coupon_money;
+							var goods = template('d_box', detailslist);
+							document.getElementById('details').innerHTML = goods;
+						},
+						one: function(res) {
+							mui.toast(res.msg)
+
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								mui.back();
+							}, 500)
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast('请求超时请稍后再试!')
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								mui.back();
+							}, 500)
+						}
+					})
+					
+					
+				});
+				mui.back = function() {
+					var _self = plus.webview.currentWebview();
+					_self.hide();
+					setTimeout(function() {
+						_self.reload(); //重新加载
+						
+					}, 10);
+				}
+
+				//点击分享
+				mui('.footer').on('tap', '.shares', function() {
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if (userinfo) {
+						if (!userinfo.relation_id) {
+							mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+					}
+					plus.nativeUI.closeWaiting();
+
+					mui.openWindow({
+						url: 'create-share.html',
+						id: 'create-share.html',
+						extras: {
+							url: detailslist.details.item_url,
+							title: detailslist.details.title,
+							numid: numid,
+							thumbs: detailslist.details.small_images,
+							profit: detailslist.details.commission_money,
+							zk_final_price: detailslist.details.coupon_price,
+							reserve_price: detailslist.details.origin_price,
+							type: type
+
+						}
+					});
+				});
+
+				function isInstalled(pn) {
+					var main = plus.android.runtimeMainActivity();
+					var pm = main.getPackageManager();
+					var PackageManager = plus.android.importClass(pm);
+					try {
+						var pi = pm.getPackageInfo(pn, PackageManager.GET_ACTIVITIES);
+						if (pi) {
+							return true;
+						}
+					} catch (e) {}
+					return false;
+				}
+				//领券
+				mui('.footer').on('tap', '.getquan', function() {
+
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if (userinfo) {
+						if (!userinfo.relation_id) {
+							mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+					}
+					if (type == 1) {
+						appapi = 'GET-QUAN';
+						appname = "com.taobao.taobao";
+					} else if (type == 21) {
+						appapi = 'JD-QUAN';
+						appname = 'com.jingdong.app.mall';
+					} else if (type == 31) {
+						appapi = 'PDD-QUAN';
+						appname = "com.xunmeng.pinduoduo";
+					}
+					//console.log(numid+","+weburl+":aaa");
+					Http.post({
+						api: appapi,
+						data: {
+							id: numid,
+							url: weburl
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							if (type == 1) {
+								appurl = res.data;
+								//console.log(appurl);
+								/*plus.runtime.openURL(appurl, function(e) {
+									if (!gobuy) {
+										gobuy = plus.webview.getWebviewById('buy.html');
+									}
+									mui.fire(gobuy, 'gobuy', {
+										url: appurl
+									});
+									mui.openWindow({
+										id: 'buy.html',
+									})
+								}, appname);*/
+								//console.log(appurl.replace('https','taobao').replace('http','taobao'));
+								if (mui.os.ios) {
+									
+									plus.runtime.openURL(appurl.replace('https', 'taobao').replace('http', 'taobao'));
+									//window.location.href=;
+								} else {
+									//console.log("android")
+									plus.runtime.openURL(appurl, function(e) {
+										if (!gobuy) {
+											gobuy = plus.webview.getWebviewById('buy.html');
+										}
+										mui.fire(gobuy, 'gobuy', {
+											url: appurl
+										});
+										mui.openWindow({
+											id: 'buy.html',
+										})
+									}, appname);
+								}
+
+							} else if (type == 31) {
+								if (isInstalled(appname)) {
+									window.location.href = res.data.appUrl;
+								} else {
+									if (!gobuy) {
+										gobuy = plus.webview.getWebviewById('buy.html');
+									}
+									mui.fire(gobuy, 'gobuy', {
+										url: res.data.url
+									});
+									mui.openWindow({
+										id: 'buy.html',
+									})
+								}
+							} else if (type == 21) {
+								appurl = res.data;
+								if (!gobuy) {
+									gobuy = plus.webview.getWebviewById('buy.html');
+								}
+								mui.fire(gobuy, 'gobuy', {
+									url: appurl
+								});
+								mui.openWindow({
+									id: 'buy.html',
+								})
+							}
+						}
+					})
+				});
+				//收藏
+				mui('.footer').on('tap', '.collect', function() {
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					console.log(userinfo)
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					Http.post({
+						api: 'COLLECT',
+						data: {
+							type: 1, //1 商品  2店铺
+							id: numid,
+							status: num,
+							good_type: type
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							if (num == 1) {
+								num = 2;
+								coll.innerText = '已收藏';
+								collimg.setAttribute('src', '../images/collect01.png')
+							} else {
+								num = 1
+								coll.innerText = '收藏';
+								collimg.setAttribute('src', '../images/collect.png');
+							}
+							mui.toast(res.msg)
+						}
+					})
+				})
+				mui('#details').on('tap', 'li.mt10', function() {
+					plus.nativeUI.showWaiting();
+					mui.scrollTo(0, 300);
+					type = 1;
+					numid = this.getAttribute('num_iid');
+					var profit = this.getAttribute('profit');
+					page = 0;
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						mui.post(http + 'taobao-buy/item-info', {
+							num_iid: numid,
+							type: type
+						}, function(res) {
+							plus.nativeUI.closeWaiting();
+							if (res.code == 0) {
+								numid = res.data.num_iid;
+								if (res.data.collection == 1) {
+									num = 2;
+									coll.innerText = '已收藏';
+									collimg.setAttribute('src', '../images/collect01.png')
+								} else {
+									num = 1;
+									coll.innerText = '收藏';
+									collimg.setAttribute('src', '../images/collect.png')
+								}
+								detailslist = {
+									details: res.data,
+									profit: profit,
+									type: 12
+								};
+								weburl = detailslist.details.item_url;
+								document.getElementsByClassName('quan')[0].innerText = res.data.coupon_price;
+								var goods = template('d_box', detailslist);
+								document.getElementById('details').innerHTML = goods;
+							} else if (res.code == 1) {
+								//mui.toast(res.msg)
+							}
+						})
+					} else {
+						Http.post({
+							api: 'INFO',
+							data: {
+								num_iid: numid,
+								type: type
+							},
+							success: function(res) {
+								plus.nativeUI.closeWaiting();
+								numid = res.data.num_iid;
+								if (res.data.collection == 1) {
+									num = 2;
+									coll.innerText = '已收藏';
+									collimg.setAttribute('src', '../images/collect01.png')
+								} else {
+									num = 1;
+									coll.innerText = '收藏';
+									collimg.setAttribute('src', '../images/collect.png')
+								}
+								detailslist = {
+									details: res.data,
+									profit: profit,
+									type: 12
+								};
+								weburl = detailslist.details.item_url;
+								document.getElementsByClassName('quan')[0].innerText = res.data.coupon_price;
+								var goods = template('d_box', detailslist);
+								document.getElementById('details').innerHTML = goods;
+							}
+						})
+					}
+
+				})
+			});
+		</script>
+	</body>
+
+</html>

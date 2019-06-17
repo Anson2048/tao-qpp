@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<title></title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+			.mui-content .mui-input-row input {
+    background-color: transparent;
+    color: #979797;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+    padding-top: 1.3rem;
+}
+		</style>
+
+	</head>
+	<body style="background-color: #f7f7f7;">
+		<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div style="padding-top:5rem;">
+				<img src="../../images/480_480.png" width="100rem">
+				<div style="padding-top:2rem;">
+					<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+						<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">手机号</div>
+						<div style="float:left;display:inline;width: 75%;"><input id='mobile' class="mui-input-clear mui-input" type="text"
+							 placeholder="请输入手机号码" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value = value.replace(/[^\d{2}\.]/g, '').replace(/(\.\d{2}).*/g, '$1')"
+							 style="color: #555555;"></div>
+					</div>
+					<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+						<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">验证码</div>
+						<div style="float:left;display:inline;width: 45%;"><input id='smsCode' type="text" style="color: #555555;"
+							 placeholder="请输入验证码"></div>
+						<div style="float:left;display:inline;width: 25%;padding-top: 0.4rem;"><button id="smsbtn" class="get_code sms" style="border: 1px solid #be0004;background-color: #BE0004;color:#ffffff;">获取验证码</button></div>
+					</div>
+					<div class="mui-content-padded">
+						<button id='loginmoblie' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+					</div>
+					<div id="accountlogin" style="font-size:0.8rem;text-align: left;padding-left:10px">账号密码登入</div>
+				</div>
+			</div>
+			<div style="width:100%;text-align: center;font-size: 0.8rem;position: relative; bottom: 0; line-height: 10rem;">登入成功即代表同意<span id="xieyi" style="color: #be0004;">《苦瓜用户协议》</span></div>
+		</div>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/mui.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var num = 60;
+			mui.plusReady(function() {
+				mui('.mui-content').on('tap', '.mui-btn', function() {
+					var mobile = document.getElementById('mobile').value.replace(/\s*/g, "");
+					var code = document.getElementById('smsCode').value.replace(/\s*/g, "");
+					if (!mobile) {
+						plus.nativeUI.toast('请输入手机号!');
+						return;
+					} else if (!code) {
+						plus.nativeUI.toast('请输入手机验证码!');
+						return;
+					} else {
+						Http.post({
+							api: 'WE-LOGIN',
+							data: {
+								mobile: mobile,
+								smsCode: code,
+								type: "auto"
+							},
+							success: function(res) {
+								
+								plus.storage.setItem('userInfo', JSON.stringify(res.data));
+								console.log(JSON.stringify(res.data))
+
+								plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+
+									mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+									mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'), 'pageflowrefresh');
+
+
+
+									mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+
+								});
+
+
+							},
+							one: function(res) {
+								plus.nativeUI.closeWaiting();
+								mui.toast("登入失败" + res.msg);
+							},
+							error: function(xhr, type, errorThrown) {
+								plus.nativeUI.closeWaiting();
+								mui.toast("提交服务器出错")
+							}
+						})
+					}
+				});
+				mui('.mui-content').on('tap', '#accountlogin', function() {
+					var child = plus.webview.create(
+						'accountlogin.html', 'accountlogin'); //直接用H5+API创建窗口
+					child.show();
+				})
+
+				mui('.mui-content').on('tap', '.get_code', function() {
+
+					var mobile = document.getElementById('mobile').value.replace(/\s*/g, "");
+					if (!mobile) {
+						plus.nativeUI.toast('请输入手机号!');
+						return;
+					} else {
+						document.getElementById('mobile').setAttribute('disabled', 'disabled');
+						document.getElementById('smsbtn').setAttribute('disabled', 'disabled');
+						Http.post({
+							api: 'SMS-VERIFY',
+							data: {
+								mobile: mobile
+							},
+							success: function(res) {
+								plus.nativeUI.toast(res.msg);
+								var time = setInterval(function() {
+									if (num > 0) {
+										--num;
+										mui('.sms')[0].innerText = num
+									} else if (num <= 0) {
+										clearInterval(time);
+										num = 60;
+										mui('.sms')[0].innerText = '重新获取'
+										document.getElementById('smsbtn').removeAttribute('disabled');
+										document.getElementById('mobile').removeAttribute('disabled');
+									}
+								}, 1000);
+							},
+							one: function(res) {
+								mui.toast(res.msg)
+								document.getElementById('mobile').removeAttribute('disabled');
+							},
+							error: function(xhr, type, errorThrown) {
+								mui.toast("短信发送错误")
+								document.getElementById('mobile').removeAttribute('disabled');
+							}
+						})
+					}
+
+
+				})
+
+			});
+			mui('.mui-content').on('tap', '#xieyi', function() {
+				var child = plus.webview.create(
+						'service_protol.html', 'service_protol'); //直接用H5+API创建窗口
+					child.show();
+			});
+		</script>
+	</body>
+
+</html>

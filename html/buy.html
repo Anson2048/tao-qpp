@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>领券</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        </header>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			var url = null;
+			var embed = null;
+			mui.init();
+			mui.plusReady(function(){
+				window.addEventListener('gobuy',function(event){
+					
+					var arr1 = plus.webview.getWebviewById('buy.html');
+					var arr = plus.webview.all();
+					console.log(arr1)
+					plus.nativeUI.showWaiting('正在加载');
+					url = event.detail.url;
+					
+					ws=plus.webview.currentWebview();
+					plus.webview.prefetchURL(url);
+					
+					setTimeout(function(){
+						embed = plus.webview.create(url, 'buy.html',{top:'0px',bottom:'0px',titleNView:{autoBackButton:true}});
+						embed.show();
+						plus.nativeUI.closeWaiting();
+					},500)
+					
+				});
+				var old_back = mui.back;
+		        mui.back = function(){
+		            embed.close();
+		            old_back();
+		        }
+			})
+		</script>
+	</body>
+
+</html>

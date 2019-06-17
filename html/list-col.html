@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<title>搜索分类</title>
+		<link href="../css/layui.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/style2.css">
+		<link rel="stylesheet" href="../css/layer.css">
+		<script src="../js/jquery.js"></script>
+		<script src="../js/lib.js"></script>
+		<!-- 今日精选好券列表css -->
+		<link rel="stylesheet" href="../css/ul-prolist.css">
+		<!-- 今日精选好券列表css end-->
+		<!-- 分类一优惠券1 -->
+		<link rel="stylesheet" href="../css/ul-quan1.css">
+		<!-- 分类一优惠券1 end-->
+		<!-- 分类二优惠券2 -->
+		<link rel="stylesheet" href="../css/ul-quan2.css">
+		<!-- 分类二优惠券2 end-->
+		<!-- 分类一优惠券3 -->
+		<link rel="stylesheet" href="../css/ul-quan3.css">
+		<!-- 分类一优惠券3 end-->
+		<style type="text/css">
+			html{background-color: #ffffff;}
+		</style>
+	</head>
+
+	<body class="body-idx body-com">
+		<div class="header-com so" style="background-image: url(../images/hb1.png);">
+			<div class="l" style="padding-left: 2px;">
+				<div class="back" style="background-image: url(../images/h-back2.png);"></div>
+			</div>
+			<div class="r">
+				
+				<div class="so-box" id="stitle" align="center" style="z-index:-1;position: absolute;width: 100%;font-size: 1rem;color: #F0F0F0;font-weight: bold;left: 0;">
+						标题
+				</div>
+			</div>
+		</div>
+		<div class="main">
+			<div class="m-ht17">
+				<a href="javascript:;" data-type="1" class="s on s1">最新</a>
+				<a href="javascript:;" sort="hot" data-type="3" class="s s2 js-hc">综合</a>
+				<a href="javascript:;" sort="price" data-type="5" class="s s3 js-hc">价格</a>
+				<a href="javascript:;" sort="money" data-type="7" class="s s4 ">佣金</a>
+			</div>
+			<div class="m-ht16" style="padding-top: 44px;background-color: #ffffff;" id="table">
+
+				<!-- 样式2 -->
+				<ul class="ul-quan1" style="background: #f0f0f0;" id="goods_box">
+					<script type="text/templete" id="col"> 
+	        		{{each collist as value i}}
+					<li data="{{value.origin_id}}" profit="{{value.ratio_price}}" type="{{value.type}}">
+						<div class="con">
+								<div class="pic"><img src="{{value.thumb}}" alt="">
+									<div class="tips" style="display:none;">奖{{value.commission_money}}</div>
+								</div>
+								<div class="txt">
+									<h3 class="tit">{{if value.type=="12"}}
+														<i class='g-tm'></i>
+														{{else}}
+														<i class='g-tb'></i>
+														{{/if}} {{value.title}}</h3>
+									<div class="s1">销量：{{value.volume}}</div>
+									<div class="s1"><span>分享赚：{{value.commission_money}}</span></div>
+									<div class="s2"><em>券后</em><span style="font-weight: 700;">{{value.coupon_price}}元</span></div>
+								</div>
+								<div class="quan">
+									<div class="q-con">
+										<div class="s1">优惠券</div>
+										<div class="s2">{{value.coupon_money}}元</div>
+										<div class="s3">领券购买</div>
+									</div>
+								</div>
+							</div>
+					</li>
+					{{/each}}
+	    		</script> 
+				</ul>
+				<div class="layui-flow-more" id="jiazai"><a href="javascript:;"><cite>加载更多</cite></a></div>
+			</div>
+		</div>
+
+		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack:true //关闭-右滑关闭功能
+			});
+			var keyword;
+			var collist;
+			var page = 1;
+			var cate = null;
+			var datatype = 1;
+			var type = null;
+			var urltype="TAO-SEARCH";
+			var soutype=0;
+			var sort = {hot:false,price:false,money:false};
+			
+			mui.plusReady(function(){
+				
+				//添加getItem自定义事件监听
+				window.addEventListener('getsearch',function(event){
+					
+				/* 	collist = {collist:null};
+					var html = template('col',collist);
+					document.getElementById('col_list').innerHTML = html; */
+					plus.nativeUI.showWaiting('正在加载');
+				    //获得事件参数
+				    keyword = event.detail.data;
+					document.getElementById('stitle').innerHTML=keyword;
+					if(event.detail.type=="TAO-SEARCH"){
+							soutype=2;
+						}
+						else{
+							soutype=1;
+						}
+				  
+				    setTimeout(function(){
+				    	Http.post({
+				    		api:urltype,
+				    		data:{
+				    			keyword:keyword,
+					    		page:1,
+					    		sort:datatype,
+								type:soutype
+				    		},
+				    		success:function(res){
+				    			plus.nativeUI.closeWaiting();
+				    			collist = {collist:res.data};
+								var html = template('col',collist);
+								document.getElementById('goods_box').innerHTML = html;
+				    		},
+				    		one:function(){
+				    			plus.nativeUI.closeWaiting();
+				    		},
+				    		error:function(res){
+				    			plus.nativeUI.closeWaiting();
+				    			mui.back();
+				    			mui.toast('数据查询失败!');
+				    		}
+				    	})
+				    },10)
+				});
+				mui('.l').on('tap','.back',function(e){
+					mui.back();
+					var _self = plus.webview.currentWebview();
+					_self.hide();
+					setTimeout(function() {
+						_self.reload(); //重新加载
+
+					}, 100);
+				});
+				//切换排序方式
+				mui('.m-ht17').on('tap','a',function(e){
+					var _this = this;
+					datatype = this.getAttribute('data-type');
+					var sorttype = this.getAttribute('sort');
+					
+					if(datatype == 'no'){
+						
+					}else{
+						page = 1;
+						mui('.m-ht17 a').each(function(i,ele){
+							console.log(datatype+","+sorttype)
+							mui('.m-ht17 a')[i].classList.remove('on');
+							if(ele.classList > 0){
+								ele.classList.remove('on');
+							}
+						})
+						this.classList.add('on');
+// 						if(sorttype){
+// 							sort[sorttype] = !sort[sorttype];
+// 							if(sort[sorttype]){
+// 								this.children[0].classList.add('on');
+// 								++datatype;
+// 							}else{
+// 								this.children[0].classList.remove('on');
+// 								datatype; 
+// 							}
+// 
+// 						}
+						
+						
+						plus.nativeUI.showWaiting('正在加载');
+						Http.post({
+				    		api:urltype,
+				    		data:{
+				    			keyword:keyword,
+					    		page:page,
+					    		sort:datatype,
+								type:soutype
+				    		},
+				    		success:function(res){
+				    			plus.nativeUI.closeWaiting();
+				    			collist = {collist:res.data};
+								var html = template('col',collist);
+								document.getElementById('goods_box').innerHTML = html;
+				    		},
+				    		one:function(){
+				    			plus.nativeUI.closeWaiting();
+				    		}
+				    	})
+						
+					}
+					
+				});
+				//商品详情页面跳转
+				mui('#goods_box').on('tap', 'li', function(e) {
+					
+					var goodswebview = plus.webview.getWebviewById('goods-webview.html');//获取预加载的b页面id  
+				    var id = this.getAttribute('data');//获取要传的参数
+				    var profit = this.getAttribute('profit');
+				    var type = this.getAttribute('type');
+				    console.log(type)
+				    mui.fire(goodswebview,'getItem',{
+					    id:id,
+					    profit:profit,
+					    type:type,
+						list:'listcol'
+					});
+					setTimeout(function(){
+						mui.openWindow({
+						    id:'goods-webview.html'
+						});
+					},500)
+				   
+				}); 
+				//加载更多
+					mui('.layui-flow-more').on('tap', 'a', function(e) {
+						/* var all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log( "窗口标识: "+all[i].id );
+								console.log( "当前Webview窗口："+all[i].getURL());
+							} */
+						var jiazai = document.getElementById('jiazai');
+						jiazai.innerHTML = '<img src="../images/100.gif">';
+						Http.post({
+							api:urltype,
+				    		data:{
+				    			keyword:keyword,
+					    		page:++page,
+					    		sort:datatype,
+								type:soutype
+				    		},
+							success: function(res) {
+								collist.collist = collist.collist.concat(res.data);
+								var goods = template('col', collist);
+								document.getElementById('goods_box').innerHTML = goods;
+								jiazai.innerHTML = '<a href="javascript:;"><cite>加载更多</cite></a>';
+
+							},
+							one: function() {
+								jiazai.innerHTML = '<cite>没有更多数据了</cite>';
+							}
+						})
+					});
+				mui.back = function(){
+			        var _self = plus.webview.currentWebview();
+				    _self.hide();
+				    setTimeout(function() {
+				        _self.reload();//重新加载
+				    }, 100);
+				}
+			})
+			template.defaults.imports.subduction = function(str1, str2) {
+				return parseInt(str1) - parseInt(str2);
+			};
+		</script>
+		<a class="gotop iconfont icon-shang" href="javascript:;"></a>
+	</body>
+</html>

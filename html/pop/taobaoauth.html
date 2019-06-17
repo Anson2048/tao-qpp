@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				font-size: 0.98rem;
+			}
+
+			body {
+				background: rgba(0, 0, 0, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			div.bg {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.1);
+				left: 0;
+				top: 0;
+				z-index: -1;
+			}
+
+			.mui-content {
+				background: white;
+				border-radius: 10px;
+				text-align: center;
+				width: 300px;
+				overflow: hidden;
+			}
+
+			.mui-content table tr td {
+				color: #8f8f94;
+				
+				font-size: 0.98rem;
+			}
+
+			.mui-content .mui-btn {
+				width: 80%;
+				margin: 0 auto 20px;
+				border-radius: 20px;
+				padding: 5px 0;
+				font-size: 14px;
+			}
+
+			.mui-content .showtitle {
+				background: #ffffff;
+				color: #fff;
+				height: 20px;
+				line-height: 20px;
+			}
+
+			.mui-icon-closeempty {
+				font-size: 30px;
+				margin-top: 5px;
+			}
+
+			input[type=text] {
+				line-height: 1.2rem;
+				width: 95%;
+				height: 1.2rem;
+				margin-bottom: 0;
+				padding: 10px 5px;
+				-webkit-user-select: text;
+				border: 1px solid rgba(0, 0, 0, .2);
+				border-radius: 3px;
+				background-color: #fff;
+				-webkit-appearance: none;
+				font-size: 0.9rem;
+			}
+
+			button {
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 1.2rem;
+				vertical-align: middle;
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="bg"></div>-->
+		<div class="mui-content" id="pop">
+			<div class="showtitle">
+				<i class="mui-icon mui-icon-closeempty mui-pull-right" style="color: #000000;"></i>
+			</div>
+			<div class="mui-btn-block mui-btn-danger" style="background-color: #ffffff;border:0">
+			<table width="80%" align="center">
+				<tr>
+					<td align="center"><img src="../../images/480_480.png" width="30%"></td>
+				</tr>
+				<tr>
+					<td align="center" style="color: #1C1C1C;line-height: 2rem;">申请淘宝授权</td>
+				</tr>
+				<tr>
+					<td align="left" style="font-size: 0.78rem;">应淘宝要求，获得返佣前请先进行官网授权</td>
+				</tr>
+				<tr>
+					<td align="left" style="font-size: 0.78rem;">苦瓜优惠券app是“官方优质合作伙伴”，领券、赚佣金，不花冤枉钱</td>
+				</tr>
+			</table>
+			</div>
+			<div class="mui-btn mui-btn-block mui-btn-danger">前往淘宝授权</div>
+			<!--<p class="bot">这是来自好友分享的淘口令</p>-->
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.plusReady(function() {
+			mui('#pop').on('tap', '.mui-btn', function() {
+				mui.openWindow("../oauthtb.html")
+				plus.webview.currentWebview().hide();
+			})
+			mui('#pop').on('tap', '.mui-icon', function() {
+					
+					mui.back();
+				});
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>消息列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style type="text/css">
+			.header{
+				top: 25px;
+				border-bottom: 1px solid #eee;
+			}
+			.nomore{
+				width: 280px;
+				margin: auto;
+				text-align: center;
+			}
+			.nomore img{
+				width: 100%;
+				margin: 30px 0;
+			}
+			.mui-content{
+				margin-top: 65px;
+			}
+			.inc-list{
+				padding: 12px 10px 12px 10px;
+				border-bottom: 1px solid #eee ;
+			}
+			.inc-item{
+				width: 50%;
+			}
+			.tot{
+				background: #fff;
+				border-bottom: 1px solid #eee;
+			}
+			.tot p{
+				float: left;
+				width: 50%;
+				text-align: center;
+				height: 40px;
+				line-height: 46px;
+			}
+			.tot p.active{
+				color: #fff;
+				background: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+		<div class="header">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+			<span>
+				<a href="javascript:;">消息</a>
+			</span>
+			<span class="header-nav"></span>
+		</div>
+		<div class="mui-content" id="pullrefresh">
+			<div class="tot clearfix">
+				<p class="active" data-type="1">消费收益</p>
+				<p data-type="2">推广收益</p>
+			</div>
+			<div class="nomore">
+				<img src="../images/nomore.png"/>
+				<p>这里还没有任何消息！</p>
+			</div>
+			<div id="income_box">
+				<ul class="" id="mes_box">
+					<script type="text/template" id="mes">
+						{{each goods as value i}}
+						<li class="inc-list">
+							<span class="inc-item" style="text-align: left;">{{value.text}}</span>
+							<span class="inc-item" style="text-align: right;">{{value.updated_at}}</span>
+						</li>
+						{{/each}}
+					</script>
+					
+				</ul>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 0;
+			var list = {};
+			var type = 1;
+			mui.init({
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						 style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				page = 0;
+				Http.post({
+					api:'MESSAGE',
+					data:{page:page,type:type},
+					success:function(res){
+						list = {goods:res.data};
+						var info = template('mes',list);
+						document.getElementById('mes_box').innerHTML = info;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:'MESSAGE',
+					data:{page:++page,type:type},
+					success:function(res){
+						list.goods = list.goods.concat(res.data);
+						var info = template('mes',list);
+						document.getElementById('mes_box').innerHTML = info;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+					},
+					one:function(res){
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast('没有更多了');
+					}
+				})
+			};
+			mui.plusReady(function(){
+				Http.post({
+					api:'MESSAGE',
+					data:{page:page,type:type},
+					success:function(res){
+						mui('.nomore')[0].classList.add('hide');
+						list = {goods:res.data};
+						var info = template('mes',list);
+						document.getElementById('mes_box').innerHTML = info;
+					},
+					one:function(){
+						mui('.nomore')[0].classList.remove('hide');
+					}
+				})
+			});
+			mui('.tot').on('tap','p',function(){
+				plus.nativeUI.showWaiting();
+				type = this.getAttribute('data-type');
+				mui('.tot p')[0].classList.remove('active');
+				mui('.tot p')[1].classList.remove('active');
+				this.classList.add('active');
+				
+				page = 0;
+				Http.post({
+					api:'MESSAGE',
+					data:{page:page,type:type},
+					success:function(res){
+						plus.nativeUI.closeWaiting();
+						mui('.nomore')[0].classList.add('hide');
+						list = {goods:res.data};
+						var info = template('mes',list);
+						document.getElementById('mes_box').innerHTML = info;
+					},
+					one:function(){
+						plus.nativeUI.closeWaiting();
+						mui('.nomore')[0].classList.remove('hide');
+						var info = template('mes',[]);
+						document.getElementById('mes_box').innerHTML = info;
+
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

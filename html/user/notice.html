@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>公告</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		<style type="text/css">
+			.my-news li{
+				font-size: 14px;
+				height: 40px;
+				line-height: 40px;
+			}
+			.mui-content{
+				margin-top: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">公告</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<div class="my-news">
+				<ul id="notice_box" >
+					<script type="text/template" id="notice">
+						{{each notice as value i}}	
+						<li num="{{i}}"> 
+							<span>{{value.title}}</span>
+							<span class="my-news-time">{{value.created_at}}</span>
+						</li>
+						{{/each}}
+					</script>
+					
+				</ul>
+			</div>
+			
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 0;
+			var data = [];
+			var titleNView = { //详情页原生导航配置
+				backgroundColor: '#f7f7f7', //导航栏背景色
+				titleText: '', //导航栏标题
+				titleColor: '#000000', //文字颜色
+				autoBackButton: true, //自动绘制返回箭头
+				splitLine: { //底部分割线
+					color: '#cccccc'
+				}
+			};
+			mui.init({
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				mui.post(http + 'taobao-buy/announcement',{page:page},function(res){
+		    		if(res.code == 0){
+		    			page = 0;
+		    			data = res.data;
+		    			var notice = template('notice',{notice:data});
+		    			document.getElementById('notice_box').innerHTML = notice;
+		    			mui('#pullrefresh').pullRefresh().endPulldown();
+		    			mui('#pullrefresh').pullRefresh().refresh(true);
+		    		}else if(res.code == 1){
+		    			mui('#pullrefresh').pullRefresh().endPulldown();
+		    		}
+		    	},'json')
+			};
+			function pullupRefresh(){
+				var _this = this;
+				mui.post(http + 'taobao-buy/announcement',{page:++page},function(res){
+		    		if(res.code == 0){
+		    			data = data.concat(res.data);
+		    			var notice = template('notice',{notice:data});
+		    			document.getElementById('notice_box').innerHTML = notice;
+		    			mui('#pullrefresh').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+		    		}else if(res.code == 1){
+		    			mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast(res.msg);
+		    		}
+		    	},'json')
+			};
+			mui.plusReady(function(){
+				webview_detail = mui.preload({
+					url: 'notice-detail.html',
+					id: 'notice-detail.html'
+				});
+				mui('#notice_box').on('tap','li',function(e){
+					var num = this.getAttribute('num');
+					var item = data[num];
+					//触发子窗口变更新闻详情
+					mui.fire(webview_detail, 'get_detail', {
+						title: item.title,
+						time: item.created_at,
+						content:item.content
+					});
+					//更改详情页原生导航条信息
+					titleNView.titleText = item.title;
+					webview_detail.setStyle({
+						"titleNView": titleNView
+					});
+					setTimeout(function() {
+						webview_detail.show("slide-in-right", 300);
+					}, 150);
+				})
+			});
+			mui.post(http + 'taobao-buy/announcement',{page:page},function(res){
+	    		if(res.code == 0){
+	    			data = res.data;
+	    			var notice = template('notice',{notice:data});
+	    			document.getElementById('notice_box').innerHTML = notice;
+	    		}
+	    	},'json');
+	    	//预加载详情页
+			
+		</script>
+	</body>
+
+</html>

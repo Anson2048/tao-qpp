@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>品牌闪购</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.title {
+				padding: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				background-color: #fff;
+			}
+			#jiao{
+				height: 0px;
+				width: 0px;
+				border-left: 10px solid  transparent;
+				border-right: 10px solid transparent;
+				border-bottom: 15px solid #fff;
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+			}
+			.mui-card{
+				margin: 0;
+				box-shadow: none;
+			}
+			.mui-card-header{
+				margin-bottom: 10px;
+			}
+			.mui-card-header:after{
+				background: transparent;
+			}
+			.mui-card-header.mui-card-media .mui-media-body{
+				line-height: 32px;
+			}
+			.mui-card-header.mui-card-media .mui-media-body button{
+				border-radius: 20px;
+				float: right;
+				padding: 6px 16px;
+				background: #ff884e;
+				color: #fff;
+				border-color: transparent;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <h1 class="mui-title">品牌闪购</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content">
+			<a id="scrollToTop" class="backTop hide"><img src="../images/top.png"/></span> </a>
+			<img style="width: 100%;" src="../images/shanbuy.jpg"/>
+			<div class="hide">
+				<!--轮播图-->
+			    <div class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop">
+					    <!--支持循环，需要重复图片节点-->
+					    <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/yuantiao.jpg" /></a></div>
+					    <div class="mui-slider-item"><a href="#"><img src="../images/muwu.jpg" /></a></div>
+					    <div class="mui-slider-item"><a href="#"><img src="../images/shuijiao.jpg" /></a></div>
+					    <div class="mui-slider-item"><a href="#"><img src="../images/yuantiao.jpg" /></a></div>
+					    <!--支持循环，需要重复图片节点-->
+					    <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/muwu.jpg" /></a></div>
+					</div>
+					<div class="mui-slider-indicator">
+						<div class="mui-indicator mui-active"></div>
+						<div class="mui-indicator"></div>
+						<div class="mui-indicator"></div>
+					</div>
+				</div>
+				<div class="" style="margin-top: -10px;position: relative;z-index: 2;overflow: hidden;height: 12px;">
+					<img src="../images/fe.png" style="width: 100%;"/>
+			        
+		        </div>
+		        <div style="text-align: center;background:#EFEFF4 ;" class="ind-hotListTit">
+					<img src="../images/team.png" style="width: 100%;"> 
+				</div>
+				<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="height: 120px;"></div>
+				<div id="mscroll">
+					<script type="text/template" id="m_scroll">
+						{{each results.uatm_tbk_item as value i}}
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media">
+									<img src="../images/logo.png" />
+									<div class="mui-media-body">
+										{{value.shop_title}}
+										<button type="button" class="mui-btn mui-btn-outlined">进店</button>
+									</div>
+									
+								</div>
+								<div class="mui-card-content" >
+									<div id="jiao"></div>
+									<img src="{{value.pict_url}}" alt="" width="100%"/>
+								</div>
+								<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="height: 80px;">
+									<div class="mui-scroll" style="height: 80px;">
+										{{each value.small_images.string as imgsrc j}}
+											<img src="{{imgsrc}}" alt="" style="height: 80px;width: 80px;"/>
+										{{/each}}
+									</div>
+								</div>
+								
+							</div>
+						{{/each}}
+					</script>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/template-web.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var datalist = [];
+			var page = 1;
+			mui.init({
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){
+				page = 1;
+				mui('#pullrefresh').pullRefresh().endPulldown();
+//				mui.toast('暂未处理');
+				return;
+//				mui.post(http + 'taobao-buy/get-favorites-item',{page:1},function(res){
+//					if(res.code == 0){
+//						datalist = res.data;
+//						var list = {list:res.data}
+//						var courselist = template('j_course',list);
+//						document.getElementById('course').innerHTML = courselist;
+//						mui('#pullrefresh').pullRefresh().refresh(true);
+//					}else if(res.code == 1){
+//						mui.toast(res.msg)
+//					}
+//					mui('#pullrefresh').pullRefresh().endPulldown();
+//				});
+			};
+			function pullupRefresh(){
+				var _this = this;
+				_this.endPullupToRefresh(true);
+				return;
+//				mui.post(http + 'taobao-buy/get-favorites-item',{page:++ page},function(res){
+//					if(res.code == 0){
+//						datalist = datalist.concat(res.data);
+//						var list = {list:datalist};
+//						var courselist = template('j_course',list);
+//						document.getElementById('course').innerHTML = courselist;
+//						mui('#pullrefresh').pullRefresh().endPulldown();
+//	        			_this.endPullupToRefresh(false);
+//					}else if(res.code == 1){
+//						mui('#pullrefresh').pullRefresh().endPulldown();
+//	        			_this.endPullupToRefresh(true);
+//						mui.toast(res.msg);
+//					}
+//					mui('#pullrefresh').pullRefresh().endPulldown();
+//				});
+			};
+			mui.plusReady(function(){
+				mui.post(http + 'taobao-buy/shop',function(res){
+					if(res.code == 0){
+						
+					}else if(res.code == 1){
+						mui.toast(res.msg)
+					}
+				})
+//				mui.post(http + 'taobao-buy/get-favorites-item',function(res){
+//					if(res.code == 0){
+//						datalist = res.data;
+//						var ms = template('m_scroll',datalist);
+//						document.getElementById('mscroll').innerHTML = ms;
+//					}else if(res.code == 1){
+//						mui.alert(res.msg)
+//					}
+//				},'json');
+				//返回按钮tap  
+				var scrollToTopBox = document.getElementById('scrollToTop'); 
+				var nav = document.getElementById('sliderSegmentedControl');
+//				scrollToTopBox.addEventListener('tap', function(e) {  
+//				    e.stopPropagation(); mui('#pullrefresh').pullRefresh().scrollTo(0, 0, 300);//滚动到顶部  
+//				});  
+				// Android上监听原生滚动，iOS上监听div滚动，上拉超过一屏后显示按钮，否则隐藏，可自行在条件判断中修改  
+//				if (mui.os.android) {  
+//				    window.addEventListener('scroll', function(e) {  
+//				        if (window.pageYOffset >= window.innerHeight && scrollToTopBox.classList.contains('hide')){ 
+//				            scrollToTopBox.classList.remove('hide'); 
+//				        }else if(window.pageYOffset < window.innerHeight && !scrollToTopBox.classList.contains('hide')){ 
+//				            scrollToTopBox.classList.add('hide'); 
+//				        } 
+//				    });  
+//				} else {  
+//				    document.getElementById('pullrefresh').addEventListener('scroll', function() {  
+//				        if (mui('#pullrefresh').pullRefresh().y <= window.innerHeight * (-1) && scrollToTopBox.classList.contains('hide')){ 
+//				            scrollToTopBox.classList.remove('hide'); 
+//				        }else if(mui('#pullrefresh').pullRefresh().y > window.innerHeight * (-1) && !scrollToTopBox.classList.contains('hide')){ 
+//				            scrollToTopBox.classList.add('hide'); 
+//				        } 
+//			    	}); 
+//				}
+			})
+			
+			
+		</script>
+	</body>
+
+</html>

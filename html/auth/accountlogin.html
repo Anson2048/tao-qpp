@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<title></title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+			.mui-content .mui-input-row input {
+    background-color: transparent;
+    color: #979797;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+    padding-top: 1.3rem;
+}
+		</style>
+
+	</head>
+
+	<body style="background-color: #f7f7f7;">
+		<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div style="padding-top:5rem;">
+				<img src="../../images/480_480.png" width="100rem">
+				<div style="padding-top:2rem;">
+				<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+					<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">手机号</div>
+					<div style="float:left;display:inline;width: 75%;"><input id='mobile' style="line-height: 1.2rem;" type="text"
+						 placeholder="请输入手机号码" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value = value.replace(/[^\d{2}\.]/g, '').replace(/(\.\d{2}).*/g, '$1')"></div>
+				</div>
+				<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+					<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">密&nbsp;&nbsp;&nbsp;&nbsp;码</div>
+					<div style="float:left;display:inline;width: 45%;"><input id='password' type="password" placeholder="请输入密码"></div>
+					
+				</div>
+				<div class="mui-content-padded">
+					<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+				</div>
+				<div id="mobilelogin" style="font-size:0.8rem;text-align: left;padding-left:10px">微信登入</div>
+				</div>
+			</div>
+			<div style="width:100%;text-align: center;font-size: 0.8rem;position:relative; line-height: 10rem;">登入成功即代表同意<span id="xieyi" style="color: #be0004;">《苦瓜用户协议》</span></div>
+		</div>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/mui.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function() {
+				mui('.mui-content').on('tap', '#mobilelogin', function() {
+					var child = plus.webview.create(
+									'login.html', 'login'); //直接用H5+API创建窗口
+								child.show();
+				})
+				//登入
+				mui('.mui-content').on('tap', '#login', function() {
+						var mobile = document.getElementById('mobile').value;
+							var password = document.getElementById('password').value;
+							Http.post({
+								api: 'LOGIN',
+								data: {
+									mobile: mobile,
+									password: password
+								},
+								success: function(res) {
+									plus.nativeUI.toast(res.msg);
+									mui.later(function() {
+										plus.storage.setItem('userInfo', JSON.stringify(res.data));
+										console.log(JSON.stringify(res.data));
+										toMain();
+									}, 2000)
+								},
+								one: function(res) {
+									mui.toast(res.msg);
+									plus.nativeUI.closeWaiting();
+
+								},
+								error: function(xhr, type, errorThrown) {
+									mui.toast('登入错误!');
+									plus.nativeUI.closeWaiting();
+								}
+							});
+				})
+				var toMain = function() {
+							//plus.webview.getWebviewById('tab-webview-share').close();
+							//console.log(plus.webview.getLaunchWebview()+","+plus.webview.getLaunchWebview());
+
+							plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+
+								mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+								mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'), 'pageflowrefresh');
+
+
+
+								mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+
+							});
+						}
+			});
+			mui('.mui-content').on('tap', '#xieyi', function() {
+				var child = plus.webview.create(
+						'service_protol.html', 'service_protol'); //直接用H5+API创建窗口
+					child.show();
+			});
+		</script>
+	</body>
+
+</html>

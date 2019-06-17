@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>会员权益</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		<style type="text/css">
+			.con{
+				background: url(../../images/lbg.png) no-repeat;
+				background-size: 100%;
+				height: 240px;
+				position: relative;
+						}
+			.con .cardbox{
+				width: 320px;
+				position: absolute;
+				top: 90px;
+				left: 50%;
+				margin-left: -160px;	
+			}
+			.con .cardbox .card{
+				width: 100%;
+			}
+			.con .cardbox .head{
+				position: absolute;
+				top: 10px;
+				text-align: center;
+				left: 50%;
+				margin-left: -96px;
+			}
+			.con .cardbox .head>img{
+				width: 40px;
+				border-radius: 50%;
+			}
+			.con .cardbox .head p{
+				margin-top: -10px;
+			}
+			.con .cardbox .head p img{
+				width: 53px;
+			}
+			.con .cardbox .head ul{
+				background: transparent;
+				
+			}
+			.con .cardbox .head ul li{
+				float: left;
+				margin-right: 10px;
+				margin-left: 10px;
+				position: relative;
+				z-index: 5;
+			}
+			.con .cardbox .head ul li:first-child{
+				margin-left: 0;
+			}
+			.con .cardbox .head ul li:last-child{
+				margin-right: 0;
+			}
+			.con .cardbox .head ul:after{
+				content: '';
+				display: block;
+				height: 3px;
+				width: 100%;
+				position: relative;
+				top: -33px;
+				background:  linear-gradient(to right, #eab243 , #ec4e43);
+				z-index: 0;
+			}
+			.con .cardbox .head ul li img{
+				width: 28px;
+			}
+			.con .cardbox .head p.lv{
+				font-size: 12px;
+				line-height: 30px;
+			}
+			.promote ul li{
+				float: left;
+				width: 25%;
+			}
+			.promote ul li img{
+				width:30px;
+				height: 30px;
+			}
+			.promote{
+				text-align: center;
+				background: #fff;
+				padding-top: 15px;
+				padding-bottom: 15px;
+			}
+			h4{
+				background: url(../../images/l_team.png) no-repeat;
+				background-size: 90%;
+				background-position: center;
+			}
+			.promote .pay{
+				color: #d29e64;
+			}
+			.promote ul{
+				margin-top: 10px;			
+			}
+			.power{
+				background: #fff;
+				text-align: center;
+				margin-top: 15px;
+				padding: 15px 0px;
+			}
+			.power h4{
+				padding-bottom: 10px;
+				border-bottom: 1px solid #efeff4;
+				background-position-y: 5px;
+			}
+			.power ul{
+				padding-top: 10px;
+			}
+			.power ul li{
+				text-align: left;
+				padding-left: 20px;
+				height: 26px;
+				margin: 5px 0;
+			}
+			.power ul li span{
+				display: inline-block;
+				width: 3px;
+				height: 12px;
+				background: #ff8c5b;
+				/*vertical-align: middle;*/
+				margin-right: 5px;
+			}
+			.power ul li:nth-child(2) span{
+				background: #5bd1ff;
+			}
+			.power ul li:nth-child(3) span{
+				background: #8d5aff;
+			}
+			.power ul li:nth-child(4) span{
+				background: #ffd25b;
+			}
+			.button{
+				margin-top: 20px;
+				margin-bottom: 30px;
+				text-align: center;
+			}
+			button.mui-btn{
+				color: #fff;
+				background: #ff5d18;
+				width: 80%;
+				border-radius: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">会员权益</h1>
+		</header>
+		<div class="mui-content" id="box">
+			<script type="text/template" id="up_box">
+				<div class="con">
+					<div class="cardbox">
+						<img class="card" src="../../images/card.png"/>
+						<div class="head">
+							<img src="{{avatar||'../../images/my-head.jpg'}}" alt="" />
+							<p class=""><img src="../../images/lv0.png" alt="" /></p>
+							<p class="lv">
+								我的等级：
+								{{if lv == 0}}
+									粉丝
+								{{else if lv == 1}}
+									市场运营
+								{{else if lv == 2}}
+									团队经理
+								{{else if lv == 3}}
+									事业总监
+								{{/if}}
+								
+							</p>
+							<ul class="clearfix">
+								<li><img src="../../images/l1.png"/></li>
+								<li><img src="../../images/l2.png"/></li>
+								<li><img src="../../images/l3.png"/></li>
+								<li><img src="../../images/l4.png"/></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="promote">
+					<h4 class="title">市场运营晋升</h4>
+					<p class="pay">需支付￥{{money}}</p>
+					<ul class="clearfix">
+						<li>
+							<img src="../../images/pro1.png"/>
+							<p>扩展学习</p>
+						</li>
+						<li>
+							<img src="../../images/pro2.png"/>
+							<p>市场培训</p>
+						</li>
+						<li>
+							<img src="../../images/pro3.png"/>
+							<p>服务器维护</p>
+						</li>
+						<li>
+							<img src="../../images/pro4.png"/>
+							<p>服务器使用</p>
+						</li>
+					</ul>
+				</div>
+				<div class="power">
+					<h4 class="title">市场运营权限</h4>
+					<ul>
+						<li>
+							<span class="b_lock"></span>
+							自购获得60%利润返佣
+						</li>
+						<li>
+							<span class="b_lock"></span>
+							享受直属粉丝购物利润40%
+						</li>
+						<li>
+							<span class="b_lock"></span>
+							获得经营推广招商的权限
+						</li>
+						<li>
+							<span class="b_lock"></span>
+							具有晋升公司团队经理、事业总监的机会
+						</li>
+					</ul>
+				</div>
+				<div class="button">
+					<button type="button" class="mui-btn">立即升级</button>
+				</div>
+			</script>	
+			
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var wxpay = null;
+			var alipay = null;
+			var updata = null;
+			mui.init();
+			
+			mui.plusReady(function(){
+				Http.post({
+					api:'UPGRADE',
+					success:function(res){
+						updata = res.data;
+						var goods = template('up_box',updata);
+						document.getElementById('box').innerHTML = goods;
+					}
+				});
+				plus.payment.getChannels(function(s){
+				 	for(var i in s){  
+	                    if(s[i].id == 'wxpay'){
+	                   	 	wxpay = s[i];
+	                    }else if(s[i].id == 'alipay'){
+	                   		alipay = s[i];
+	                    }
+	                }
+				}, function(e){
+				 	plus.nativeUI.alert("获取支付服务列表失败：" + e.message);
+				});
+				
+				var UPGRADESERVER = http + 'user/upgrade?type=';
+				function pay(payType){
+					var chanel = null;
+					if (payType == 'alipay') {
+						PAYURL = UPGRADESERVER + 'alipay';
+						chanel = alipay;
+					} else if (payType == 'wxpay') {
+						PAYURL = UPGRADESERVER + 'wxpay';
+						chanel = wxpay;
+					} else {
+						plus.nativeUI.alert("不支持此支付通道：" + payType,null,"错误");
+					}
+					
+					var xhr=new XMLHttpRequest();
+				    xhr.onreadystatechange=function(){
+				        switch(xhr.readyState){
+				            case 4:
+				            if(xhr.status==200){
+				            	var response = JSON.parse(xhr.responseText);
+				            	if (response.code == 0) {
+					                plus.payment.request(chanel, response.data.orderStr, function(result){
+					                    plus.nativeUI.alert("支付成功！");
+					                    setTimeout(function(){
+					                    	var main = plus.webview.getWebviewById('html/tab-webview-my.html');
+											mui.fire(main,'pageflowrefresh');
+											mui.back();
+					                    },1000)
+					                },function(error){
+					                	console.log(error);
+					                	if (error.message.indexOf('canceled')) {
+					                    	plus.nativeUI.toast('已取消')
+					                	} else {
+					                    	plus.nativeUI.alert("支付失败：" + "[" + error.code+ "]" + error.message);
+					                	}
+					                });
+				            	} else {
+				            		plus.nativeUI.alert(response.msg);
+				            	}
+				            }else{
+				                plus.nativeUI.alert("获取订单信息失败！");
+				            }
+				            break;
+				            default:
+				            break;
+				        }
+				    }
+				    xhr.open('post',PAYURL);
+				    xhr.setRequestHeader('token',Http.getToken());
+				    xhr.send();
+				}
+				mui('#box').on('tap','.mui-btn',function(){
+					var payBts=[];
+					// 更新支付方式列表
+					payBts.push({'title':'支付宝支付',payType:'alipay'});
+					payBts.push({'title':'微信支付',payType:'wxpay'});
+					
+					plus.nativeUI.actionSheet({title:'会员升级',cancel:'取消',buttons:payBts},function(e){
+		                (e.index>0)&&pay(payBts[e.index-1].payType);
+		            })
+				});
+			});
+		</script>
+	</body>
+
+</html>

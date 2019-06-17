@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<title>宝贝详情</title>
+		<link rel="stylesheet" href="../css/style2.css">
+		<link rel="stylesheet" href="../css/layer.css">
+		<link href="../css/swiper.min.css" rel="stylesheet" />
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/swiper.min.js"></script>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/lib.js"></script>
+
+	</head>
+	<style>
+		.myfancy{   
+		display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    overflow: hidden;}
+</style>
+	<body class="body0">
+		<div class="main">
+			<div class="m-menu">
+				<ul class="ul-listz1" id="loutinav">
+					<li><a href="javascript:;">宝贝</a></li>
+					<li><a href="javascript:;">详情</a></li>
+					<!-- <li><a href="javascript:;">推荐</a></li> -->
+				</ul>
+			</div>
+			<div class="g-return">
+					<img src="../images/zys_img19.png" alt="" />
+			</div>
+			<div class="g-btn" style="display: none;">
+				<div class="myfancy" id="open_fullimg_btn">
+					<img src="../images/ico-g1-2.png" alt="" />
+				</div>
+			</div>
+			<div class="box-list">
+				<ul class="ul-tab-g1 TAB_CLICK2" id=".tab-con1"></ul>
+				<div class="tab-con1 ok">
+					<div class="slider-pic1">
+						<div class="swiper-wrapper" id="smallpic">
+							<!-- 轮播图 -->
+						</div>
+						<!-- Add Pagination -->
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="m-price1">
+				<div class="date">
+					<h3>距结束仅剩</h3>
+					<div class="timer" id="countdown">
+						<div class="dash days_dash">
+							<div class="digit">0</div>
+							<div class="digit">0</div>
+						</div>
+						<span class="sp1">:</span>
+						<div class="dash hours_dash">
+							<div class="digit">0</div>
+							<div class="digit">0</div>
+						</div>
+						<span class="sp1">:</span>
+						<div class="dash minutes_dash">
+							<div class="digit">0</div>
+							<div class="digit">0</div>
+						</div>
+						<span class="sp1">:</span>
+						<div class="dash seconds_dash">
+							<div class="digit">0</div>
+							<div class="digit">0</div>
+						</div>
+					</div>
+				</div>
+				<div class="num" id="price_detail">
+					<!-- 价格 -->
+				</div>
+			</div>
+			<div class="m-info1 louti" id="louti1">
+				<div class="tit">
+					<a href="javascript:;" class="heart"><i></i>收藏</a>
+					<h3 id="titledetail">
+						<!-- 标题 -->
+					</h3>
+				</div>
+				<!--<div class="t1">
+                <a href="" class="a1">立即开通&gt;&gt;</a>
+                <p class="p1">现在升级VIPer，最高可得佣金<span>¥<em>2.24</em></span></p>
+            </div>-->
+				<div class="t2" style="font-size: 14px;">
+					<!--<div class="num"><span>33</span>人已抢</div>-->
+					<div class="price" id="bonus">
+						<!--佣金<span class="sp1">奖</span>
+						<span class="sp2">
+							<i>¥</i><em>7.98元</em></span>
+						<span class="sp3">原价<em>¥129</em></span>-->
+					</div>
+				</div>
+			</div>
+			<div class="m-coupon1">
+				<a href="javascript:;" class="js-pop">
+					<span class="sp1" id="nowquan">立即领券</span>
+					<div class="con" id="qutime">
+						<!-- <span class="sp2" style="width:60px;"><i>¥</i><em>100</em></span>
+						<div class="inner">
+							<h3>优惠券有效期至:</h3>
+							<p>2019-06-20 23:59:59</p>
+						</div> -->
+					</div>
+				</a>
+			</div>
+			<!-- <div class="m-txt1" style="display: none;">
+				<h3>推荐理由:</h3>
+				<p><span id="p-text">上脚很舒服，百搭又清新，新潮单鞋，PVC健康材质，防滑防臭，轻软不磨脚，秀气又显瘦，上街保证回头率杠杠的。一直挺钟意小白鞋的！穿着透气舒适！还有三色可以选漂亮~穿着它出街让你美美的【赠送运费险】</span>
+					<a href="javascript:;" class="btn copy-p" data-clipboard-action="copy" data-clipboard-target="#p-text">复制</a></p>
+			</div> -->
+
+			<div class="g-tit1 louti" id="louti2">宝贝详情</div>
+			<div class="pic-info" id="imgs"></div>
+
+			<!-- <div class="g-tit1 louti" id="louti3">推荐商品</div>
+			<ul class="ul-listy3">
+				<li>
+					<div class="con">
+						<div class="pic">
+							<a href="./index.php?i=2&c=entry&itemid=560606706955&lm=2&pid=mm_338020111_359700140_100098250184&do=view&m=tiger_newhu"><img
+								 src="http://img.alicdn.com/imgextra/i3/3377622722/O1CN01vjkVAd1VyiaLWCzA3_!!3377622722.jpg" alt=""></a>
+						</div>
+						<div class="txt">
+							<h5><a href="./index.php?i=2&c=entry&itemid=560606706955&lm=2&pid=mm_338020111_359700140_100098250184&do=view&m=tiger_newhu">新春款回力帆布鞋经典款迷彩涂鸦男鞋韩版情侣学生运动鞋女小白鞋</a></h5>
+							<div class="sp-con">
+								<span class="l">原价 ¥79.00</span><span class="r">已售208件</span>
+							</div>
+							<div class="price">
+								<div class="quan">
+									<em>10元券</em>
+								</div>
+								券后价 <span><i>¥</i>69.00</span>
+							</div>
+						</div>
+					</div>
+				</li>
+
+			</ul> -->
+		</div>
+
+		<div class="footer" id="footer">
+			<div class="div-a">
+				<a href=""><em class="ico" id="home" style="background-image: url(../images/yi1.png)"></em><span>返回</span></a>
+			</div>
+			<div class="div-a">
+				<a href="javascript:;" class="js-collect"><em class="ico" id="collimg" style="background-image: url(../images/star.png)"></em><span id="coll">收藏</span></a>
+			</div>
+			<div class="btn">
+				<a href="javascript:;" class="a1" id="share">分享宝贝</a>
+				<a href="javascript:;" class="js-pop a2" id="getquan">领券 ￥<span class="quan"></span>元</a>
+
+			</div>
+		</div>
+		<script>
+			// 顶部
+			$(window).scroll(function() {
+				if ($(window).scrollTop() >= 45) {
+					$(".ul-listz1").addClass('on');
+					$(".g-btn").addClass('on');
+
+				} else {
+					$(".ul-listz1").removeClass('on');
+					$(".g-btn").removeClass('on');
+				}
+
+			})
+			$(".ul-listz1 li").on('click', function() {
+				$(this).addClass('on').siblings().removeClass('on');
+			})
+			$(window).on('scroll', function() {
+				var $scroll = $(this).scrollTop();
+				var top1 = $("#louti1").offset().top;
+				var top2 = $("#louti2").offset().top-200;
+				// var top3 = $("#louti3").offset().top - 200;
+
+				/* if ($scroll < top1 && $scroll < top2 && $scroll < top3) {
+					$('#loutinav li').removeClass('on');
+					$('#loutinav li').eq(0).addClass('on').siblings('li').removeClass('on');
+				}
+				 if (top2 < $scroll < top3 && $scroll > top1) {
+					$('#loutinav li').removeClass('on');
+					$('#loutinav li').eq(1).addClass('on').siblings('li').removeClass('on');
+				}
+				if (top3 < $scroll && $scroll > top1 && $scroll > top2) {
+					$('#loutinav li').removeClass('on');
+					$('#loutinav li').eq(2).addClass('on').siblings('li').removeClass('on');
+				} */
+				if ($scroll < top1 && $scroll < top2 ) {
+					$('#loutinav li').removeClass('on');
+					$('#loutinav li').eq(0).addClass('on').siblings('li').removeClass('on');
+				}
+				 if (top2 < $scroll  && $scroll > top1) {
+					$('#loutinav li').removeClass('on');
+					$('#loutinav li').eq(1).addClass('on').siblings('li').removeClass('on');
+				}
+			});
+			var $loutili = $('#loutinav li');
+			$loutili.on('click', function() {
+				$(this).addClass('on').siblings('li').removeClass('on');
+				var $loutitop = $('.louti').eq($(this).index()).offset().top - 45;
+				// console.log($lou);
+				$('html,body').animate({
+					scrollTop: $loutitop
+				})
+			});
+		</script>
+		<a class="gotop iconfont icon-shang" href="javascript:;"></a>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //关闭-右滑关闭功能 
+			});
+
+			var userinfo;
+			var detailslist = {};
+			var numid = null;
+			var weburl;
+			var type;
+			var appurl;
+			var appapi;
+			var appname;
+			var coll = document.getElementById('coll');
+			var collimg = document.getElementById('collimg');
+
+			mui.plusReady(function() {
+				window.addEventListener('getItem', function(event) {
+
+					plus.nativeUI.showWaiting('正在加载');
+					//获得事件参数
+					var id = event.detail.id;
+					showdetail(id)
+
+					var profit = event.detail.profit;
+					type = event.detail.type;
+					var types = type;
+					var bb = document.getElementById('profit');
+					//var url = 'taobao-buy/item-info';
+					if (event.detail.list) { //list-col页面
+						if (type == 0 || type == 11 || type == 12 || type == 1) {
+							type = 1;
+						} else if (type == 21) {
+							type = 21;
+						} else if (type == 2 || type == 31) {
+							type = 31;
+						}
+					} else {
+						if (type == 0 || type == 11 || type == 12) {
+							type = 1;
+						} else if (type == 1) {
+							type = 21;
+						} else if (type == 2 || type == 31) {
+							type = 31;
+						}
+					}
+					Http.post({
+						api: 'INFO',
+						data: {
+							num_iid: id,
+							type: type
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							numid=id;
+							if (res.data.collection == 1) {
+								num = 2;
+								coll.innerHTML = '已收藏';
+								collimg.style.backgroundImage='url(../images/collect01.png)';
+								//collimg.setAttribute('src', '../images/collect01.png')
+							} else {
+								num = 1;
+								coll.innerHTML = '收藏';
+								collimg.style.backgroundImage='url(../images/collect.png)';
+							}
+							detailslist = {
+								details: res.data,
+								profit: profit,
+								type: types
+							};
+							var html = "";
+							for (var p = 0; p < res.data.small_images.length; p++) {
+								html += '<div class="swiper-slide"><div class="pic">';
+								html += '<img src="' + res.data.small_images[p] + '" alt="" />'
+								html += '</div></div>';
+							}
+							document.getElementById('smallpic').innerHTML = html;
+							document.getElementById('price_detail').innerHTML = '<span class="sp1"><em>¥</em>' + res.data.coupon_price +
+								'</span><div class="con"><span class="sp2"><em>¥</em>' + res.data.origin_price +
+								'</span><div class="sp3"><span><em>' + res.data.volume + '</em>件已售</span></div></div>'
+							document.getElementById('titledetail').innerHTML = '<div class="icon"><img src="' + (types == 12 ?
+								'../images/tm.png' : '../images/tb.png') + '" alt="" /></div>' + res.data.title;
+							document.getElementById('bonus').innerHTML = '<span class="sp1">分享赚</span><span class="sp2"><em>' + res.data
+								.commission_money + '元</em></span>'
+							var swiper = new Swiper('.slider-pic1', {
+								pagination: {
+									el: '.swiper-pagination',
+									type: 'fraction',
+								}
+							});
+							weburl = res.data.item_url;
+							document.getElementById('qutime').innerHTML = '<span class="sp2" style="width:60px;"><i>¥</i><em>' + res.data
+								.coupon_money + '</em></span><div class="inner"><h3>优惠券有效期至:</h3><p>' + res.data.coupon_end_time +
+								'</p></div>';
+								document.getElementsByClassName('quan')[0].innerText = res.data.coupon_money;
+							//时间拆分
+							var date = res.data.coupon_end_time;
+							date = date.substring(0, 19);
+							date = date.replace(/-/g, '/');
+							var timestamp = new Date(date);
+							var year = timestamp.getFullYear();
+							var month = timestamp.getMonth() + 1;
+							var day = timestamp.getDate();
+							var hour = timestamp.getHours();
+							var min = timestamp.getMinutes();
+							console.log(timestamp)
+							console.log(year + "," + month + "," + day)
+							// 倒计时
+							$('#countdown').countDown({
+								targetDate: {
+									'day': day,
+									'month': month,
+									'year': year,
+									'hour': hour,
+									'min': min,
+									'sec': 0
+								}
+							});
+
+						},
+						one: function(res) {
+							mui.toast(res.msg)
+
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								mui.back();
+							}, 500)
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast('请求超时请稍后再试!')
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								mui.back();
+							}, 500)
+						}
+					})
+				});
+
+
+				//<button type="button"></button>
+				mui('.g-return').on('tap', 'img', function() {
+					mui.back();
+					var _self = plus.webview.currentWebview();
+					_self.hide();
+					setTimeout(function() {
+						_self.reload(); //重新加载
+
+					}, 100);
+				});
+							mui('#footer').on('tap', '#home', function() {
+								mui.back();
+					var _self = plus.webview.currentWebview();
+					_self.hide();
+					setTimeout(function() {
+						_self.reload(); //重新加载
+
+					}, 100);
+							});
+				
+				//点击分享
+				mui('#footer').on('tap', '#share', function() {
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if (userinfo) {
+						if (!userinfo.relation_id) {
+							mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+					}
+					plus.nativeUI.closeWaiting();
+
+					mui.openWindow({
+						url: 'create-share.html',
+						id: 'create-share.html',
+						extras: {
+							url: detailslist.details.item_url,
+							title: detailslist.details.title,
+							numid: numid,
+							thumbs: detailslist.details.small_images,
+							profit: detailslist.details.commission_money,
+							zk_final_price: detailslist.details.coupon_price,
+							reserve_price: detailslist.details.origin_price,
+							type: type
+
+						}
+					});
+				});
+
+				
+				//领券
+				mui('#footer').on('tap', '#getquan', function() {
+
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if (userinfo) {
+						if (!userinfo.relation_id) {
+							mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+					}
+						appapi = 'GET-QUAN';
+						appname = "com.taobao.taobao";
+				
+					//console.log(numid+","+weburl+":aaa");
+					Http.post({
+						api: appapi,
+						data: {
+							id: numid,
+							url: weburl
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							if (type == 1) {
+								appurl = res.data;
+								//console.log(appurl);
+								/*plus.runtime.openURL(appurl, function(e) {
+									if (!gobuy) {
+										gobuy = plus.webview.getWebviewById('buy.html');
+									}
+									mui.fire(gobuy, 'gobuy', {
+										url: appurl
+									});
+									mui.openWindow({
+										id: 'buy.html',
+									})
+								}, appname);*/
+								//console.log(appurl.replace('https','taobao').replace('http','taobao'));
+								if (mui.os.ios) {
+									
+									plus.runtime.openURL(appurl.replace('https', 'taobao').replace('http', 'taobao'));
+									//window.location.href=;
+								} else {
+									//console.log("android")
+									plus.runtime.openURL(appurl,  appname);
+								}
+							} 
+						}
+					})
+				});
+				
+				mui('.m-coupon1').on('tap', '#nowquan', function() {
+
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					if (userinfo) {
+						if (!userinfo.relation_id) {
+							mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							plus.nativeUI.closeWaiting();
+							return;
+						}
+					}
+						appapi = 'GET-QUAN';
+						appname = "com.taobao.taobao";
+				
+					//console.log(numid+","+weburl+":aaa");
+					Http.post({
+						api: appapi,
+						data: {
+							id: numid,
+							url: weburl
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							if (type == 1) {
+								appurl = res.data;
+								//console.log(appurl);
+								/*plus.runtime.openURL(appurl, function(e) {
+									if (!gobuy) {
+										gobuy = plus.webview.getWebviewById('buy.html');
+									}
+									mui.fire(gobuy, 'gobuy', {
+										url: appurl
+									});
+									mui.openWindow({
+										id: 'buy.html',
+									})
+								}, appname);*/
+								//console.log(appurl.replace('https','taobao').replace('http','taobao'));
+								if (mui.os.ios) {
+									
+									plus.runtime.openURL(appurl.replace('https', 'taobao').replace('http', 'taobao'));
+									//window.location.href=;
+								} else {
+									//console.log("android")
+									plus.runtime.openURL(appurl,  appname);
+								}
+							} 
+						}
+					})
+				})
+				
+				//收藏
+				mui('#footer').on('tap', '#collimg', function() {
+					plus.nativeUI.showWaiting();
+					userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					console.log(userinfo)
+					if (!userinfo) {
+						var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+						plus.nativeUI.closeWaiting();
+						return;
+					}
+					Http.post({
+						api: 'COLLECT',
+						data: {
+							type: 1, //1 商品  2店铺
+							id: numid,
+							status: num,
+							good_type: type
+						},
+						success: function(res) {
+							plus.nativeUI.closeWaiting();
+							
+							if (num == 1) {
+								num = 2;
+								coll.innerHTML = '已收藏';
+								collimg.style.backgroundImage='url(../images/collect01.png)';
+								//collimg.setAttribute('src', '../images/collect01.png')
+							} else {
+								num = 1;
+								coll.innerHTML = '收藏';
+								collimg.style.backgroundImage='url(../images/collect.png)';
+							}
+							mui.toast(res.msg)
+						}
+					})
+				})
+			});
+		</script>
+		<script>
+			function showdetail(itemid) {
+				var url =
+					"https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?jsv=2.4.0&appKey=12574478&t=1560248888574&sign=2db06c3e2c1ec60d2cb53e4f06e92077&api=mtop.taobao.detail.getdesc&v=6.0&AntiFlool=true&AntiCreep=true&type=jsonp&dataType=jsonp&callback=mtopjsonp1&data=%7b%22id%22%3a%22" +
+					itemid + "%22%2c%22type%22%3a%221%22%7d";
+				$.ajax({
+					url: url,
+					dataType: 'jsonp',
+					jsonpCallback: 'mtopjsonp1',
+					success: function(dat) {
+						console.log(dat.ret[0])
+						if (dat.ret[0] == "SUCCESS::调用成功") {
+							var picinfo = dat.data.pcDescContent;
+							var patt = /<img[^>]+src=['"]([^'"]+)['"]+/g;
+							var image = [],
+								temp;
+							while ((temp = patt.exec(picinfo)) != null) {
+								if (temp[1].indexOf("spaceball.gif") > 0) {} else {
+									image.push("<img src='https:" + temp[1] + "' style='width:100%;max-width:100%'>");
+								}
+							}
+							$('#imgs').html(image);
+						}
+					}
+
+				});
+			}
+		</script>
+	</body>
+
+</html>

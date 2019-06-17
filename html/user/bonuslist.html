@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>佣金明细</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style>
+			.table {
+                border: 1px solid #f7f7f7;
+                color: #666;
+				background-color: #ffffff;
+            }
+
+            .table th {
+                background-repeat: repeat-x;
+                height: 3rem;
+            }
+
+            .table td,
+            .table th {
+                border: 1px solid #f7f7f7;
+                padding: 0 1em 0;
+				text-align: center;
+				height: 2.5rem;
+            }
+
+            .table tr.alter {
+                background-color: #ffffff;
+            }
+    </style>
+	</head>
+
+	<body style="background-color: #ffffff;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">佣金明细</h1>
+		</header>
+		<div class="content">
+			<table width="100%" class="table">
+				
+				<thead>
+				<tr>
+					<th>日期</th>
+					<th>推荐</th>
+					<th>分享</th>
+					<th>补贴</th>
+					<th>税</th>
+					<th>总佣金</th>
+				</tr>
+				</thead>
+				<tbody id="boxlist"></tbody>
+				</table>
+				<script type="text/template" id="bonuslist">
+					{{each bonuslist as value i}}
+				<tr>
+					<td>{{time(value.AddTime)}}</td>
+					<td>{{parsefloat(value.BonusTalent)}}</td>
+					<td>{{parsefloat(value.BonusRecommend)}}</td>
+					<td>{{parsefloat(value.BonusReseller)}}</td>
+					<td>{{parsefloat(value.Tax)}}</td>
+					<td>{{parsefloat(value.BonusAll)}}</td>
+				</tr>
+				{{/each}}
+				</script>
+			
+<span id="pullrefresh2" style="background-color:#ffffff;"></span>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			mui.init({swipeBack:true,  //关闭-右滑关闭功能
+				    pullRefresh:{
+				   					container:"#pullrefresh2",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				   					down:{
+				   						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				   				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				   				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				   				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				   				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				   				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				   				        callback:function(){
+				   				        	page = 1;
+											Http.post({
+												api: 'BONUSLIST',
+												data: {
+													page: page
+												},
+												success: function(res) {
+													plus.nativeUI.closeWaiting();
+													bonuslist = {bonuslist:res.data}
+													var html = template('bonuslist', bonuslist);
+													document.getElementById('boxlist').innerHTML = html;
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+												},
+												one: function() {
+													plus.nativeUI.closeWaiting();
+													//mui.toast(res.msg);
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+												}
+											})
+				   				        }
+				   					},
+				   					up:{
+				   						height:50,//可选.默认50.触发上拉加载拖动距离
+				   				        auto:false,//可选,默认false.自动上拉加载一次
+				   				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				   				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				   				        callback :function(){
+				   				        	var _this = this;
+				   				        	Http.post({
+				   				        		api: 'BONUSLIST',
+				   				        		data: {
+				   				        			page: ++page
+				   				        		},
+				   				        		success: function(res) {
+				   				        			plus.nativeUI.closeWaiting();
+													if(res.code=="0")
+													{
+				   				        			bonuslist.bonuslist = bonuslist.bonuslist.concat(res.data);
+				   				        			//collist = {collist:res.data};
+				   				        			var html = template('bonuslist', bonuslist);
+													}
+				   				        			document.getElementById('boxlist').innerHTML = html;
+				   				        			mui('#pullrefresh2').pullRefresh().endPulldown();
+				   				        			if(res.data!=""){
+				   				        			_this.endPullupToRefresh(false);
+				   				        			}
+				   				        			else{
+				   				        				_this.endPullupToRefresh(true);
+				   				        			}
+				   				        		},
+												one:function(){
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+													_this.endPullupToRefresh(true);
+												}
+				   				        	})
+				   				        } 
+				   					}
+				   				}});
+			
+			var page=1;
+			var bonuslist;
+			mui.plusReady(function(){
+				Http.post({
+					api:'BONUSLIST',
+					data:{page:page},
+					success:function(res){
+						bonuslist = {bonuslist:res.data}
+						var html = template('bonuslist',bonuslist);
+						document.getElementById('boxlist').innerHTML = html;
+						console.log(JSON.stringify(res.data))
+					},
+					error:function(xhr,type,errorThrown){
+						document.getElementById('boxlist').innerHTML="没有数据";
+					}
+				})
+			});
+template.defaults.imports.parsefloat = function(str) {
+		return parseFloat(str).toFixed(1);
+	};
+template.defaults.imports.time = function(str) {
+		var date=new Date(str);
+		return date.getMonth()+1+"."+date.getDate();
+	};	
+		</script>
+	</body>
+
+</html>

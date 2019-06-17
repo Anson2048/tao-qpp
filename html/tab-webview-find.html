@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>苦瓜发现</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+		    <h1 class="mui-title">苦瓜发现</h1>
+		</header>
+		<div class="mui-content">
+			<img src="../images/jtfind.jpg"/ style="width: 100%;">
+			<div id="pullrefresh" class="hide">
+				<a id="scrollToTop" class="backTop hide"> <img src="../images/top.png"/></span> </a>
+				<!--商品-->
+				<ul class="" id="course">
+					<script type="text/template" id="j_course">
+						{{each list as value i}}
+							<li class="col-shop-item">
+								<a href="javascript:;">
+									<div class="col-shop-tit">
+										<div class="col-shop-left">
+											<img style="width: 18%; border-radius: 50%;" src="{{value.small_img || '../images/course-head_03.jpg'}}" alt="" />
+											<span class="col-shop-det">
+												<span>{{value.title}}</span>
+												<span class="col-shop-con">{{value.description}}</span>
+											</span>
+										</div>
+										<span class="course-share"></span>
+									</div>
+									<div class="col-shop-img">
+										<img class="o_detail" style="width: 100%;" src="{{value.img}}" data-index="{{i}}" alt="" />
+									</div>
+									<div style="padding: 10px;display: none;">
+										{{#value.content}}
+									</div>
+									<div class="col-goods-item-bot">
+										<span></span>
+										<span style="padding: 0 5px;">分享次数：<span class="col-goods-price">823次</span></span>
+									</div>
+								</a>
+							</li>
+						{{/each}}
+					</script>
+				</ul>
+			</div>	
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="...js/mui.pullToRefresh.js"></script>
+		<script src="../js/mui.pullToRefresh.material.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 1;
+			var findlist = [];
+			mui.init({
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){
+				page = 1;
+				mui.post(http + 'taobao-buy/article',{page:1},function(res){
+					if(res.code == 0){
+						findlist = res.data;
+						var list = {list:res.data}
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}else if(res.code == 1){
+						mui.alert(res);
+					}
+					mui('#pullrefresh').pullRefresh().endPulldown();
+				});
+			};
+			function pullupRefresh(){
+				var _this = this;
+				mui.post(http + 'taobao-buy/article',{page:++ page},function(res){
+					if(res.code == 0){
+						findlist = findlist.concat(res.data);
+						var list = {list:findlist};
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(false);
+					}else if(res.code == 1){
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast(res.msg);
+					}
+					mui('#pullrefresh').pullRefresh().endPulldown();
+				});
+			};
+			mui.plusReady(function(){
+				mui.post(http + 'taobao-buy/article',function(res){
+					if(res.code == 0){
+						findlist = res.data;
+						var list = {list:res.data}
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+					}else if(res.code == 1){
+						//mui.alert(res)3.8修改弹出object问题
+						mui.toast(res.msg);
+					}
+				});
+				//返回按钮tap  
+				var scrollToTopBox = document.getElementById('scrollToTop'); 
+				var nav = document.getElementById('sliderSegmentedControl');
+				scrollToTopBox.addEventListener('tap', function(e) {  
+				    e.stopPropagation(); mui('#pullrefresh').pullRefresh().scrollTo(0, 0, 300);//滚动到顶部  
+				});  
+				// Android上监听原生滚动，iOS上监听div滚动，上拉超过一屏后显示按钮，否则隐藏，可自行在条件判断中修改  
+				if (mui.os.android) {  
+				    window.addEventListener('scroll', function(e) {  
+				        if (window.pageYOffset >= window.innerHeight && scrollToTopBox.classList.contains('hide')){ 
+				            scrollToTopBox.classList.remove('hide'); 
+				        }else if(window.pageYOffset < window.innerHeight && !scrollToTopBox.classList.contains('hide')){ 
+				            scrollToTopBox.classList.add('hide'); 
+				        } 
+				    });  
+				} else {  
+				    document.getElementById('pullrefresh').addEventListener('scroll', function() {  
+				        if (mui('#pullrefresh').pullRefresh().y <= window.innerHeight * (-1) && scrollToTopBox.classList.contains('hide')){ 
+				            scrollToTopBox.classList.remove('hide'); 
+				        }else if(mui('#pullrefresh').pullRefresh().y > window.innerHeight * (-1) && !scrollToTopBox.classList.contains('hide')){ 
+				            scrollToTopBox.classList.add('hide'); 
+				        } 
+			    	}); 
+				}
+			});
+		</script>
+	</body>
+</html>
+

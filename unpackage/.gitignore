@@ -1,0 +1,5 @@
+debug
+release
+.confirmed_dependencies
+.dependencies
+!.gitignore

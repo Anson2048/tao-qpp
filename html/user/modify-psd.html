@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>修改密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.header{
+				top: 25px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">修改密码</h1>
+		    
+		</header>
+		<div class="content" style="margin-top: 75px;">
+			<!--商品-->
+			<ul class="mui-table-view set-list">
+			    <li class="mui-table-view-cell mt1">
+			        <a class="navigate-right">手机号 <input class="mobile" style="width: 80%; height: 33px;" type="text" value="123****8912" disabled="ture"/></a>
+			    </li>
+			    <li class="mui-table-view-cell mt1">
+			        <a class="navigate-right">验证码 
+			        	<input class="sms" style="width: 80%; height: 33px;" type="number" placeholder="请输入验证码" />
+			        	<button class="mui-btn mui-btn-danger getsms">获取验证码</button>
+			        </a>
+			    </li>
+			    <li class="mui-table-view-cell mt1">
+			        <a class="navigate-right">新密码<input class="psd" style="width: 80%; height: 33px;" type="password" placeholder="请输入新密码" /></a>
+			    </li>
+			    <li class="mui-table-view-cell mt1">
+			        <a class="navigate-right">确认密码<input class="repsd" style="width: 80%; height: 33px;" type="password" placeholder="请重新输入密码" /></a>
+			    </li>
+			</ul>
+			<button class="preserve" style="width: 86%; margin: 85px 7% 0;">保存</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var num = 60;
+			var sms = document.getElementsByClassName('getsms')[0];
+			var userinfo;
+			var auths = {};
+			var mobile;
+			//获取验证码
+			mui('.content').on('tap','.getsms',function(){
+				if(num > 0&&num != 60){
+					return;
+				}
+				mui.post(http + 'auth/sms-verifycode',{mobile:userinfo.mobile},function(res){
+					mui.toast(res.msg);
+					if(res.code == 0){
+						var time = setInterval(function(){
+							if(num > 0){
+								-- num;
+								sms.innerText = num
+							}else if(num <= 0){
+								clearInterval(time);
+								num = 60;
+								sms.innerText = '重新获取'
+							}
+						},1000);
+					}else if(res.code == 1){
+						
+					}
+
+				})
+			});
+			mui('.content').on('tap','.preserve',function(){
+				var smscode = document.getElementsByClassName('sms')[0].value;
+				var password = document.getElementsByClassName('psd')[0].value;
+				var repassword = document.getElementsByClassName('repsd')[0].value;
+				Http.post({
+					api:'RESET',
+					data:{smsCode:smscode,password:password,rePassword:repassword,mobile:mobile},
+					success:function(){
+						mui.toast('修改成功，请重新登录');
+						Http.post({api:'LOGINOUT'});  		//清除服务器token
+                        plus.storage.clear('userInfo');
+                        for(var i in auths){
+                        	var s = auths[i];
+                        	if(s.authResult ){
+                        		s.logout(function(){console.log('注销成功')},function(){'注销失败'})
+                        	}
+                        	console.log(auths[i])
+                        }
+                        var main = plus.webview.getWebviewById('html/tab-webview-my.html');
+						mui.fire(main,'pageflowrefresh');
+						mui.back()
+					},
+					one: function(res) {
+														mui.toast(res.msg);
+													}
+				})
+				
+			});
+			mui.plusReady(function(){
+				userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				mobile = userinfo.mobile;
+				var mobile1 = mobile.substr(0,3) + ' **** ' + mobile.substr(7);
+				document.getElementsByClassName('mobile')[0].value = mobile1;
+				plus.oauth.getServices(function(services){
+			    	for(var i in services){
+			    		var service=services[i];
+			    		auths[service.id]=service;
+			    	}
+			    })
+				
+			})
+		</script>
+	</body>
+</html>

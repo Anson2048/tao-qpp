@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>修改手机号</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--头部-->
+
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">修改手机号</h1>
+		    
+		</header>
+		<div class="tel-content">
+			<!--商品-->
+			<ul class="">
+			    <li class="">
+			        <a class="navigate-right">
+			        	<span style="width: 100%; padding-left: 5px;">
+			        		<span style="font-size: 22px;" class="mui-icon mui-icon-phone"></span>
+			        		<input class="mobile" style="width: 80%; height: 33px; padding: 0;" type="number" placeholder="输入新的手机号" />
+			        	</span>
+			        </a>
+			    </li>
+			    <li class="">
+			        <a class="navigate-right">
+			        	<input class="sms" style="width: 80%; height: 33px; padding: 0 0 0 32px; background: url(../../images/yzm.png) no-repeat 7px center; background-size: 8%;" type="text" placeholder="输入验证码" />
+			        	<button class="tel-yzm getsms">获取验证码</button>
+			        </a>
+			    </li>
+			</ul>
+			<button class="preserve" style="width: 86%; margin: 85px 7% 0;">确定</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var num = 60;
+			var sms = document.getElementsByClassName('getsms')[0];
+			//获取验证码
+			mui('.tel-content').on('tap','.getsms',function(){
+				var mobile = document.getElementsByClassName('mobile')[0].value;
+				if(num > 0&&num != 60){
+					return;
+				}
+				mui.post(http + 'auth/sms-verifycode',{mobile:mobile},function(res){
+					mui.toast(res.msg);
+					if(res.code == 0){
+						var time = setInterval(function(){
+							if(num > 0){
+								-- num;
+								sms.innerText = num
+							}else if(num <= 0){
+								clearInterval(time);
+								num = 60;
+								sms.innerText = '重新获取'
+							}
+						},1000);
+					}else if(res.code == 1){
+						
+					}
+
+				});
+				mui('.tel-content').on('tap','.preserve',function(){
+					var smscode = document.getElementsByClassName('sms')[0].value;
+					var mobile = document.getElementsByClassName('mobile')[0].value;
+					Http.post({
+						api:'UPDATE-MOBILE',
+						data:{
+							smscode:smscode,
+							mobile:mobile
+						},
+						success:function(res){
+							mui.toast('修改成功,请重新登录');
+							setTimeout(function(){
+								plus.storage.clear('userInfo');
+	                        	plus.runtime.restart();
+							},1500)
+							
+						}
+					})
+				})
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<title></title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+		</style>
+
+	</head>
+
+	<body style="background-color: #f7f7f7;">
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+		<div style="padding-top:10rem;">
+				<img src="../../images/480_480.png" width="100rem">
+
+				<div class="mui-content-padded" style="padding-top:5rem;">
+					<button id='loginwx' class="mui-btn mui-btn-block mui-btn-primary" style="display: none;">微信授权登录</button>
+					<button id='loginmoblie' class="mui-btn mui-btn-block mui-btn-primary2">手机号码登录</button>
+				</div>
+				<div class="mui-content-padded oauth-area">
+
+				</div>
+				<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+				<script src="../../js/mui.js"></script>
+				<script src="../../js/app.js"></script>
+				<script>
+					(function($, doc) {
+						$.init({
+							statusBarBackground: '#f7f7f7',
+							swipeBack: false
+						});
+						$.plusReady(function() {
+							/* plus.webview.currentWebview().setStyle({ //关闭首页侧滑返回功能
+								'popGesture': 'none'
+							}); */
+							all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log(all[i].id);
+							}
+							//第三方登录
+							var authBtns = ['weixin']; //配置业务支持的第三方登录
+							var auths = {};
+							plus.oauth.getServices(function(services) {
+								for (var i in services) {
+
+									var service = services[i];
+									auths[service.id] = service;
+								}
+								//点击微信登录授权事件
+								mui('.mui-content-padded').on('tap', '#loginwx', function() {
+
+									var isInstalled = app.isInstalled("weixin");
+									if (isInstalled) {
+										plus.nativeUI.toast('正在获取设备信息，请稍等');
+
+									} else {
+										plus.nativeUI.toast('您尚未安装微信客户端');
+										return;
+									}
+									var auth = auths['weixin'];
+									auth.logout();
+									var waiting = plus.nativeUI.showWaiting();
+									auth.login(function(res) {
+										auth.getUserInfo(function() {
+											auth.userInfo['access_token'] = auth.authResult.access_token;
+											auth.userInfo['openid'] = auth.authResult.openid;
+											auth.userInfo['unionid'] = auth.authResult.unionid;
+											console.log("授权成功：" + auth.authResult.unionid);
+											console.log("授权成功：" + auth.authResult.openid);
+											console.log("授权成功：" + auth.authResult.access_token);
+											mui.later(function() {
+												Http.post({
+													api: 'NEW-LOGIN',
+													data: {
+														userinfo: auth.userInfo
+													},
+													success: function(res) {
+														waiting.close();
+														var type=res.data.type;
+														if(type=='invite_code')
+														{
+															mui.openWindow({
+																url: 'bandinvite_code.html',
+																id: 'bandinvite_code',
+																extras: {
+																	openid: auth.authResult.openid,
+																	type: res.data.type,
+																	unionid: auth.authResult.unionid,
+																	access_token:auth.authResult.access_token
+																}
+															})
+														}else if(type=='mobile'){
+															mui.openWindow({
+																url: 'bangmobile.html',
+																id: 'bangmobile',
+																extras: {
+																	openid: auth.authResult.openid,
+																	type: res.data.type,
+																	unionid: auth.authResult.unionid,
+																	access_token:auth.authResult.access_token
+																}
+															})
+														}
+														else
+														{
+														plus.storage.setItem('userInfo', JSON.stringify(res.data));
+														toMain();
+														}
+													},
+													one: function(res) {
+														plus.nativeUI.closeWaiting();
+														mui.toast("微信登入失败" + res.msg);
+													},
+													error: function(xhr, type, errorThrown) {
+														plus.nativeUI.closeWaiting();
+														mui.toast("提交服务器出错")
+													}
+												})
+											}, 2000)
+
+										}, function(e) {
+											//									plus.nativeUI.toast("获取用户信息失败：" + e.message);
+											waiting.close();
+										});
+
+									}, function(e) {
+										console.log('login 失败', e)
+										waiting.close();
+										//								plus.nativeUI.toast("登录认证失败：" + e.message);
+									});
+								})
+							}, function(e) {
+								//oauthArea.style.display = 'none';
+
+								plus.nativeUI.toast("获取登录认证失败：" + e.message);
+							});
+
+							var toMain = function() {
+								//plus.webview.getWebviewById('tab-webview-share').close();
+								//console.log(plus.webview.getLaunchWebview()+","+plus.webview.getLaunchWebview());
+
+								plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+
+									mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+									mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'), 'pageflowrefresh');
+
+
+
+									mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+
+								});
+							}
+							mui('.mui-content-padded').on('tap', '#loginmoblie', function() {
+								var child = plus.webview.create(
+									'mobilelogin.html', 'mobilelogin'); //直接用H5+API创建窗口
+								child.show();
+							});
+							/* mui.back = function() {
+							var child = plus.webview.create(
+							'html/../index.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+							} */
+						});
+
+					}(mui, document));
+				</script>
+	</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>淘宝授权</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">淘宝授权</h1>
+		</header>
+		<div id="calltitle"></div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+
+			function showAG(title) {
+				document.getElementById('calltitle').innerHTML = title;
+			}
+			mui.plusReady(function() {
+				/**
+				 * json转对象
+				 */
+				//console.log(document.title)
+				userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				/*if(userinfo.relation_id){
+						mui.toast("您已经成功授权")
+						mui.back();		
+				return;
+				}*/
+				//console.log(userinfo.uid);
+				if (!userinfo) {
+					var child = plus.webview.create(
+						'auth/login.html', 'login'); //直接用H5+API创建窗口
+					child.show();
+					//plus.webview.currentWebview().append(child); //将创建的子窗口添加到父窗口
+					return;
+				}
+				if(!userinfo.uid){
+					var child = plus.webview.create(
+						'auth/login.html', 'login'); //直接用H5+API创建窗口
+					child.show();
+					//plus.webview.currentWebview().append(child); //将创建的子窗口添加到父窗口
+					return;
+				}
+				var subPages =
+					'https://oauth.taobao.com/authorize?response_type=code&client_id=25913425&redirect_uri=https://www.kuguayouhui.com/callback?uid=' +
+					userinfo.uid + '&state=1234&view=wap';
+				//var subPages="sonauth.html";
+				var subPageStyle = {
+					top: '46px',
+					bottom: '0px'
+				}
+				if (mui.os.ios) {
+					subPageStyle = {
+						top: '46px',
+						bottom: '-45px'
+					}
+				}
+				var self = plus.webview.currentWebview(); //获取当前页面窗体
+
+				var sub = plus.webview.create(subPages, subPages, subPageStyle); //给子页面创建窗体
+				sub.hide(); //将子页面隐藏
+				self.append(sub); //将创建的子窗体追加到主页面
+				sub.show();
+				Listen();
+
+				function Listen() {
+					var num = 150;
+					var time = setInterval(function() {
+						if (num > 0) {
+							--num;
+							sub.appendJsFile('_www/js/callbacktitle.js');
+							sub.evalJS('sendMeta()');
+							var title = document.getElementById('calltitle').innerHTML;
+							var reg = RegExp(/_/);
+							if (title.match(reg)) {
+								clearInterval(time);
+								//if (title.split('_')[1] == '1') {
+									Http.post({
+										api: 'GET-RELATION',
+										success: function(res) {
+											//console.log(JSON.stringify(res.data))
+											if (res.data.length>0) {
+												userinfo.relation_id = res.data;
+												console.log(JSON.stringify(userinfo));
+												//对象转JSON写入cookies
+												plus.storage.setItem('userInfo', JSON.stringify(userinfo));
+
+												mui.toast("淘宝备案成功");
+												mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+												mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'), 'pageflowrefresh');
+												mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+											}
+											else
+											{
+												mui.toast("淘宝备案失败");
+											}
+											sub.close();
+											self.close();
+										},
+										one: function(res) {
+											mui.toast("权限写入错误,请重新登录app");
+											sub.close();
+											self.close();
+										},
+										error: function(xhr, type, errorThrown) {
+											mui.toast("权限写入错误,请重新登录app");
+											sub.close();
+											self.close();
+										}
+									})
+								//} else {
+								//	mui.toast("淘宝授失败，关闭授权页面");
+								//	sub.close();
+								//	self.close();
+								//}
+							}
+
+						} else if (num <= 0) {
+							clearInterval(time);
+							mui.toast("淘宝备案失败，关闭授权页面");
+							sub.close();
+							self.close();
+						}
+
+					}, 1000);
+				}
+				mui.back = function() {
+					sub.close();
+					self.close();
+
+				}
+
+			});
+		</script>
+	</body>
+
+</html>

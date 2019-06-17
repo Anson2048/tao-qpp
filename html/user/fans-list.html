@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>粉丝列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		<style type="text/css">
+			.name{
+				display: inline-block;
+				width: 72px;
+			}
+			.vip{
+				display: inline-block;
+				color: #fff !important;
+				font-size: 11px;
+				padding-left: 18px;
+				padding-right: 7px;
+				border-radius: 15px;
+				height: 16px;
+				line-height: 18px;
+				background: url('../../images/v1.png') no-repeat;
+				margin-left: 3px;
+			}
+			.vip1{
+				background: #d0a062 url('../../images/v1.png') no-repeat;
+				background-size: 12px;
+				background-position-x:5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+			.vip2{
+				background: #ff4800 url('../../images/v2.png') no-repeat;
+				background-size: 12px;
+				background-position-x:5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+			.vip3{
+				background: #cf1133 url('../../images/v3.png') no-repeat;
+				background-size: 12px;
+				background-position-x:5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+			.vip4{
+				background: #a700fe url('../../images/v4.png') no-repeat;
+				background-size: 12px;
+				background-position-x:5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div id="list_box">
+				<script id="list" type="text/template">
+					<ul class="fans-list">
+						{{if fansinfo.length < 1}}
+							<div class="no">
+								<img src="../../images/nomore.png"/>
+								<p>这里还什么都没有，快快努力吧！</p>
+							</div>
+						{{/if}}	
+						{{each fansinfo as value i}}
+						<li class="fans-item">
+			                <div class="fans-item-left">
+			                	<div class="my-img fans-img">
+			                		<img src="{{value.avatar||'../../images/my-head.jpg'}}"/>
+									
+								</div>
+				                <div class="fans-item-det">
+				                	<span>
+				                		<span class="name mui-ellipsis">{{value.nickname}}</span> 
+				                		{{if value.lv == 0}}
+											<span class="vip vip1">苦瓜会员</span> 
+										{{else if value.lv == 1}}
+											<span class="vip vip2">市场运营</span> 
+										{{else if value.lv == 2}}
+											<span class="vip vip3">团队经理</span> 
+										{{else if value.lv == 3}}
+											<span class="vip vip4">事业总监</span> 
+										{{/if}}
+				                		
+				                	</span>
+				                	<p class="fans-num">
+				                		{{value.mobile}}
+				                	</p>
+				                </div>
+						    </div>
+					        <div class="fans-item-det jump" uid="{{value.uid}}" name="{{value.nickname}}">
+					            <span style="color: #ff681e;">推荐{{value.num}}人</span>
+					            <p class="fans-num">{{value.created_at}}</p>
+					        </div>
+					    </li>
+					    {{/each}}
+					</ul>
+				</script>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 0;
+			var id;
+			mui.init({
+				pullRefresh:{
+					container:"#list_box",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						 style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				page = 0;
+				Http.post({
+					api:'FANS-LIST',
+					data:{id:id,page:page},
+					success:function(res){
+						fans_list = {fansinfo:res.data};
+						var fans = template('list',fans_list);
+						document.getElementById('list_box').innerHTML = fans;
+						mui('#list_box').pullRefresh().endPulldown();
+						mui('#list_box').pullRefresh().refresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:'FANS-LIST',
+					data:{id:id,page:++page},
+					success:function(res){
+						fans_list.fansinfo = fans_list.fansinfo.concat(res.data);
+						var fans = template('list',fans_list);
+						document.getElementById('list_box').innerHTML = fans;
+						mui('#list_box').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+						
+					},
+					one:function(){
+						mui('#list_box').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+//						mui.toast('没有更多了');
+					}
+				})
+			};
+			mui.plusReady(function(){
+				var currentWebview = plus.webview.currentWebview();
+				id = currentWebview.uid
+				Http.post({
+					api:'FANS-LIST',
+					data:{
+						id:id,
+						page:page
+					},
+					success:function(res){
+						fans_list = {fansinfo:res.data}
+						var fans = template('list',fans_list);
+						document.getElementById('list_box').innerHTML = fans;
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>升级</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+			}
+
+			body {
+				background: rgba(0, 0, 0, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.mui-content {
+				background: transparent;
+				border-radius: 10px;
+				text-align: center;
+				width: 300px;
+				overflow: hidden;
+			}
+
+			.mui-content img {
+				width: 100%;
+			}
+
+			.mui-content .mui-btn {
+				border: none;
+				width: 160px;
+				margin: -18px auto 0;
+			}
+
+			.hide {
+				display: none;
+			}
+
+			.up {
+				padding: 15px 10px 25px;
+				background: #fff;
+			}
+
+			.up p {
+				margin-top: 25px;
+			}
+
+			.mui-progressbar-danger span {
+				background-color: #dd524d;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="box">
+				<img src="../../images/update1.png" />
+			</div>
+			<div class="up hide">
+				<h4>正在下载</h4>
+				<p class="mui-progressbar mui-progressbar-danger"><span></span></p>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind: {
+					backbutton: false  //关闭back按键监听
+				}
+				});
+			var url;
+			var gobuy = null;
+			var container;
+			mui.plusReady(function() {
+				plus.webview.currentWebview().setStyle({//关闭首页侧滑返回功能
+					'popGesture': 'none'
+					});
+				var ww = plus.webview.currentWebview();
+				url =ww.url;
+				//url='https://kuguaapp.oss-cn-shenzhen.aliyuncs.com/kugua123.wgt';
+				var lastname=url.substring(url.lastIndexOf(".") + 1, url.length);
+				
+				
+				//url='https://kuguaapp.oss-cn-shenzhen.aliyuncs.com/kugua123.wgt';
+				//url="http://www.kuguayouhui.com/hotcode/android/1.1.7/update.wgt"
+				//console.log(url)
+				//点击开始下载
+				mui('.mui-content').on('tap', 'img', function() {
+					mui('.mui-content .box')[0].classList.add('hide');
+					mui('.mui-content .up')[0].classList.remove('hide');
+					if(lastname!='wgt'){
+					plus.runtime.openURL(url);
+					return;
+				}
+					//plus.runtime.openURL(url);})
+					 var filename = url.substring(url.lastIndexOf("/") + 1, url.length);
+					var relativePath = "_doc/update/" + filename;
+					plus.io.resolveLocalFileSystemURL(relativePath, function(entry) {
+						 entry.remove(function(entry) {
+							console.log("文件删除成功==" + relativePath);
+							downWgt();
+						}, function(e) {
+							console.log("文件删除失败=" + relativePath);
+						}); 
+						//console.log("文件存在" + relativePath);
+						//downgoon(relativePath);
+
+					}, function(e) {
+						downWgt(); // 下载升级包
+					});
+
+					 container = mui(".mui-content p");
+					container.progressbar({
+					progress: 0
+					}).show(); //显示进度条
+					//mui.later(ww.hide(),1000);
+				})
+				//重写返回
+				mui.back = function() {
+					mui.confirm('确定要取消更新么？', '温馨提示', ['取消', '退出'], function(e) {
+						console.log(e)
+						if (e.index == 1) {
+							ww.hide("auto", 300);
+							plus.downloader.clear();
+						} else {
+							return
+						}
+					})
+				}
+
+			})
+			// 下载文件
+			var dtask;
+
+			function downWgt() {
+				dtask = plus.downloader.createDownload(url, {
+					filename: "_doc/update/"
+				}, function(d, status) {
+
+					if (status == 200) {
+						mui.toast('下载完成');
+						console.log("下载成功：" + d.filename);
+						installWgt(d.filename); // 安装
+						/* mui.later(function() {
+							mui.back();
+						}, 500) */
+					} else {
+						console.log("下载失败！");
+						plus.nativeUI.alert("下载更新包失败！");
+					}
+					plus.nativeUI.closeWaiting();
+				});
+				dtask.addEventListener("statechanged", onStateChanged, false);
+				dtask.start();
+			}
+			
+			function downgoon(downloads) {
+				plus.downloader.enumerate(function(downloads) {
+						console.log("===========：" + downloads.length);
+						console.log("===========：" + JSON.stringify(downloads));
+						dtask=downloads[0];
+						//console.log(dtask.filename);
+						dtask.addEventListener("statechanged", onStateChanged, false);
+						//dtask.start();
+                                                 //设置监听器
+						//downloads[0].addEventListener("statechanged", onStateChanged);
+                                                 //启动任务
+						//downloads[0].start();
+					});
+					
+			}
+			// 监听下载任务状态 
+			function onStateChanged() {
+				mui.later(function() {
+					var num = dtask.downloadedSize / dtask.totalSize * 100;
+					if (num < 100) {
+						mui(container).progressbar().setProgress(num);
+					} else {
+						mui(container).progressbar().hide();
+						
+						//installWgt(dtask.filename);
+					}
+				}, 5000)
+			}
+			
+			// 更新应用资源
+			function installWgt(path) {
+				plus.nativeUI.showWaiting("安装wgt文件...");
+				plus.runtime.install(path, {force:true}, function() {
+					plus.nativeUI.closeWaiting();
+					console.log("安装wgt文件成功！");
+					plus.nativeUI.alert("应用资源更新完成！", function() {
+						plus.runtime.restart();
+					});
+				}, function(e) {
+					plus.nativeUI.closeWaiting();
+					console.log("安装文件失败[" + e.code + "]：" + e.message);
+					plus.nativeUI.alert("安装文件失败[" + e.code + "]：" + e.message);
+				});
+			}
+		</script>
+	</body>
+
+</html>

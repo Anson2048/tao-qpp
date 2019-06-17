@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>淘宝授权2</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="../js/mui.js"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init(
+				 
+								 {
+								      //示例打开百度,进行加载
+								      subpages:[{
+								         url:"https://oauth.taobao.com/authorize?response_type=code&client_id=25913425&redirect_uri=https://www.kuguayouhui.com/callback?uid="+JSON.parse(plus.storage.getItem('userInfo')).uid+"&state=1234&view=wap",
+								         id:"sunoauth.html",
+								        styles:{
+										top:'0px',//mui标题栏默认高度为45px；
+								        bottom:'0px'//默认为0px，可不定义；
+								        }
+								      }]
+								    } 
+			)
+			//mui.openWindow('https://oauth.taobao.com/authorize?response_type=code&client_id=25913425&redirect_uri=https://www.kuguayouhui.com/callback?id=12345&state=1234&view=wap', 'taobao')
+			//plus.runtime.openURL('https://oauth.taobao.com/authorize?response_type=code&client_id=25913425&redirect_uri=https://www.kuguayouhui.com/callback?id=12345&state=1234&view=wap',  'com.taobao.taobao');
+			//plus.runtime.openURL('https://oauth.taobao.com/authorize?response_type=code&client_id=25913425&redirect_uri=https://www.kuguayouhui.com/callback?id=12345&state=1234&view=wap')
+		</script>
+	</body>
+
+</html>

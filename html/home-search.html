@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<!--<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		 <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no"> -->
+		<title>超级搜索</title>
+		<link href="../css/mengyuan/css.css" rel="stylesheet" />
+		<script src="../js/phonetype.js"></script>
+	</head>
+
+	<body style="background:#f5f5f5">
+		<div class="con9 mgz">
+				<div class="con9z ov">
+					<div class="con9l f"><input type="text" name="key" id="key" value="" style="height: 60px;" placeholder="宝贝标题/关键词 （如：女装/男装）"></div>
+					<button type="submit" class="con9r r xi28 cen bai" id="J_FormBtn" style="border: 0;height: 70px;">搜索</button>
+				</div>
+			
+		</div>
+		<div style="margin-left: auto;margin-right: auto;width: 640px;">
+			<div class="moregd" id="moregd">
+				<ul id="keylist"></ul>
+			</div>
+		</div>
+
+		<style>
+			.moregd{
+				border: 1px #f4f4f4 solid;
+			    position: absolute;
+			    z-index: 10000;
+			    width: 462px;
+   				left: 50%;
+   				margin-left: -296px;
+   				top:258px;
+			    background: #ffffff;
+			    display: none;
+			}
+			.moregd li{padding-left: 10px;font-size: 18px;height:45px;line-height:45px;}
+			.moregd li a{color: #545454;}
+		</style>
+
+		<div class="con10 mgz bgbai">
+			<div class="con10t ov xi18">
+				<div class="con10tl f">热门搜索</div>
+				<!--<a href="#"><div class="con10tr r hong">清空历史记录</div></a>-->
+			</div>
+			<div class="con10f ov">
+				<ul>
+					<a data="排汗睡衣">
+						<li>排汗睡衣</li>
+					</a>
+					<a data="衬衫">
+						<li>衬衫</li>
+					</a>
+					<a data="连衣裙">
+						<li>连衣裙</li>
+					</a>
+					<a data="乐高积木">
+						<li>乐高积木</li>
+					</a>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="con11 mgz bgbai">
+			<ul>
+				<li>
+					<a data="女装">
+						<div class="con11t cen"><img src="../images/fl/skirt_icon.png" style="width: 60px;" align='absmiddle'></div>
+						女装
+					</a>
+				<li>
+					<a data="男装">
+						<div class="con11t cen"><img src="../images/fl/man_icon.png" style="width: 60px;" align='absmiddle'></div>
+						男装
+					</a>
+				<li>
+					<a data="内衣">
+						<div class="con11t cen"><img src="../images/fl/underwear_icon.png" style="width: 60px;" align='absmiddle'></div>
+						内衣
+					</a>
+				<li>
+					<a data="美妆">
+						<div class="con11t cen"><img src="../images/fl/makeup_icon.png" style="width: 60px;" align='absmiddle'></div>
+						美妆
+					</a>
+				<li>
+					<a data="配饰">
+						<div class="con11t cen"><img src="../images/fl/hat_icon.png" style="width: 60px;" align='absmiddle'></div>
+						配饰
+					</a>
+				<li>
+					<a data="鞋品">
+						<div class="con11t cen"><img src="../images/fl/shoes_icon.png" style="width: 60px;" align='absmiddle'></div>
+						鞋品
+					</a>
+				<li>
+					<a data="箱包">
+						<div class="con11t cen"><img src="../images/fl/package_icon.png" style="width: 60px;" align='absmiddle'></div>
+						箱包
+					</a>
+				<li>
+					<a data="母婴">
+						<div class="con11t cen"><img src="../images/fl/child1_icon.png" style="width: 60px;" align='absmiddle'></div>
+						母婴
+					</a>
+				<li>
+					<a data="居家">
+						<div class="con11t cen"><img src="../images/fl/home_icon.png" style="width: 60px;" align='absmiddle'></div>
+						居家
+					</a>
+				<li>
+					<a data="美食">
+						<div class="con11t cen"><img src="../images/fl/food_icon.png" style="width: 60px;" align='absmiddle'></div>
+						美食
+					</a>
+				</li>
+
+			</ul>
+		</div>
+
+		<div class="con8 mgz xi18 cen bgbai">-猜你喜欢-</div>
+		<div class="con7 mgz">
+			<ul id="likelist">
+				
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		
+			if (mui.os.ios) {
+				 loadJS('../js/autocss.js');
+			}
+			var type = 'TAOBAO-SEARCH';
+			mui.init();
+			mui.plusReady(function() {
+				Http.post({
+						api: 'GUESS-LIKE',
+						data: {
+							page:1,
+							page_size:6
+						},
+						success: function(res) {
+							var html="";
+							for(var i=0;i<res.data.length;i++){
+								html+='<li data="'+res.data[i].num_iid+'" type="'+res.data[i].type+'">';
+								html+='<div class="con7t cen"><img src="'+res.data[i].pict_url+'" align="absmiddle" width="300" height="300"></div>';
+								html+='<div class="con7m xi20 hui" style="height: 37px;overflow: hidden;">'+res.data[i].title+'</div>'
+								html+='<div class="con7f ov">';
+								html+='<div class="con7fl f xi18">原价￥<span class="xi22">'+res.data[i].zk_final_price+'</span></div>';
+								html+='<div class="con7fr r xi18 hong">券后价￥<span class="xi20">'+(parseInt(res.data[i].zk_final_price)-parseInt(res.data[i].coupon_amount))+'</span></div>';
+								html+='</div>';
+								html+='<div class="con7x2 ov">'
+								html+='<div class="con7x2l f">'
+								html+='<div class="con7x2ll f xi18 bai">领券</div>';
+								html+='<div class="con7x2lr f xi18">减'+parseInt(res.data[i].coupon_amount)+'</div>';
+								html+='</div>';
+								html+='<div class="con7xr r xi18 hui">销量'+res.data[i].volume+'</div>';
+								html+='</div>';
+								html+='</li>'
+							}
+							document.getElementById('likelist').innerHTML = html;
+						},
+						one: function(res) {
+							mui.toast(res.msg)
+
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast('请求超时请稍后再试!')
+							
+						}
+					})
+				var listcolPage = null;
+				function searchlist(data) {
+					/* all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log(all[i].id+" webveiw");
+							} */
+					//console.log(type)
+					if (!listcolPage) {
+						listcolPage = plus.webview.getWebviewById('list-col');
+					};
+					//触发搜索页面的getItem事件 
+					mui.fire(listcolPage, 'getsearch', {
+						data: data,
+						type: type
+					});
+					mui.openWindow({
+						id: 'list-col',
+						waiting: {
+							autoShow: true, //自动显示等待框，默认为true
+							title: '正在加载...', //等待对话框上显示的提示内容
+						},
+						cachemode: 'noCache'
+					});
+				};
+				mui('.con9z').on('tap', '#J_FormBtn', function() {
+					var ele = document.getElementById('key');
+					var data = ele.value;
+					if (!data) {
+						mui.toast('查询不能为空');
+						return;
+					}
+					searchlist(data);
+				});
+				
+				mui('.con10f').on('tap', 'ul a', function() {
+					var data = this.getAttribute('data');
+					//获得列表页
+					searchlist(data);
+
+				});
+			mui('.con11').on('tap', 'ul a', function() {
+					var data = this.getAttribute('data');
+					//获得列表页
+					searchlist(data);
+
+				});
+				
+				mui('#likelist').on('tap', 'li', function(e) {
+						var all = plus.webview.all();
+							// for (var i = 0; i < all.length; i++) {
+							// 	console.log( "窗口标识: "+all[i].id );
+							// 	console.log( "当前Webview窗口："+all[i].getURL());
+							// }
+						var type = this.getAttribute('type');
+						var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+						var id = this.getAttribute('data'); //获取要传的参数
+						var profit = 0;//this.getAttribute('profit');
+						
+						mui.fire(goodswebview, 'getItem', {
+							id: id,
+							profit: profit,
+							type: type
+						});
+
+						setTimeout(function() {
+							mui.openWindow({
+								id: 'goods-webview.html'
+							})
+						}, 100);
+						/*var type = this.getAttribute('type');
+						
+						var id = this.getAttribute('data'); //获取要传的参数
+						var profit = this.getAttribute('profit');
+						mui.openWindow({
+							id: 'goods-webview',
+							url: 'html/goods-webview.html'
+						});
+						setTimeout(function(){
+							var goodswebview = plus.webview.getWebviewById('goods-webview'); //获取预加载的b页面id  
+							mui.fire(goodswebview, 'getItem', {
+							id: id,
+							profit: profit,
+							type: type
+							});
+						},100)
+						var all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log( "窗口标识: "+all[i].id );
+								console.log( "当前Webview窗口："+all[i].getURL());
+							}*/
+					}); 
+			})
+		</script>
+	</body>
+</html>

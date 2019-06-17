@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<meta name="format-detection" content="telephone=yes" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+			.mui-content .mui-input-row input {
+    background-color: transparent;
+    color: #979797;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+    padding-top: 1.3rem;
+}
+		</style>
+
+	</head>
+
+	<body style="background-color: #ffffff;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">绑定微信</h1>
+		</header>
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">邀请码</div>
+				<div style="float:left;display:inline;width: 75%;"><input id='referrer' class="mui-input-clear mui-input" type="text"
+					 placeholder="邀请码" style="color: #555555;"></div>
+			</div>
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">登录密码</div>
+				<div style="float:left;display:inline;width: 75%;"><input id='password' class="mui-input-clear mui-input" type="password"
+					 placeholder="登录密码" style="color: #555555;"></div>
+			</div>
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">确认密码</div>
+				<div style="float:left;display:inline;width: 75%;"><input id='re_password' class="mui-input-clear mui-input" type="password"
+					 placeholder="和登录密码保持一致" style="color: #555555;"></div>
+			</div>
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">验证码</div>
+				<div style="float:left;display:inline;width: 45%;"><input id='smsCode' type="text" style="color: #555555;"
+					 placeholder="请输入验证码"></div>
+				<div style="float:left;display:inline;width: 25%;padding-top: 0.4rem;"><button id="smsbtn" class="get_code sms"
+					 style="border: 1px solid #be0004;background-color: #BE0004;color:#ffffff;">获取验证码</button></div>
+			</div>
+			<div class="mui-content-padded">
+				<button id='btnbang' class="mui-btn mui-btn-block mui-btn-primary">微信授权</button>
+			</div>
+
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			var num = 60;
+			var url;
+			var urlid;
+
+			mui.plusReady(function() {
+				var userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				window.addEventListener('geturl', function(event) {
+					//获得事件参数
+					url = event.detail.url;
+					urlid = event.detail.urlid;
+				});
+				mui('.mui-content').on('tap', '.get_code', function() {
+					var referrer = document.getElementById('referrer').value.replace(/\s*/g, "");
+					if (!referrer) {
+						plus.nativeUI.toast('请输入邀请码!');
+						return;
+					} else {
+						document.getElementById('smsbtn').setAttribute('disabled', 'disabled');
+						document.getElementById('referrer').setAttribute('disabled', 'disabled');
+						Http.post({
+							api: 'CHECKCODE',
+							data: {
+								invite_code: referrer
+							},
+							success: function(res) {
+								if (num > 0 && num != 60) {
+									return;
+								}
+								if (res.code == '0') {
+									Http.post({
+										api: 'SMS-VERIFY',
+										data: {
+											mobile: userinfo.mobile
+										},
+										success: function(res) {
+											plus.nativeUI.toast(res.msg);
+											var time = setInterval(function() {
+												if (num > 0) {
+													--num;
+													mui('.sms')[0].innerText = num
+												} else if (num <= 0) {
+													clearInterval(time);
+													num = 60;
+													mui('.sms')[0].innerText = '重新获取'
+													document.getElementById('smsbtn').removeAttribute('disabled');
+													document.getElementById('referrer').removeAttribute('disabled');
+												}
+											}, 1000);
+										},
+										one: function(res) {
+											mui.toast(res.msg)
+											document.getElementById('smsbtn').removeAttribute('disabled');
+											document.getElementById('referrer').removeAttribute('disabled');
+										},
+										error: function(xhr, type, errorThrown) {
+											mui.toast("短信发送错误")
+											document.getElementById('smsbtn').removeAttribute('disabled');
+											document.getElementById('referrer').removeAttribute('disabled');
+										}
+									})
+								} else {
+									mui.toast(res.msg)
+								}
+							},
+							one: function(res) {
+								mui.toast(res.msg)
+							},
+							error: function(xhr, type, errorThrown) {
+								mui.toast("邀请码查询错误")
+							}
+						});
+					}
+				})
+				//第三方登录
+				var authBtns = ['weixin']; //配置业务支持的第三方登录
+				var auths = {};
+				plus.oauth.getServices(function(services) {
+					for (var i in services) {
+
+						var service = services[i];
+						auths[service.id] = service;
+					}
+					//绑定事件
+					mui('.mui-content').on('tap', '#btnbang', function() {
+						var data = {};
+						var smsCode = document.getElementById('smsCode').value.replace(/\s*/g, "");
+						var referrer = document.getElementById('referrer').value.replace(/\s*/g, "");
+						var password = document.getElementById('password').value.replace(/\s*/g, "");
+						var re_password = document.getElementById('re_password').value.replace(/\s*/g, "");
+						if (!referrer) {
+							plus.nativeUI.toast('请输入邀请码!');
+						} else if (!password) {
+							plus.nativeUI.toast('请输入密码!');
+						} else if (password != re_password) {
+							plus.nativeUI.toast('两次密码输入不一致!');
+						} else if (!smsCode) {
+							plus.nativeUI.toast('请输入短信验证码!');
+						} else {
+							var isInstalled = app.isInstalled("weixin");
+							if (isInstalled) {
+								plus.nativeUI.toast('正在获取设备信息，请稍等');
+
+							} else {
+								plus.nativeUI.toast('您尚未安装微信客户端');
+								return;
+							}
+							var auth = auths['weixin'];
+							auth.logout();
+							var waiting = plus.nativeUI.showWaiting();
+							auth.login(function(res) {
+								auth.getUserInfo(function() {
+									data['userinfo'] = {};
+									data['userinfo']['openid'] = auth.authResult.openid;
+									data['userinfo']['unionid'] = auth.authResult.unionid;
+									data['userinfo']['access_token'] = auth.authResult.access_token;
+									data['userinfo']['smsCode'] = smsCode;
+									data['userinfo']['invite_code'] = referrer;
+									data['userinfo']['password'] = password;
+									data['userinfo']['mobile'] = userinfo.mobile;
+									data.type = 'bing';
+									mui.later(function() {
+										Http.post({
+											api: 'WE-LOGIN',
+											data: data,
+											success: function(res) {
+												/* userinfo.openid = auth.authResult.openid;
+												plus.storage.setItem('userInfo', JSON.stringify(userinfo)); */
+												plus.storage.clear('userInfo');
+												mui.toast('微信授权成功');
+												//console.log(plus.storage.getItem('userInfo'));
+												waiting.close();
+												mui.later(function() {
+													Http.post({
+															api: 'LOGIN',
+															data: {
+																mobile: userinfo.mobile,
+																password: password
+															},
+															success: function(res) {
+
+																plus.storage.setItem('userInfo', JSON.stringify(res.data));
+																console.log(JSON.stringify(res.data));
+																plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+
+																	mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'),
+																		'pageflowrefresh');
+																	mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'),
+																		'pageflowrefresh');
+
+
+
+																	mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+
+																});
+															}
+													});}, 2000);
+
+												//mui.fire(plus.webview.getWebviewById('tab-webview-my.html'), 'pageflowrefresh');
+												//console.log(plus.storage.getItem('userInfo'));
+												//var child = plus.webview.create("auth/login.html", "login"); //直接用H5+API创建窗口
+												//	child.show();
+
+
+											},
+											one: function(res) {
+												//										getPicVerify();
+												mui.toast('微信授权失败，请联系客服')
+												console.log(res.msg)
+												waiting.close();
+											}
+										})
+									}, 2000)
+
+								}, function(e) {
+									//									plus.nativeUI.toast("获取用户信息失败：" + e.message);
+									waiting.close();
+								});
+
+							}, function(e) {
+								console.log('login 失败', e)
+								waiting.close();
+								//								plus.nativeUI.toast("登录认证失败：" + e.message);
+							});
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提现记录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		<style type="text/css">
+			.mui-content{
+				margin-top: 48px;
+			}
+			.nomore{
+				width: 280px;
+				margin: auto;
+				text-align: center;
+			}
+			.nomore img{
+				width: 100%;
+				margin: 30px 0;
+			}
+			.inc-list{
+				border-bottom: 1px solid #eee;
+			}
+			.hide{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部-->
+				<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">提现记录</h1>
+		</header>
+		<div class="mui-content">
+			<div id="income_box">
+				<ul class="inc-list">
+					<li class="inc-item">
+						<span>提现时间</span>
+					</li>
+					<li class="inc-item">
+						<span>提现金额</span>
+					</li>
+					<li class="inc-item">
+						<span>提现状态</span>
+					</li>
+				</ul>
+				<div class="nomore hide">
+					<img src="../../images/nomore.png"/>
+					<p>这里还什么都没有，快去提现吧！</p>
+				</div>
+				<ul id="order_box">
+					<script type="text/template" id="order">
+						{{each order as value i}}
+						<li class="inc-list" >	
+								<div class="inc-item">
+								<span>{{value.created_at}}</span>
+								</div>
+								<div class="inc-item">
+									<span>{{value.amount}}</span>
+								</div>
+								<div class="inc-item">
+									<span>{{value.status}}</span>
+								</div>
+						</li>		
+						{{/each}}
+					</script>
+				</ul>
+				
+			</div>
+		</div>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 0;
+			var list = {};
+			mui.init({
+				pullRefresh:{
+					container:"#order_box",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						 style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){ //刷新
+				page = 0;
+				Http.post({
+					api:'DRAW-LIST',
+					data:{page:page},
+					success:function(res){
+						list = {order:res.data};
+						var info = template('order',list);
+						document.getElementById('order_box').innerHTML = info;
+						mui('#order_box').pullRefresh().endPulldown();
+						mui('#order_box').pullRefresh().refresh(true);
+					}
+				})
+			};
+			function pullupRefresh(){
+				var _this = this;
+				Http.post({
+					api:'DRAW-LIST',
+					data:{page:++page},
+					success:function(res){
+						list.order = list.order.concat(res.data);
+						var info = template('order',list);
+						document.getElementById('order_box').innerHTML = info;
+						mui('#order_box').pullRefresh().endPulldown();
+		    			_this.endPullupToRefresh(false);
+					},
+					one:function(res){
+						mui('#order_box').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast('没有更多了');
+					}
+				})
+			};
+			
+			mui.plusReady(function(){
+				plus.nativeUI.showWaiting();
+				Http.post({
+					api:'DRAW-LIST',
+					success:function(res){
+						plus.nativeUI.closeWaiting();
+						list = {order:res.data};
+						var info = template('order',list);
+						document.getElementById('order_box').innerHTML = info;
+					},
+					one:function(){
+						plus.nativeUI.closeWaiting();
+						mui('.nomore')[0].classList.remove('hide');
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>购物教程</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+		    <h1 class="mui-title">购物教程</h1>
+		</header>
+		<div class="mui-content">
+			<div id="pullrefresh">
+				<a id="scrollToTop" class="backTop hide"> <img src="../images/top.png" alt="" /></span> </a>
+				<!--商品-->
+				<ul class="" id="course">
+					<script type="text/template" id="j_course">
+						{{each list as value i}}
+							<li class="col-shop-item">
+								<a href="javascript:;">
+									<div class="col-shop-tit">
+										<div class="col-shop-left">
+											<img style="width: 18%; border-radius: 50%;" src="{{value.small_img || '../images/course-head_03.jpg'}}" alt="" />
+											<span class="col-shop-det">
+												<span>{{value.title}}</span>
+												<span class="col-shop-con">{{value.description}}</span>
+											</span>
+										</div>
+										<span class="course-share" data-index="{{i}}"></span>
+									</div>
+									<div class="col-shop-img">
+										<img class="o_detail" style="width: 100%;" src="{{value.img}}" data-index="{{i}}" alt="" />
+									</div>
+									<div style="padding: 10px;display: none;">
+										{{#value.content}}
+									</div>
+									<div class="col-goods-item-bot">
+										<span></span>
+										<span style="padding: 0 5px;">阅读量：<span class="col-goods-price">823万次</span></span>
+									</div>
+								</a>
+							</li>
+						{{/each}}
+					</script>
+				</ul>
+			</div>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 1;
+			var webview_detail = null; //详情页webview
+			var titleNView = { //详情页原生导航配置
+				backgroundColor: '#f7f7f7', //导航栏背景色
+				titleText: '', //导航栏标题
+				titleColor: '#000000', //文字颜色
+				type: 'transparent', //透明渐变样式
+				autoBackButton: true, //自动绘制返回箭头
+				splitLine: { //底部分割线
+					color: '#cccccc'
+				}
+			};
+			var detail;
+			//mui初始化，配置下拉刷新
+			mui.init({
+				pullRefresh:{
+					container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down:{
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				        callback:pulldownRefresh
+						
+					},
+					up:{
+						height:50,//可选.默认50.触发上拉加载拖动距离
+				        auto:false,//可选,默认false.自动上拉加载一次
+				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				        callback :pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh(){
+				page = 1;
+				mui.post(http + 'taobao-buy/article',{page:1},function(res){
+					if(res.code == 0){
+						detail = res.data;
+						var list = {list:res.data}
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}else if(res.code == 1){
+						//mui.alert(res);3.8修改弹出object问题
+						mui.toast(res.msg);
+					}
+					mui('#pullrefresh').pullRefresh().endPulldown();
+				});
+			};
+			function pullupRefresh(){
+				var _this = this;
+				mui.post(http + 'taobao-buy/article',{page:++ page},function(res){
+					if(res.code == 0){
+						detail = detail.concat(res.data);
+						var list = {list:detail};
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(false);
+					}else if(res.code == 1){
+						mui('#pullrefresh').pullRefresh().endPulldown();
+	        			_this.endPullupToRefresh(true);
+						mui.toast(res.msg);
+					}
+					mui('#pullrefresh').pullRefresh().endPulldown();
+				});
+			};
+			mui.plusReady(function(){
+				//预加载详情页
+				webview_detail = mui.preload({
+					url: 'detail.html',
+					id: 'news_detail',
+					styles: {
+						"render": "always",
+						"popGesture": "hide",
+						"bounce": "vertical",
+						"bounceBackground": "#efeff4",
+						"titleNView": titleNView
+					}
+				});
+				mui.post(http + 'taobao-buy/article',{page:1},function(res){
+					if(res.code == 0){
+						detail = res.data;
+						var list = {list:res.data}
+						var courselist = template('j_course',list);
+						document.getElementById('course').innerHTML = courselist;
+					}else if(res.code == 1){
+						mui.toast(res.msg);
+						//mui.alert(res)3.8修改弹出object问题
+						//console.log(res);
+					}
+				});
+				
+				//分享服务
+				var shares={};
+				var sharedata = null;
+				plus.share.getServices(function(s) {
+				    for(var i in s){  
+	                    var t = s[i];  
+	                    shares[t.id] = t;  
+	                }  
+				}, function(e) {
+				    plus.nativeUI.alert("获取分享服务列表失败：" + e.message);
+				});
+				function shareAction(sb, bh,data) {
+				    if(!sb||!sb.s){  
+		                console.log("无效的分享服务！");  
+		                return;  
+		            }  
+		            if (plus.os.name !== "Android") {  
+		                    plus.nativeUI.alert("此平台暂不支持系统分享功能!");  
+		                    return;  
+		            }  
+		            var msg={};
+		            msg = {content:data.description,extra:{scene:sb.x}};
+		            if(bh){  
+		                msg.href = data.url;  
+		                if(data&&data.title!=""){  
+		                    msg.title=data.title;  
+		                }  
+		                if(data&&data.description!=""){  
+		                    msg.content=data.description;  
+		                }  
+		                msg.thumbs=[data.img];  
+		            }else{  
+//		                if(pic&&pic.realUrl){  
+//		                    msg.pictures=[pic.realUrl];  
+//		                }  
+		            }  
+		            // 发送分享  
+		            if ( sb.s.authenticated ) {  
+		                console.log("---已授权---");  
+		                shareMessage(msg,sb.s);  
+		            } else {  
+		                console.log("---未授权---");  
+		                sb.s.authorize( function(){  
+	                		plus.nativeUI.showWaiting('正在加载');
+	                        shareMessage(msg,sb.s);  
+	                    },function(e){  
+	                        console.log("认证授权失败："+e.code+" - "+e.message );  
+		                      
+		                });  
+		            } 
+				};
+				function shareMessage(msg,s){
+					console.log(msg)
+				    s.send( msg, function(){
+				    	plus.nativeUI.closeWaiting();
+				        alert( "分享到\""+s.description+"\"成功！ " );
+				    }, function(e){
+				        alert( "分享到"+s.description+"失败");
+				    } );
+				};
+				//点击分享
+				mui('#course').on('tap','.course-share',function(){
+					var index = this.getAttribute('data-index');
+					var shareBts=[];
+		            // 更新分享列表
+		            var ss=shares['weixin'];  
+		            ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),  
+		            shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));  
+//		            ss=shares['qq'];  
+//		            ss&&ss.nativeClient&&shareBts.push({title:'QQ',s:ss});  
+		            // 弹出分享列表
+		            shareBts.length>0?plus.nativeUI.actionSheet({title:'分享链接',cancel:'取消',buttons:shareBts},function(e){
+		                (e.index>0)&&shareAction(shareBts[e.index-1],true,detail[index]);
+		            }):plus.nativeUI.alert('当前环境无法支持分享链接操作!');
+				});
+			});
+			
+			mui('#course').on('tap','.o_detail',function(){
+				var index = this.getAttribute('data-index');
+				var item = detail[index];
+				//触发子窗口变更新闻详情
+				mui.fire(webview_detail, 'get_detail', {
+					title: item.title,
+					author: item.description,
+					time: item.created_at,
+					cover: item.img,
+					content:item.content
+				});
+
+				//更改详情页原生导航条信息
+				titleNView.titleText = item.title;
+				webview_detail.setStyle({
+					"titleNView": titleNView
+				});
+				setTimeout(function() {
+					webview_detail.show("slide-in-right", 300);
+				}, 150);
+			});
+			//返回按钮tap  
+			var scrollToTopBox = document.getElementById('scrollToTop'); 
+			var nav = document.getElementById('sliderSegmentedControl');
+			scrollToTopBox.addEventListener('tap', function(e) {  
+			    e.stopPropagation(); mui('#pullrefresh').pullRefresh().scrollTo(0, 0, 300);//滚动到顶部  
+			});  
+			// Android上监听原生滚动，iOS上监听div滚动，上拉超过一屏后显示按钮，否则隐藏，可自行在条件判断中修改  
+			if (mui.os.android) {  
+			    window.addEventListener('scroll', function(e) {  
+			        if (window.pageYOffset >= window.innerHeight && scrollToTopBox.classList.contains('hide')){ 
+			            scrollToTopBox.classList.remove('hide'); 
+			        }else if(window.pageYOffset < window.innerHeight && !scrollToTopBox.classList.contains('hide')){ 
+			            scrollToTopBox.classList.add('hide'); 
+			        } 
+			    });  
+			} else {  
+			    document.getElementById('pullrefresh').addEventListener('scroll', function() {  
+			        if (mui('#pullrefresh').pullRefresh().y <= window.innerHeight * (-1) && scrollToTopBox.classList.contains('hide')){ 
+			            scrollToTopBox.classList.remove('hide'); 
+			        }else if(mui('#pullrefresh').pullRefresh().y > window.innerHeight * (-1) && !scrollToTopBox.classList.contains('hide')){ 
+			            scrollToTopBox.classList.add('hide'); 
+			        } 
+		    	}); 
+			}
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<meta name="format-detection" content="telephone=yes" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-btn-primary,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #BE0004;
+			}
+
+			.mui-btn-primary2,
+			input[type=submit] {
+				border: 1px solid #be0004;
+				background-color: #ffffff;
+				color: #be0004;
+			}
+
+			.mui-btn-block {
+				padding: 7px 0;
+			}
+			.mui-content .mui-input-row input {
+    background-color: transparent;
+    color: #979797;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+    padding-top: 1.3rem;
+}
+		</style>
+
+	</head>
+
+	<body style="background-color: #f7f7f7;">
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<a href="javascript:;" class="mui-ellipsis"></a>
+			<h1 class="mui-title">绑定手机号</h1>
+		</header>
+		<div class="mui-content" style="background-color: #f7f7f7;text-align:center;">
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">手机号</div>
+				<div style="float:left;display:inline;width: 75%;"><input id='mobile' class="mui-input-clear mui-input" type="text"
+					 placeholder="请输入手机号码" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value = value.replace(/[^\d]/g, '')"
+					 style="color: #555555;"></div>
+			</div>
+			<div class="mui-input-row" style="border-bottom: 1px solid #ddd;">
+				<div style="float:left;display:inline; width: 25%;padding-top: 0.6rem;">验证码</div>
+				<div style="float:left;display:inline;width: 45%;"><input id='smsCode' type="text" style="color: #555555;"
+					 placeholder="请输入验证码" oninput="if(value.length>4)value=value.slice(0,4)" onkeyup="value = value.replace(/[^\d]/g, '')"></div>
+				<div style="float:left;display:inline;width: 25%;padding-top: 0.4rem;"><button id="smsbtn" class="get_code sms"
+					 style="border: 1px solid #be0004;background-color: #BE0004;color:#ffffff;">获取验证码</button></div>
+			</div>
+			<div class="mui-content-padded">
+				<button id='btnbang' class="mui-btn mui-btn-block mui-btn-primary">绑定</button>
+			</div>
+
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			var num = 60;
+			var unionid;
+			var openid;
+			var type;
+			var access_token;
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				self.setStyle({ //关闭首页侧滑返回功能
+					'popGesture': 'none'
+				});
+				unionid = self.unionid;
+				openid = self.openid;
+				type = self.type;
+				access_token = self.access_token;
+				console.log(type);
+				mui('.mui-content').on('tap', '.get_code', function() {
+					var mobile = document.getElementById('mobile').value.replace(/\s*/g, "");
+					if (!mobile) {
+						plus.nativeUI.toast('请输入手机号!');
+						return;
+					} else {
+						document.getElementById('mobile').setAttribute('disabled', 'disabled');
+						document.getElementById('smsbtn').setAttribute('disabled', 'disabled');
+						Http.post({
+							api: 'SMS-VERIFY',
+							data: {
+								mobile: mobile
+							},
+							success: function(res) {
+								plus.nativeUI.toast(res.msg);
+								var time = setInterval(function() {
+									if (num > 0) {
+										--num;
+										mui('.sms')[0].innerText = num
+									} else if (num <= 0) {
+										clearInterval(time);
+										num = 60;
+										mui('.sms')[0].innerText = '重新获取'
+										document.getElementById('smsbtn').removeAttribute('disabled');
+										document.getElementById('mobile').removeAttribute('disabled');
+									}
+								}, 1000);
+							},
+							one: function(res) {
+								mui.toast(res.msg)
+								document.getElementById('smsbtn').removeAttribute('disabled');
+								document.getElementById('mobile').removeAttribute('disabled');
+							},
+							error: function(xhr, type, errorThrown) {
+								mui.toast("短信发送错误")
+								document.getElementById('smsbtn').removeAttribute('disabled');
+								document.getElementById('mobile').removeAttribute('disabled');
+							}
+						})
+
+					}
+				})
+				//绑定事件
+				mui('.mui-content').on('tap', '#btnbang', function() {
+					console.log("授权成功：" + unionid);
+					console.log("授权成功：" + openid);
+					var data = {};
+					var mobile = document.getElementById('mobile').value.replace(/\s*/g, "");
+					var smsCode = document.getElementById('smsCode').value.replace(/\s*/g, "");
+					if (!mobile) {
+						plus.nativeUI.toast('请输入手机号!');
+					} else if (!smsCode) {
+						plus.nativeUI.toast('请输入短信验证码!');
+					} else {
+
+						var waiting = plus.nativeUI.showWaiting();
+						data['userinfo'] = {};
+						data['userinfo']['openid'] = openid;
+						data['userinfo']['unionid'] = unionid;
+						data['userinfo']['access_token'] = access_token;
+						data.smsCode = smsCode;
+						data.mobile = mobile;
+						data.type = 'mobile';
+						Http.post({
+							api: 'NEW-LOGIN',
+							data: data,
+							success: function(res) {
+								plus.storage.clear('userInfo');
+								mui.toast('手机号绑定成功');
+								waiting.close();
+								plus.storage.setItem('userInfo', JSON.stringify(res.data));
+											console.log(JSON.stringify(res.data));
+											plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+
+												mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'),
+													'pageflowrefresh');
+												mui.fire(plus.webview.getWebviewById('html/tab-webview-share.html'),
+													'pageflowrefresh');
+												mui.fire(plus.webview.getLaunchWebview(), 'pageflowrefresh');
+
+											});
+							},
+							one: function(res) {
+								//										getPicVerify();
+								mui.toast(res.msg)
+								waiting.close();
+							},
+							error: function(xhr, type, errorThrown) {
+								mui.toast("绑定接口错误")
+								waiting.close();
+							}
+						})
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+			}
+
+			body {
+				background: rgba(0, 0, 0, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			div.bg {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.1);
+				left: 0;
+				top: 0;
+				z-index: -1;
+			}
+
+			.mui-content {
+				background: white;
+				border-radius: 10px;
+				text-align: center;
+				width: 300px;
+				overflow: hidden;
+			}
+
+			.mui-content img {
+				width: 100%;
+			}
+
+			.mui-content p.title {
+				padding: 10px;
+			}
+
+			.mui-content p.bot {
+				font-size: 12px;
+			}
+
+			.mui-content .mui-btn {
+				width: 80%;
+				margin: 0 auto 20px;
+				border-radius: 20px;
+				padding: 5px 0;
+				font-size: 14px;
+			}
+
+			.mui-content .showtitle {
+				background: #dd524d;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+			}
+
+			.mui-icon-closeempty {
+				font-size: 30px;
+				margin-top: 5px;
+			}
+		</style>
+	</head>
+
+	<body onclick="mui.back()">
+		<!--<div class="bg"></div>-->
+		<div class="mui-content" id="pop" v-cloak v-on:click.stop>
+			<div class="showtitle">
+				<i class="mui-icon mui-icon-closeempty mui-pull-right" @click="close()"></i>
+			</div>
+
+			<img :src="picUrl" alt="" />
+			<p class="title">{{title}}</p>
+			<p v-if="showtype != 'show'">预估佣金￥<span style="color: #ff671e;font-size: 16px;font-weight: 600;">{{price||'0.00'}}</span></p>
+			<div class="mui-btn mui-btn-block mui-btn-danger" @click="jump(url)">打开</div>
+			<!--<p class="bot">这是来自好友分享的淘口令</p>-->
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var pop = new Vue({
+				el: '#pop',
+				data: {
+					picUrl: '',
+					title: '',
+					url: '',
+					gobuy: null,
+					type: '',
+					appneme: '',
+					showtype: 'show',
+					price: ''
+				},
+				methods: {
+					jump: function(url) {
+						//console.log(this.showtype)
+						if (this.showtype == 'show') {
+							var searchPage = plus.webview.getWebviewById('search');
+							console.log(this.type + "类型")
+							mui.fire(searchPage, 'getItem', {
+								data: 'search',
+								showtitle: this.title
+							});
+							mui.openWindow({
+								id: 'search'
+							})
+							plus.webview.currentWebview().close();
+						} else {
+							var userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+							if (!userinfo) {
+								mui.toast("请登录苦瓜APP后再使用该功能！")
+								return;
+							}
+							var appname;
+							if (this.type == 21) {
+								appname = 'com.jingdong.app.mall';
+							} else if (this.type == 1) {
+								appname = "com.taobao.taobao";
+							}
+							var flag = plus.runtime.isApplicationExist(appname);
+							plus.runtime.isApplicationExist(this.appname);
+							if (mui.os.ios) {
+									
+									plus.runtime.openURL(url.replace('https', 'taobao').replace('http', 'taobao'));
+									//window.location.href=;
+								} else {
+							plus.runtime.openURL(url, function(e) {
+								this.gobuy = plus.webview.getWebviewById('buy.html');
+								mui.fire(this.gobuy, 'gobuy', {
+									url: url
+								});
+								plus.webview.currentWebview().close();
+								mui.openWindow({
+									id: 'buy.html',
+								})
+							}, appname);}
+							plus.webview.currentWebview().close();
+						}
+
+					},
+					close: function() {
+						plus.webview.currentWebview().close();
+					}
+				},
+				mounted: function() {
+					mui.init();
+					var _this = this;
+					mui.plusReady(function() {
+						var currentView = plus.webview.currentWebview();
+						_this.picUrl = currentView.picUrl;
+						_this.title = currentView.title;
+						_this.url = currentView.url;
+						console.log(_this.url)
+						_this.type = currentView.shoptype;
+						_this.price = currentView.price;
+						_this.showtype = currentView.showtype;
+
+					})
+				}
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				font-size: 0.98rem;
+			}
+
+			body {
+				background: rgba(0, 0, 0, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			div.bg {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.1);
+				left: 0;
+				top: 0;
+				z-index: -1;
+			}
+
+			.mui-content {
+				background: white;
+				border-radius: 10px;
+				text-align: center;
+				width: 300px;
+				overflow: hidden;
+			}
+
+			.mui-content table tr td {
+				color: #8f8f94;
+				line-height: 2rem;
+				font-size: 0.98rem;
+			}
+
+			.mui-content .mui-btn {
+				width: 80%;
+				margin: 0 auto 20px;
+				border-radius: 20px;
+				padding: 5px 0;
+				font-size: 14px;
+			}
+
+			.mui-content .showtitle {
+				background: #dd524d;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+			}
+
+			.mui-icon-closeempty {
+				font-size: 30px;
+				margin-top: 5px;
+			}
+
+			input[type=text] {
+				line-height: 1.2rem;
+				width: 95%;
+				height: 1.2rem;
+				margin-bottom: 0;
+				padding: 10px 5px;
+				-webkit-user-select: text;
+				border: 1px solid rgba(0, 0, 0, .2);
+				border-radius: 3px;
+				background-color: #fff;
+				-webkit-appearance: none;
+				font-size: 0.9rem;
+			}
+
+			button {
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 1.2rem;
+				vertical-align: middle;
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="bg"></div>-->
+		<div class="mui-content" id="pop">
+			<div class="showtitle">支付订单
+				<i class="mui-icon mui-icon-closeempty mui-pull-right"></i>
+			</div>
+			<table width="100%" align="center">
+				<tr>
+					<td align="right" width="40%">&nbsp;</td>
+					<td align="left"></td>
+				</tr>
+				<tr>
+					<td align="right">订单手机号：</td>
+					<td align="left" id="mobile"></td>
+				</tr>
+				<tr>
+					<td align="right">支付金额：</td>
+					<td align="left" id="price"></td>
+				</tr>
+				<tr>
+					<td align="right">验证码：</td>
+					<td align="left">
+						<table width="100%">
+							<tr>
+								<td width="40%"><input id='smsCode' type="text" style="color: #555555;" placeholder="验证码" oninput="if(value.length>4)value=value.slice(0,4)"
+									 onkeyup="value = value.replace(/[^\d{2}\.]/g, '').replace(/(\.\d{2}).*/g, '$1')"></td>
+								<td><button id="smsbtn" class="get_code sms" style="border: 1px solid #dd524d;background-color: #dd524d;color:#ffffff;font-size: 0.8rem;">获取验证码</button></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">&nbsp;</td>
+					<td align="left"></td>
+				</tr>
+			</table>
+			<div class="mui-btn mui-btn-block mui-btn-danger">激活</div>
+			<!--<p class="bot">这是来自好友分享的淘口令</p>-->
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var num = 60;
+			mui.plusReady(function() {
+
+				if (mui.os.ios) {
+					plus.navigator.setStatusBarBackground('#b2b2b2');
+				}
+				userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+				if (!userinfo) {
+					var child = plus.webview.create(
+						'auth/login.html', 'login'); //直接用H5+API创建窗口
+					child.show();
+					//plus.webview.currentWebview().append(child); //将创建的子窗口添加到父窗口
+					return;
+				}
+				var ww = plus.webview.currentWebview();
+				var memberid = ww.MemberID;
+				var memberno = ww.MemberNo;
+				var price = ww.Price;
+				document.getElementById('mobile').innerHTML = memberno;
+				document.getElementById('price').innerHTML = "¥ " + price;
+				mui('#pop').on('tap', '.mui-btn', function() {
+					var waiting = plus.nativeUI.showWaiting();
+					var smsCode = document.getElementById('smsCode').value.replace(/\s*/g, "");
+					if (!smsCode) {
+						plus.nativeUI.toast('请输入验证码!');
+						return;
+					} else {
+						Http.post({
+							api: 'ACTIVE',
+							data: {
+								memberid: memberid,
+								smsCode: smsCode
+							},
+							success: function(res) {
+								plus.nativeUI.closeWaiting();
+								if (res.code == '0') {
+									mui.toast(res.msg)
+									if (mui.os.ios) {
+										plus.navigator.setStatusBarBackground('#F7F7F7');
+									}
+									mui.fire(plus.webview.getWebviewById('user/activelist.html'), 'pageflowrefresh');
+									setTimeout(function() {
+
+										mui.back();
+									}, 500)
+								} else {
+									mui.toast(res.msg);
+								}
+
+							},
+							one: function(res) {
+								plus.nativeUI.closeWaiting();
+								mui.toast(res.msg)
+							},
+							error: function(xhr, type, errorThrown) {
+								plus.nativeUI.closeWaiting();
+								mui.toast("提交服务器出错")
+							}
+						})
+					}
+				});
+				mui('#pop').on('tap', '.mui-icon', function() {
+					if (mui.os.ios) {
+						plus.navigator.setStatusBarBackground('#F7F7F7');
+					}
+					mui.back();
+				});
+
+				mui('.mui-content').on('tap', '.get_code', function() {
+
+					document.getElementById('smsbtn').setAttribute('disabled', 'disabled');
+					Http.post({
+						api: 'SMS-VERIFY',
+						data: {
+							mobile: userinfo.mobile
+						},
+						success: function(res) {
+							plus.nativeUI.toast(res.msg);
+							var time = setInterval(function() {
+								if (num > 0) {
+									--num;
+									mui('.sms')[0].innerText = num
+								} else if (num <= 0) {
+									clearInterval(time);
+									num = 60;
+									mui('.sms')[0].innerText = '重新获取'
+									document.getElementById('smsbtn').removeAttribute('disabled');
+								}
+							}, 1000);
+						},
+						one: function(res) {
+							mui.toast(res.msg)
+							document.getElementById('smsbtn').removeAttribute('disabled');
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast("短信发送错误")
+							document.getElementById('smsbtn').removeAttribute('disabled');
+						}
+					})
+
+
+				})
+			});
+		</script>
+	</body>
+
+</html>

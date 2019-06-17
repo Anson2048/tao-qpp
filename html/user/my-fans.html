@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的粉丝</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				/*color: inherit;
+				border-bottom-color: transparent;*/
+				color: #ff681e;
+				border-bottom: 2px solid #ff681e;
+			}
+
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.active {
+				color: #ff681e;
+				border-bottom: 2px solid #ff681e;
+			}
+
+			.fans-img .my-info-fs img {
+				width: 100%;
+			}
+
+			.fans-list {
+				background: #fff;
+			}
+
+			.fans-list div.no {
+				text-align: center;
+				padding-bottom: 50px;
+			}
+
+			.fans-list div.no img {
+				width: 280px;
+				margin-top: 30px;
+			}
+
+			.name {
+				display: inline-block;
+				width: 72px;
+			}
+
+			.vip {
+				display: inline-block;
+				color: #fff !important;
+				font-size: 11px;
+				padding-left: 18px;
+				padding-right: 7px;
+				border-radius: 15px;
+				height: 16px;
+				line-height: 18px;
+				background: url('../../images/v1.png') no-repeat;
+				margin-left: 3px;
+			}
+
+			.vip1 {
+				background: #d0a062 url('../../images/v1.png') no-repeat;
+				background-size: 12px;
+				background-position-x: 5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+
+			.vip2 {
+				background: #ff4800 url('../../images/v2.png') no-repeat;
+				background-size: 12px;
+				background-position-x: 5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+
+			.vip3 {
+				background: #cf1133 url('../../images/v3.png') no-repeat;
+				background-size: 12px;
+				background-position-x: 5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+
+			.vip4 {
+				background: #a700fe url('../../images/v4.png') no-repeat;
+				background-size: 12px;
+				background-position-x: 5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+			.vip5 {
+				background: #4A4A4A url('../../images/v4.png') no-repeat;
+				background-size: 12px;
+				background-position-x: 5px;
+				background-position-y: 3px;
+				vertical-align: 8px;
+			}
+
+			.fans-top {
+				padding: 15px 0;
+			}
+
+			.none {
+				color: transparent;
+			}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+		<!-- 		<div class="header fans-header" >
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+			<span>
+				<a href="javascript:;"></a>
+			</span>
+			<span class="header-nav"></span>
+		</div> -->
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">我的团队</h1>
+		</header>
+		<div id="fans_box">
+			<div class="fans-bg">
+				<img src="../../images/fans-bg.png" alt="" />
+			</div>
+			<!--内容-->
+			<div class="fans-det">
+				<div class="fans-top">
+					<span id="vip0">会员:0位</span>
+					<span id="vip1">钻石:0位</span>
+					<span id="vip2">店长:0位</span>
+					<span id="vip3">金牌:0位</span>
+					<span id="vip4">特约:0位</span>
+				</div>
+				<div style="padding: 10px 10px;background: #fff;color: #999;">
+					<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+						<a class="mui-control-item mui-active" href="#item1">全部粉丝</a>
+						<a class="mui-control-item" href="#item2">直属粉丝</a>
+						<a class="mui-control-item" href="#item3">间接粉丝</a>
+					</div>
+				</div>
+				<div>
+					<div id="item1" class="mui-control-content mui-active">
+						<ul class="fans-list" id="allfans">
+							<li class="fans-item">
+								<div class="fans-item-left">
+									<div class="my-img fans-img">
+										<img src="../../images/my-head.jpg" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+
+									</div>
+									<div class="fans-item-det">
+										<span>
+											<span class="name mui-ellipsis">sdsadas</span>
+
+											<span class="vip vip4">店长</span>
+
+										</span>
+										<p class="fans-num">
+											13536665645645
+										</p>
+									</div>
+								</div>
+								<div class="fans-item-det jump">
+									<span style="color: #ff681e;">推荐4人
+										<i style="font-size: 20px;" class="mui-icon mui-icon-arrowright none"></i>
+									</span>
+									<p class="fans-num">0</p>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+					<div id="item2" class="mui-control-content">
+						<ul class="fans-list" id='allfans1'>
+							<li class="fans-item">
+								<div class="fans-item-left">
+									<div class="my-img fans-img">
+										<img src="../../images/my-head.jpg" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+
+									</div>
+									<div class="fans-item-det">
+										<span>
+											<span class="name mui-ellipsis">sdsadas</span>
+
+											<span class="vip vip4">店长</span>
+
+										</span>
+										<p class="fans-num">
+											13536665645645
+										</p>
+									</div>
+								</div>
+								<div class="fans-item-det jump">
+									<span style="color: #ff681e;">推荐4人
+										<i style="font-size: 20px;" class="mui-icon mui-icon-arrowright none"></i>
+									</span>
+									<p class="fans-num">0</p>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+					<div id="item3" class="mui-control-content">
+						<ul class="fans-list" id='allfans2'>
+							<li class="fans-item">
+								<div class="fans-item-left">
+									<div class="my-img fans-img">
+										<img src="../../images/my-head.jpg" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+
+									</div>
+									<div class="fans-item-det">
+										<span>
+											<span class="name mui-ellipsis">sdsadas</span>
+
+											<span class="vip vip4">店长sds</span>
+
+										</span>
+										<p class="fans-num">
+											13536665645645
+										</p>
+									</div>
+								</div>
+								<div class="fans-item-det jump">
+									<span style="color: #ff681e;">推荐4人
+										<i style="font-size: 20px;" class="mui-icon mui-icon-arrowright none"></i>
+									</span>
+									<p class="fans-num">0</p>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vip0 = 0;
+			var vip1 = 0;
+			var vip2 = 0;
+			var vip3 = 0;
+			var vip4 = 0;
+			var fans_alllist = {};
+			var jsonstr = "[]";
+			var jsonarray = eval('(' + jsonstr + ')');
+			var jsonarray1 = eval('(' + jsonstr + ')');
+			var jsonarray2 = eval('(' + jsonstr + ')');
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				Http.post({
+					api: 'TEAM',
+					data: {
+						type: 2
+					},
+					success: function(res) {
+						for (var i = 0; i < res.data.info.length; i++) {
+							if (res.data.info[i].level == "0") {
+								vip0 += 1;
+							}
+							if (res.data.info[i].level == "1") {
+								vip1 += 1;
+							}
+							if (res.data.info[i].level == "2") {
+								vip2 += 1;
+							}
+							if (res.data.info[i].level == "3") {
+								vip3 += 1;
+							}
+							if (res.data.info[i].level == "4") {
+								vip4 += 1;
+							}
+
+							if (res.data.info[i].childNodes.length > 0) {
+								for (var l = 0; l < res.data.info[i].childNodes.length; l++) {
+									if (res.data.info[i].childNodes[l].level == "0") {
+										vip0 += 1;
+									}
+									if (res.data.info[i].childNodes[l].level == "1") {
+										vip1 += 1;
+									}
+									if (res.data.info[i].childNodes[l].level == "2") {
+										vip2 += 1;
+									}
+									if (res.data.info[i].childNodes[l].level == "3") {
+										vip3 += 1;
+									}
+									if (res.data.info[i].childNodes[l].level == "4") {
+										vip4 += 1;
+									}
+									jsonarray.push(res.data.info[i].childNodes[l]);
+									jsonarray2.push(res.data.info[i].childNodes[l]);
+									//console.log(JSON.stringify(res.data.info[i].childNodes[l]).replace('{','[').replace('}',']'));
+								}
+							}
+							delete res.data.info[i].childNodes;
+							jsonarray.push(res.data.info[i]);
+							jsonarray1.push(res.data.info[i]);
+
+						}
+						document.getElementById('vip0').innerHTML = "会员:" + vip0 + "位";
+						document.getElementById('vip1').innerHTML = "钻石:" + vip1 + "位";
+						document.getElementById('vip2').innerHTML = "店长:" + vip2 + "位";
+						document.getElementById('vip3').innerHTML = "金牌:" + vip3 + "位";
+						document.getElementById('vip4').innerHTML = "特约:" + vip4 + "位";
+						var htmlall = "<div class=no><img src=../../images/nomore.png/><p>这里还什么都没有，快快努力吧！</p></div>";
+						var html1= "<div class=no><img src=../../images/nomore.png/><p>这里还什么都没有，快快努力吧！</p></div>";
+						var html2= "<div class=no><img src=../../images/nomore.png/><p>这里还什么都没有，快快努力吧！</p></div>";
+						if (jsonarray.length > 0) {
+							htmlall=html(jsonarray);
+						}
+						if (jsonarray1.length > 0) {
+							html1=html(jsonarray1);
+						}
+						if (jsonarray2.length > 0) {
+							html2=html(jsonarray2);
+						}
+						document.getElementById('allfans').innerHTML = htmlall;
+						document.getElementById('allfans1').innerHTML = html1;
+						document.getElementById('allfans2').innerHTML = html2;
+					}
+				})
+
+				function level(lv) {
+					switch (lv) {
+						case "0":
+							return "<span class='vip vip1'>苦瓜会员</span>"
+							break;
+						case "1":
+							return "<span class='vip vip2'>钻石会员</span>"
+							break;
+						case "2":
+							return "<span class='vip vip3'>普通店长</span>"
+							break;
+						case "3":
+							return "<span class='vip vip4'>金牌店长</span>"
+							break;
+						case "4":
+							return "<span class='vip vip5'>特约店长</span>"
+							break;
+						default:
+							break;
+					}
+				}
+				
+				function html(arr) {
+							var html = "";
+							for (var i = 0; i < arr.length; i++) {
+								html += "<li class='fans-item'>";
+								html += "<div class='fans-item-left'>";
+								html += "<div class='my-img fans-img'>";
+								html += "<img src='" + arr[i].avatar +
+									"' onerror=this.src='../../images/60x60.png';this.onerror=null;/>";
+								html += "</div>";
+								html += "<div class='fans-item-det'>";
+								html += "<span>";
+								html += "<span class='name mui-ellipsis'>" + arr[i].nickname + "</span>";
+								html += level(arr[i].level);
+								html += "</span>";
+								html += "<p class='fans-num'>" + arr[i].mobile + "</p>";
+								html += "</div></div>";
+								html += "<div class='fans-item-det'>";
+								//html+="<span style='color: #ff681e;'>推荐" + arr[i].num + "人</span>";
+								html += "<p class='fans-num'>" + arr[i].created_at + "</p>";
+								html += "</div></li>";
+							}
+							return html;
+				}
+			});
+		</script>
+	</body>
+</html>

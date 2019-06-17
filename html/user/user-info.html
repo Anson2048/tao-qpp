@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>个人信息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.user-btn .sex{
+				padding: 3px 20px;
+				height: initial;
+				width: initial;
+			}
+			.navigate-right input.nickname{
+				padding-left: 20px;
+				margin-left: 10px;
+			}
+			.header{
+				top:25px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+		
+				<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">个人信息</h1>
+		    
+		</header>
+		
+		<div class="content" style="margin-top: 75px;">
+			<!--商品-->
+			<ul class="mui-table-view set-list">
+			    <li class="mui-table-view-cell">
+			        <div class="navigate-right">
+			        	<span></span>
+				        <img id="headImage" class="avatar" style="width: 64px;height: 64px;" src="../../images/my-head.jpg" alt="" />
+				        <span></span>
+			        </div>
+			    </li>
+			    <li class="mui-table-view-cell mt1">
+			        <a class="navigate-right">昵称<input class="nickname" type="text" value="甜甜公主" /></a>
+			    </li>
+			    <li class="mui-table-view-cell mt1">
+			        <div class="navigate-right user-btn">
+			        	<span>性别
+			        		<button class="sex active" data-sex="0">男</button>
+			        		<button class="sex" data-sex="1">女</button>
+						</span>
+			        </div>
+			    </li>
+			</ul>
+			<button class="preserve">保存</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var sex = '0';
+			var image = document.getElementById('headImage');
+			var imgsrc = null;
+			mui.init();
+			mui.plusReady(function(){
+				Http.post({
+					api:'UPDATE-NICK',
+					success:function(res){
+						//console.log(JSON.stringify(res.data));
+						document.getElementsByClassName('nickname')[0].value = res.data.nickname;
+						imgsrc = res.data.avatar;
+						if(res.data.avatar){
+							document.getElementById('headImage').setAttribute('src',res.data.avatar)
+						}
+						if(res.data.gender==1){
+							document.getElementsByClassName("sex")[0].classList.remove('active')
+							document.getElementsByClassName("sex")[1].classList.add('active')
+						}
+						
+					}
+				});
+				mui('.content').on('tap','.preserve',function(){
+					var nickname = document.getElementsByClassName('nickname')[0].value;
+					var data = {};
+					if(imgsrc == image.src){
+						data = {
+							nickname:nickname,
+							gender:sex
+						}
+					}else{
+						data = {
+							nickname:nickname,
+							avatar:image.src,
+							gender:sex
+						}
+					}
+					Http.post({
+						api:'UPDATE-NICK',
+						data:data,
+						success:function(res){
+							var main = plus.webview.getWebviewById('html/tab-webview-my.html');
+							mui.fire(main,'pageflowrefresh');
+							mui.toast(res.msg)
+						}
+					})
+					console.log(image)
+				});
+			});
+			
+			mui('.content').on('tap','.sex',function(){
+				sex = this.getAttribute('data-sex');
+				mui('.sex').each(function(i,ele){
+					ele.classList.remove('active');
+				});
+				this.classList.add('active');
+			});
+			
+			image.addEventListener('tap', function() {  
+			    if (mui.os.plus) {  
+			        var buttonTit = [{  
+			            title: "拍照"  
+			        }, {  
+			            title: "从手机相册选择"  
+			        }];  
+			          
+			        plus.nativeUI.actionSheet({  
+			            title: "上传图片",  
+			            cancel: "取消",  
+			            buttons: buttonTit  
+			        }, function(b) { /*actionSheet 按钮点击事件*/  
+			            switch (b.index) {  
+			                case 0:  
+			                    break;  
+			                case 1:  
+			                    getImage(); /*拍照*/  
+			                    break;  
+			                case 2:  
+			                    galleryImg();/*打开相册*/  
+			                    break;  
+			                default:  
+			                    break;  
+			            }  
+			        })  
+			    }          
+			}, false); 
+			// 拍照获取图片  
+			function getImage() {  
+			    var c = plus.camera.getCamera();  
+			    c.captureImage(function(e) {  
+			        plus.io.resolveLocalFileSystemURL(e, function(entry) {  
+			            var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径  
+		            	image.src = imgSrc;
+		            	console.log(imgSrc)
+		            	image.onload = function(){
+		            		var imgData = getBase64Image(image); 
+		            		image.src = getBase64Image(image); 
+		            	}
+			           
+			        }, function(e) {  
+			            console.log("读取拍照文件错误：" + e.message);  
+			        });  
+			    }, function(s) {  
+			        console.log("error" + s);  
+			    }, {  
+			        filename: "_doc/camera/"  
+			    })  
+			} 
+			// 从相册中选择图片   
+			function galleryImg(){  
+			    // 从相册中选择图片  
+			    plus.gallery.pick( function(e){  
+			        for(var i in e.files){  
+			            var fileSrc = e.files[i]  
+			            image.src = fileSrc;
+			            image.onload = function(){
+		            		var imgData = getBase64Image(image); 
+		            		image.src = getBase64Image(image); 
+		            	}
+			        }  
+			    }, function ( e ) {  
+			        console.log( "取消选择图片" );  
+			    },{  
+			        filter: "image",  
+			        multiple: true,  
+			        maximum: 1,  
+			        system: false,  
+			        onmaxed: function() {  
+			            plus.nativeUI.alert('最多只能选择1张图片');  
+			        }  
+			    });  
+			};
+			//将图片压缩转成base64 
+			function getBase64Image(img) { 
+			    var canvas = document.createElement("canvas");   //创建canvas DOM元素，并设置其宽高和图片一样
+			    canvas.width = img.width;
+			    canvas.height = img.height;
+			    var ctx = canvas.getContext("2d");
+			    ctx.drawImage(img, 0, 0, img.width, img.height); //使用画布画图
+			    var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();  //动态截取图片的格式
+			    var dataURL = canvas.toDataURL("image/" + ext);  //返回的是一串Base64编码的URL并指定格式
+			    return dataURL;
+			}    
+		</script>
+	</body>
+</html>
+

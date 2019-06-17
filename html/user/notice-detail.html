@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>公告详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/list-to-detail.css" />
+		<style type="text/css">
+			.kr-article-content{
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content" id="details">
+			<script type="text/template" id="j_details">
+				<!--顶部banner图 开始-->
+				<div id="kr-article-banner" class="kr-article-banner" style="height: initial;">
+					<div id="kr-article-cover" class="kr-article-cover" style="height: initial;">
+						<!--<img src="{{cover}}">-->
+					</div>
+					<!--<h2 id="kr-article-title" class="kr-article-title">{{title}}</h2>-->
+				</div>
+				<!--顶部banner图 结束-->
+				
+				<div class="kr-article-content">
+					
+					<!--文章详细内容-->
+					<div id="kr-article-article" class="kr-article-article">{{#content}}</div>
+					<!-- 文章作者、发布时间等信息 -->
+					<div class="kr-article-meta" style="display: block;padding-right: 10px;">
+						<!--<div id="kr-article-author" class="kr-article-author">{{author}}</div>-->
+						<div id="kr-article-time" class="kr-article-time" style="float: right;">{{time}}</div>
+						<div class="kr-article-text" style="float: right;">发表于</div>
+					</div>
+				</div>
+			</script>	
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var vm = {};
+			//监听自定义事件，获取新闻详情
+			document.addEventListener('get_detail', function(event) {
+				var guid = event.detail.guid;
+				//前页传入的数据，直接渲染，无需等待ajax请求详情后
+				vm.title = event.detail.title;
+				vm.time = event.detail.time;
+				vm.content = event.detail.content;
+				console.log(vm.content)
+				console.log(template.helper)
+				var courselist = template('j_details',vm);
+				document.getElementById('details').innerHTML = courselist;
+				
+				
+			});
+
+			//重写返回逻辑
+			mui.back = function() {
+				plus.webview.currentWebview().hide("auto", 300);
+			}
+			
+			//窗口隐藏时，重置页面数据
+			mui.plusReady(function () {
+				var self = plus.webview.currentWebview();
+				self.addEventListener("hide",function (e) {
+					window.scrollTo(0, 0);
+				},false);
+			})
+			
+		</script>
+	</body>
+
+</html>

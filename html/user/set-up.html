@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--头部-->
+		<div class="header">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+			<span>
+				<a href="javascript:;">设置</a>
+			</span>
+			<span class="header-nav"></span>
+		</div>
+		<div class="content" style="margin-top: 50px;">
+			<!--商品-->
+			<ul class="mui-table-view set-list">
+				<li class="mui-table-view-cell">
+					<a href="user-info.html" class="navigate-right">个人资料
+						<div class="set-right">
+							<!--<img src="../../images/my-head.jpg" alt="" />-->
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view set-list">
+				<!--<li class="mui-table-view-cell">
+			        <a href="modify-tel.html" class="navigate-right">修改手机号
+			        	<div class="set-right">
+				        	<span class="mui-icon mui-icon-arrowright"></span>
+				        </div>
+			        </a>
+			    </li>-->
+				<li class="mui-table-view-cell mt1">
+					<a href="modify-psd.html" class="navigate-right">修改密码
+						<div class="set-right">
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view set-list">
+				<!--<li class="mui-table-view-cell">
+			        <a class="navigate-right">消息通知
+			        	<div class="set-right">
+				        	<span class="mui-icon mui-icon-arrowright"></span>
+				        </div>
+			        </a>
+			    </li>-->
+				<li class="mui-table-view-cell update">
+					<div class="navigate-right">当前版本
+						<div class="set-right">
+							<span class="version"></span>
+							<!--<span class="mui-icon mui-icon-arrowright"></span>-->
+						</div>
+					</div>
+				</li>
+				<!--<li class="mui-table-view-cell mt1">
+			        <div class="navigate-right">
+			        	<span>清除缓存<span class="set-clear"></span></span>
+			        	<div class="set-right">
+				        	<button>清除缓存</button>
+				        </div>
+			        </div>
+			    </li>-->
+			</ul>
+			 <button class="set-logout">退出登录</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var wgtVer = null; //版本号
+			var webVer = null;
+			var auths = {};
+			mui.init();
+
+			mui.plusReady(function() {
+				
+				//var wvs = plus.webview.all();
+				//for (var i = 0; i < wvs.length; i++) {
+					//console.log(JSON.stringify(wvs[i]));
+					//console.log('webview' + i + ': ' + wvs[i].getURL());
+				//}
+
+				mui('.set-right').on('tap', 'button', function() {
+					plus.cache.calculate(function(res) {
+						console.log(res)
+						document.getElementsByClassName('set-clear')[0].innerText = res;
+					});
+				})
+				//检测本地app版本号
+				plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+					wgtVer = inf.version;
+					console.log(wgtVer);
+					mui('.version')[0].innerText = wgtVer;
+				});
+				plus.oauth.getServices(function(services) {
+					for (var i in services) {
+						var service = services[i];
+						auths[service.id] = service;
+					}
+				})
+			})
+
+			mui('.content').on('tap', 'a', function() {
+				var href = this.getAttribute('href');
+				var id = href;
+				mui.openWindow(href, id);
+			})
+			var os = mui.os.android;
+			console.log(os)
+			mui('.content').on('tap', '.update', function() {
+				return;
+				console.log(http)
+				mui.post(http + 'taobao-buy/update', function(res) {
+					if (mui.os.android) {
+						if (wgtVer < res.data.version) {
+							plus.nativeUI.actionSheet({
+								title: "软件更新",
+								cancel: "取消",
+								buttons: [{
+									title: "确定"
+								}]
+							}, function() {
+								plus.runtime.openURL(res.data.url, function() {
+									mui.toast('打开失败')
+								})
+							})
+						} else {
+							mui.toast('已经是最新版了！')
+						}
+					} else {
+						if (wgtVer < res.data.iosVersion) {
+							plus.nativeUI.actionSheet({
+								title: "软件更新",
+								cancel: "取消",
+								buttons: [{
+									title: "确定"
+								}]
+							}, function() {
+								plus.runtime.openURL(res.data.iosUrl, function() {
+									mui.toast('打开失败')
+								})
+							})
+						} else {
+							mui.toast('已经是最新版了！')
+						}
+					}
+				}, 'json')
+			})
+			//退出
+			 mui('.content').on('tap', '.set-logout', function() {
+				
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+						title: "注销当前账号"
+					}]
+				}, function(e) {
+					var index = e.index;
+					console.log("退出"+index);
+					switch (index) { //case 0: 取消
+						case 1: //
+							Http.post({
+								api: 'LOGINOUT'
+							}); //清除服务器token
+							plus.storage.clear('userInfo');
+							for (var i in auths) {
+								var s = auths[i];
+								if (s.authResult) {
+									s.logout(function() {
+										console.log('注销成功')
+									}, function() {
+										'注销失败'
+									})
+								}
+								//	                        	logout(auths[i])
+								console.log(auths[i])
+							}
+							var login = plus.webview.getWebviewById('login');
+							if(!login)
+							{
+								login = plus.webview.create('../auth/login.html', 'login');
+								login.show();
+							}
+							/*var all= plus.webview.all();
+							var launch=plus.webview.getWebviewById('login');
+							for(var i=0;i<all.length;i++)
+							{
+								//console.log(all[i]+","+launch);
+								if(all[i]==launch||all[i]==plus.webview.getLaunchWebview())
+								continue;
+								all[i].close();
+								all[i].clear();
+							}*/
+							
+							break;
+						case 2: //
+							plus.runtime.quit();
+							break;
+					}
+				});
+			});
+				/*mui.back = function(){
+			         var _self = plus.webview.currentWebview();
+				
+				    _self.hide();
+				    setTimeout(function() {
+				        _self.reload();//重新加载
+				    }, 10); 
+					history.go(-1);
+				}*/
+			function logout(auth) {
+				auth.logout(function() {
+					console.log(auth, 1)
+					if (auth.description == '微信') {
+						//						mui.toast("注销\""+auth.description+"\"成功");
+					}
+
+				}, function(e) {
+					console.log(auth, 2)
+					if (auth.description == '微信') {
+						//						mui.toast("注销\""+auth.description+"\"失败："+e.message);
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

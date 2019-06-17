@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>累计收益</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.hide {
+				display: none;
+			}
+
+			.inc-cash {
+				height: 22px;
+			}
+
+			a:active {
+				color: #ccc;
+			}
+
+			.inc-item.active span {
+				color: #ff6920;
+			}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #888;"></span>
+			<h1 class="mui-title">累计收益</h1>
+			<a href="income-statement.html" style="position:absolute;right:0;">
+				<span class="mui-icon mui-icon-help"></span>&nbsp;&nbsp;
+			</a>
+		</header>
+		<div class="content">
+			<div id="income_box">
+				<script type="text/template" id="income">
+					<!--内容-->
+					<div class="inc-top">
+						<div class="inc-top-left">
+							<span>账户余额</span>
+							<span>￥{{balance||'0.00'}}</span>
+						</div>
+				        <a class="inc-cash" href="../forward.html">提现</a>
+					</div>
+					<ul class="inc-list">
+						<li class="inc-item">
+							<span>结算收入</span>
+							<span class="inc-itm-num">￥{{bill_income}}</span>
+							<span class="inc-item-bot">上月佣金</span>
+						</li>
+						<li class="inc-item">
+							<span>预估收入</span>
+							<span class="inc-itm-num">￥{{predict_income}}</span>
+							<span class="inc-item-bot">本月佣金</span>
+						</li>
+						<li class="inc-item">
+							<span>预估收入</span>
+							<span class="inc-itm-num">￥{{last_revenue}}</span>
+							<span class="inc-item-bot">上月佣金</span>
+						</li>
+					</ul>
+					<ul class="inc-list inc-list2">
+						<li class="inc-item">
+							<span>本月市场推广奖励</span>
+							<span>收入</span>
+							<span class="inc-itm-num">￥{{nownonth_bonus}}</span>
+						</li>
+						<li class="inc-item">
+							<span>上月市场推广奖励</span>
+							<span>收入</span>
+							<span class="inc-itm-num">￥{{upmonth_bonus}}</span>
+						</li>
+					</ul>
+					<ul class="inc-list inc-list3">
+						<li class="inc-item active" day="today">
+							<span>今日</span>
+						</li>
+						<li class="inc-item" day="day">
+							<span>昨日</span>
+						</li>
+					</ul>
+					<ul class="inc-list inc-list4">
+						<li class="inc-item">
+							<span>付款笔数</span>
+							<span class="inc-itm-num today">{{today_payments}}</span>
+							<span class="inc-itm-num day hide">{{yesterday_payments}}</span>
+						</li>
+						<li class="inc-item">
+							<span>预估佣金</span>
+							<span class="inc-itm-num today">￥{{today_commission}}</span>
+							<span class="inc-itm-num day hide">￥{{yesterday_commission}}</span>
+						</li>
+						<!--<li class="inc-item">
+							<span>分享赚</span>
+							<span class="inc-itm-num today">￥{{today_share}}</span>
+							<span class="inc-itm-num day hide">￥{{yesterday_share}}</span>
+						</li>-->
+						<li class="inc-item">
+							<span>推广奖励</span>
+							<span class="inc-itm-num today">￥{{today_award}}</span>
+							<span class="inc-itm-num day hide">￥{{yesterday_award}}</span>
+						</li>
+					</ul>
+				</script>
+			</div>
+			<ul class="mui-table-view set-list inc-list5">
+
+				<li class="mui-table-view-cell">
+					<a class="navigate-right" href="mission-listl.html">结算佣金明细
+						<div class="set-right">
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="navigate-right" href="draw-list.html">提现记录
+						<div class="set-right">
+							<span class="mui-icon mui-icon-arrowright"></span>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var topoffset = '25px';
+			mui.init();
+			mui.plusReady(function() {
+				plus.nativeUI.showWaiting();
+				if (plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
+					topoffset = (Math.round(plus.navigator.getStatusbarHeight())) + 'px';
+				}
+				Http.post({
+					api: 'TOTAL-INCOME',
+					success: function(res) {
+						plus.nativeUI.closeWaiting();
+						var income = template('income', res.data);
+						document.getElementById('income_box').innerHTML = income;
+					},
+					one: function(res) {
+						plus.nativeUI.closeWaiting();
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.closeWaiting();
+					}
+				});
+				mui('#income_box').on('tap', '.inc-list3 li', function() {
+					for (var i = 0; i < mui('#income_box .inc-list3 li').length; i++) {
+						mui('#income_box .inc-list3 li')[i].classList.remove('active');
+					}
+					this.classList.add('active');
+					var day = this.getAttribute('day');
+					console.log(day)
+					if (day == 'day') {
+						for (var i = 0; i < mui('.day').length; i++) {
+							mui('.day')[i].classList.remove('hide');
+							mui('.today')[i].classList.add('hide');
+						}
+					} else {
+						for (var i = 0; i < mui('.day').length; i++) {
+							mui('.day')[i].classList.add('hide');
+							mui('.today')[i].classList.remove('hide');
+						}
+					}
+
+				});
+
+
+				//提现记录  提现
+				mui('.content').on('tap', 'a', function() {
+					plus.nativeUI.showWaiting();
+					var href = this.getAttribute('href');
+					if (href) {
+						if (href == '../forward.html') {
+							Http.post({
+								api: 'WITHDRAW',
+								success: function(res) {
+									plus.nativeUI.closeWaiting();
+									if (res.data.withdraw_to) {
+										mui.openWindow({
+											url: '../forward.html',
+											id: 'forward.html',
+											extras: {
+												alipayid: res.data.withdraw_to
+											}
+										})
+									} else {
+										mui.openWindow({
+											url: 'bind.html',
+											id: 'bind.html',
+											extras: {
+												type: "never"
+											}
+										})
+									}
+								}
+							})
+						}
+						/* else if(href == 'mission-listl.html'){
+													plus.nativeUI.showWaiting();  
+													// 创建加载内容窗口
+													plus.webview.create('mission-listl.html','mission-listl.html',{top:topoffset});
+												} */
+						else {
+							mui.openWindow(href, href)
+						}
+
+					}
+				});
+			})
+		</script>
+	</body>
+</html>

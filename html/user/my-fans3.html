@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的团队</h1>
+		</header>
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1" id="num0">普通会员(0)</a>
+					<a class="mui-control-item" href="#item2" id="num1">钻石会员(0)</a>
+					<a class="mui-control-item" href="#item3" id="num2">普通店长(0)</a>
+					<a class="mui-control-item" href="#item4" id="num3">金牌店长(0)</a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<script type="text/template" id="member0">
+						<ul class="fans-list">
+							{{if fans_list0.length < 1}}
+								<div class="no">
+									<img src="../../images/nomore.png"/>
+									<p>这里还什么都没有，快快努力吧！</p>
+								</div>
+							{{/if}}	
+								{{each fans_list0 as value i}}
+								<li class="fans-item">
+				                <div class="fans-item-left">
+				                	<div class="my-img fans-img">
+				                		<img src="{{value.avatar||'../../images/my-head.jpg'}}" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+										
+									</div>
+					                <div class="fans-item-det">
+					                	<span>
+					                		<span class="name mui-ellipsis">{{value.nickname}}</span> 
+					                		<span class="vip vip1">苦瓜会员</span> 
+					                	</span>
+					                	<p class="fans-num">
+					                		{{telreplace(value.mobile)}}
+					                	</p>
+					                </div>
+							    </div>
+						        <!-- <div class="fans-item-det jump" uid="{{value.uid}}" name="{{value.nickname}}" num="{{value.num}}">
+						            <span style="color: #ff681e;">推荐{{value.num}}人 
+						            	<i style="font-size: 20px;" class="mui-icon mui-icon-arrowright {{value.num > 0?'':'none'}}"></i>
+						            </span>
+						            <p class="fans-num">{{value.created_at}}</p>
+						        </div> -->
+						   </li>
+								{{/each}}
+							</ul>
+					</script>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<script type="text/template" id="member1">
+						<ul class="fans-list">
+							{{if fans_list1.length < 1}}
+								<div class="no">
+									<img src="../../images/nomore.png"/>
+									<p>这里还什么都没有，快快努力吧！</p>
+								</div>
+							{{/if}}	
+								{{each fans_list1 as value i}}
+								<li class="fans-item">
+				                <div class="fans-item-left">
+				                	<div class="my-img fans-img">
+				                		<img src="{{value.avatar||'../../images/my-head.jpg'}}" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+										
+									</div>
+					                <div class="fans-item-det">
+					                	<span>
+					                		<span class="name mui-ellipsis">{{value.nickname}}</span> 
+					                		<span class="vip vip2">钻石会员</span> 
+					                	</span>
+					                	<p class="fans-num">
+					                		{{telreplace(value.mobile)}}
+					                	</p>
+					                </div>
+							    </div>
+						   </li>
+								{{/each}}
+							</ul>
+					</script>
+				</div>
+				<div id="item3" class="mui-control-content">
+					<script type="text/template" id="member2">
+						<ul class="fans-list">
+							{{if fans_list2.length < 1}}
+								<div class="no">
+									<img src="../../images/nomore.png"/>
+									<p>这里还什么都没有，快快努力吧！</p>
+								</div>
+							{{/if}}	
+								{{each fans_list2 as value i}}
+								<li class="fans-item">
+				                <div class="fans-item-left">
+				                	<div class="my-img fans-img">
+				                		<img src="{{value.avatar||'../../images/my-head.jpg'}}" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+										
+									</div>
+					                <div class="fans-item-det">
+					                	<span>
+					                		<span class="name mui-ellipsis">{{value.nickname}}</span> 
+					                		<span class="vip vip3">普通店长</span> 
+					                	</span>
+					                	<p class="fans-num">
+					                		{{telreplace(value.mobile)}}
+					                	</p>
+					                </div>
+							    </div>
+						   </li>
+								{{/each}}
+							</ul>
+					</script>
+				</div>
+				<div id="item4" class="mui-control-content">
+					<script type="text/template" id="member3">
+						<ul class="fans-list">
+							{{if fans_list3.length < 1}}
+								<div class="no">
+									<img src="../../images/nomore.png"/>
+									<p>这里还什么都没有，快快努力吧！</p>
+								</div>
+							{{/if}}	
+								{{each fans_list3 as value i}}
+								<li class="fans-item">
+				                <div class="fans-item-left">
+				                	<div class="my-img fans-img">
+				                		<img src="{{value.avatar||'../../images/my-head.jpg'}}" onerror="this.src='../../images/60x60.png';this.onerror=null;" />
+										
+									</div>
+					                <div class="fans-item-det">
+					                	<span>
+					                		<span class="name mui-ellipsis">{{value.nickname}}</span> 
+					                		<span class="vip vip4">金牌店长</span> 
+					                	</span>
+					                	<p class="fans-num">
+					                		{{telreplace(value.mobile)}}
+					                	</p>
+					                </div>
+							    </div>
+						   </li>
+								{{/each}}
+							</ul>
+					</script>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/http.js" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var fans_list0 = {};
+			var fans_list1 = {};
+			var fans_list2 = {};
+			var fans_list3 = {};
+			mui.plusReady(function() {
+
+				Http.post({
+					api: 'TEAM',
+					success: function(res) {
+						fans_list0 = {
+								fans_list0: res.data["level0"]
+							}
+							fans_list1 = {
+								fans_list1: res.data["level1"]
+							}
+							fans_list2 = {
+								fans_list2: res.data["level2"]
+							}
+							fans_list3 = {
+								fans_list3: res.data["level3"]
+							}
+						document.getElementById('num0').innerHTML = "普通会员(" + res.data["level0"].length + ")";
+						document.getElementById("num1").innerHTML = "钻石会员(" + res.data["level1"].length + ")";
+						document.getElementById("num2").innerHTML = "普通店长(" + res.data["level2"].length + ")";
+						document.getElementById("num3").innerHTML = "金牌店长(" + res.data["level3"].length + ")";
+						//console.log(JSON.stringify(fans_list0))
+						var fans = template('member0', fans_list0);
+						document.getElementById('item1').innerHTML = fans;
+						var fans1 = template('member1', fans_list1);
+						document.getElementById('item2').innerHTML = fans1;
+						var fans2 = template('member2', fans_list2);
+						document.getElementById('item3').innerHTML = fans2;
+						var fans3 = template('member3', fans_list3);
+						document.getElementById('item4').innerHTML = fans3;
+					}
+				})
+			});
+
+
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+				var segmentedControl = document.getElementById('segmentedControl');
+				$('.mui-input-group').on('change', 'input', function() {
+					if (this.checked) {
+						var styleEl = document.querySelector('input[name="style"]:checked');
+						var colorEl = document.querySelector('input[name="color"]:checked');
+						if (styleEl && colorEl) {
+							var style = styleEl.value;
+							var color = colorEl.value;
+							segmentedControl.className = 'mui-segmented-control' + (style ? (' mui-segmented-control-' + style) : '') +
+								' mui-segmented-control-' + color;
+						}
+					}
+				});
+			})(mui);
+				template.defaults.imports.telreplace = function(str) {
+
+		return str.substring(0, 3)+"****"+str.substr(str.length-4);
+	};
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>首页</title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/util.js"></script>
+		<link rel="stylesheet" href="fangzhou/common.css" />
+		<link rel="stylesheet" href="fangzhou/main.css" />
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<script src="js/swiper.min.js"></script>
+		<script src="js/app.js" type="text/javascript"></script>
+		<script src="js/http.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<style>
+			.header-mui-bar {
+				height: 2.6rem;
+				padding-top: 0px;
+				z-index: 10;
+				padding-right: 10px;
+				padding-left: 10px;
+				border-bottom: 0;
+				background-color: #f7f7f7;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+
+			.header-mui-bar-nav {
+				top: 0;
+				-webkit-box-shadow: 0 1px 6px #ccc;
+				box-shadow: 0 1px 6px #ccc;
+			}
+
+			.header-mui-bar-nav.mui-bar .header-mui-icon {
+				margin-right: -10px;
+				margin-left: -10px;
+				padding-right: 10px;
+				padding-left: 10px;
+			}
+
+			.ck-search {
+				background: #fff;
+				height: 1.9rem;
+				border-radius: 17px;
+				width: 75%;
+				position: absolute;
+				top: 5px;
+				left: 16%;
+				z-index: 3;
+			}
+
+			.ck-search img:nth-child(2) {
+				vertical-align: -2px;
+				margin-right: 5px;
+				width: 1rem;
+			}
+
+			.ck-search img:nth-child(1) {
+				vertical-align: -3px;
+				margin: 7px 5px 0 15px;
+			}
+
+			.ck-search img {
+				width: 0.9rem;
+			}
+
+			.ck-search p {
+				display: inline-block;
+				line-height: 1rem;
+				margin-top: 0.4rem;
+				font-size: 0.8rem;
+				color: #989898;
+			}
+			.logo-kugua img{
+				height: 1.9rem;
+				position: absolute;
+				top: 5px;
+				left: 2%;
+				z-index: 3;
+			}
+		</style>
+		<header id="header" class="header-mui-bar header-mui-bar-nav">
+			<div class="logo-kugua"><img src="images/kugua.jpg"></div>
+			<div class="ck-search">
+
+				<img src="images/search.png" />
+				<img src="images/tao.png" />
+				<p>搜索商品名称先领券再购物</p>
+			</div>
+		</header>
+		<div style="clear: both;"></div>
+		<style>
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+			}
+			.swiper-slide {
+				overflow: hidden;
+    }
+		.beidian-ads-wrapper {
+	    position: relative;
+	    width: 16rem;
+	    overflow: hidden;
+	    font-size: 0;
+	}
+ 	.icon-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding: .512rem 0;
+    background-color: #fff;
+    font-size: 0;
+}
+	.icon-wrapper, .icon-wrapper .icon {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+} 
+.icon-wrapper .icon {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: center;
+}
+.icon-wrapper .icon .icon-title {
+    display: inline-block;
+    margin-top: .08533333rem;
+    line-height: .59733333rem;
+    color: #000;
+    font-size: .8rem;
+    white-space: nowrap;
+}
+
+		</style>
+		<!-- Swiper -->
+		<div class="swiper-container" id="navbox">
+			<div class="swiper-wrapper" id="sliderbox">
+				<script type="text/template" id="s_box">
+					{{each slidelist as value i}}
+					<div class="swiper-slide"><a href="{{value.url}}"><img style="width: 100%;" src="{{value.img}}" /></a></div>
+					{{/each}}
+				</script>
+			</div>
+			<!-- Add Pagination -->
+			<div class="swiper-pagination"></div>
+		</div>
+		<div class="beidian-ads">
+			<div class="icon-wrapper" id="classhtm">
+				<script type="text/template" id="in_class">
+					{{each classlist as value i}}
+				<a data-col="{{value.id}}" cate="{{value.name}}">
+					<div class="icon">
+						<img src="{{value.img}}">
+						<span class="icon-title">
+							{{value.name}}
+						</span>
+					</div>
+				</a>
+									{{/each}}
+				</script>
+
+
+
+			</div>
+			<div class="beidian-ads-wrapper">
+			</div>
+		</div>
+		<style>
+			.icon-wrapper img{
+				max-width:100%;max-height:100%
+			}
+			
+		</style>
+		<div class="beidian-ads">
+			<div class="icon-wrapper"><img src="images/IMG_0192.GIF"></div>
+		</div>
+		<div ui-home-content="" data-item="indexContentNav" isload="true">
+			<div class="home_ant_voucher " style="layout:2;margin-bottom:10px;">
+
+				<h3 class="home_h3 row-s">
+					<div class="col-mar">
+						<div class="col-12-4 text-left">
+							大家都在领
+						</div>
+						<div class="col-12-8 text-right" style="display: none;">
+							<span ui-home-number="" data-time="2" isload="true">2,215,724</span> 次实时领券
+						</div>
+					</div>
+				</h3>
+				<div class="swiper-container swiper-container-horizontal swiper-container-android" id="cms_wap_coupon">
+
+					<script type="text/template" id="Two_class">
+						{{each Twolist as value i}}
+					<ul class="swiper-wrapper">	
+						{{each value.goods as val l}}
+						<div class="mui-scroll swiper-slide swiper-slide-active">
+							<div class="swiper-cent">
+								<div class="cent">
+									<a data="{{val.origin_id}}" profit="{{val.ratio_price}}" type="{{val.type}}" class="img"><img src="{{val.thumb}}"/>
+										<p class="text">{{tofixed(val.coupon_received)}}<span>人已领</span> <i>|</i> {{parsefloat(val.coupon_money)}}元券</p>
+									</a>
+									<p class="name">{{val.title}}</p>
+									<p class="money">
+										<i>&yen;</i>{{subduction(val.coupon_price,val.coupon_money)}}
+										<del>
+											&yen;{{parsefloat(val.coupon_price)}}
+										</del>
+									</p>
+									<!-- <p class="progress" data-progress="41"><i style="width: 41%;"></i></p> -->
+								</div>
+							</div>
+						</div>
+						{{/each}}
+					</ul>
+						
+						{{/each}}
+						</script>
+				</div>
+			</div>
+			<div class="hr"></div>
+			<div class="home_ant_brand" style="layout:2;margin-bottom:5px;" id="Threehtm">
+				<script type="text/template" id="Three_class">
+					{{each Threelist as value i}}
+				<div class="tab">
+					<!-- <a class="img"><img src="{{value.img}}" /></a> -->
+					<div class="nr">
+						<h3 class="bt" style="color: rgb(51, 51, 51);">
+							{{value.name.split('|')[0]}}
+						</h3>
+						<p class="text" style="color: rgb(51, 51, 51);">{{value.name.split('|')[1]}}</p>
+					</div>
+				</div>
+				<div class="swiper-container  swiper-container-horizontal" id="cms_wap_brand">
+					<ul class="swiper-wrapper">
+						{{each value.goods as val l}}
+						<div class="swiper-slide">
+							<div class="swiper-cent">
+								<div class="cent">
+									<a data="{{val.origin_id}}" profit="{{val.ratio_price}}" type="{{val.type}}" class="img"><img src="{{val.thumb}}" alt=""></a>
+									<p class="name">{{val.title}}</p>
+									<p class="money">
+										<i>&yen;</i>{{subduction(val.coupon_price,val.coupon_money)}}
+										<del>
+											&yen;{{parsefloat(val.coupon_price)}}
+										</del>
+									</p>
+								</div>
+							</div>
+						</div>
+						{{/each}}
+					</ul>
+				</div>
+				{{/each}}
+				</script>
+			</div>
+			<div class="hr"></div>
+			<div class="home_ant_webview " ui-mta-modular="" id="cms_wap_group" data-mta_name="首页-webView模块" style="layout:2;margin-bottom:10px;"
+			 isload="true">
+				<style>
+					.home_ant_juhuasuan ul, .home_ant_juhuasuan li {
+		                        padding: 0;
+		                        margin: 0;
+		                    }
+		
+		                    .home_ant_juhuasuan {
+		                        background: #fff;
+		                    }
+		
+		                        .home_ant_juhuasuan .tab {
+		                            line-height: 45px;
+		                            height: 45px;
+		                            margin: 0 10px;
+		                        }
+		
+		                            .home_ant_juhuasuan .tab h3.fl {
+		                                font-size: 0;
+		                                height: 45px;
+		                                line-height: 500px;
+		                                overflow: hidden;
+		                                background: url(https://img.alicdn.com/imgextra/i1/2053469401/O1CN012JJhsIdrfdTFXkr-2053469401.png) center left no-repeat;
+		                                -webkit-background-size: auto 18px;
+		                                background-size: auto 18px;
+		                            }
+		
+		                        .home_ant_juhuasuan div.fr b {
+		                            font-weight: 300;
+		                            color: #FC4D52;
+		                            font-size: 13px;
+		                        }
+		
+		                        .home_ant_juhuasuan div.fr span {
+		                            background: #FFF0F0;
+		                            border-radius: 3px;
+		                            padding: 2px 4px;
+		                            color: #FC4D52;
+		                            font-size: 12px;
+		                        }
+		
+		                        .home_ant_juhuasuan div.fr i {
+		                            font-style: normal;
+		                            padding: 0 3px;
+		                        }
+		
+		                        .home_ant_juhuasuan div.fr {
+		                            line-height: 45px;
+		                            background: url(https://img.alicdn.com/imgextra/i1/2053469401/O1CN012JJhsNjrVHc2JCS-2053469401.png) center right no-repeat;
+		                            color: #999;
+		                            -webkit-background-size: auto 11px;
+		                            background-size: auto 11px;
+		                        }
+		
+		                        .home_ant_juhuasuan .ullit {
+		                            clear: both;
+		                            margin: 0 5px;
+		                            padding-bottom: 10px;
+		                        }
+		
+		                            .home_ant_juhuasuan .ullit li {
+		                                width: 25%;
+		                                float: left;
+		                            }
+		
+		                                .home_ant_juhuasuan .ullit li .img {
+		                                    display: block;
+		                                    margin: 0 5px;
+		                                    border-radius: 5px;
+		                                    overflow: hidden;
+		                                    position: relative;
+		                                    z-index: 0;
+		                                }
+		
+		                                    .home_ant_juhuasuan .ullit li .img img {
+		                                        width: 100%;
+		                                    }
+		
+		                                    .home_ant_juhuasuan .ullit li .img .name {
+		                                        position: absolute;
+		                                        left: 0;
+		                                        bottom: 0;
+		                                        height: 20px;
+		                                        line-height: 22px;
+		                                        font-size: 12px;
+		                                        background: #FC4D52;
+		                                        color: #fff;
+		                                        width: 100%;
+		                                        overflow: hidden;
+		                                    }
+		
+		                                        .home_ant_juhuasuan .ullit li .img .name > * {
+		                                            position: relative;
+		                                            z-index: 5;
+		                                            text-align: center;
+		                                            display: block;
+		                                            width: 50%;
+		                                            float: left;
+		                                            font-weight: 300;
+		                                            font-size: 10px;
+		                                        }
+		
+		                                        .home_ant_juhuasuan .ullit li .img .name:before {
+		                                            content: "";
+		                                            background: #FFE7C9;
+		                                            width: 300px;
+		                                            height: 100px;
+		                                            position: absolute;
+		                                            -webkit-transform: rotate(15deg);
+		                                            transform: rotate(15deg);
+		                                            left: 43%;
+		                                            bottom: -90px;
+		                                        }
+		
+		                                        .home_ant_juhuasuan .ullit li .img .name span {
+		                                            color: #FC4D52;
+		                                            font-size: 12px;
+		                                            font-family: Arial;
+		                                            line-height: 20px;
+		                                        }
+		
+		                                            .home_ant_juhuasuan .ullit li .img .name span i {
+		                                                font-weight: 300;
+		                                                font-size: 10px;
+		                                                font-style: normal;
+		                                            }
+		
+		                        .home_ant_juhuasuan .jh_new {
+		                            line-height: 45px;
+		                            margin: 0 10px;
+		                            background: url(https://img.alicdn.com/imgextra/i1/2053469401/O1CN012JJhsNjrVHc2JCS-2053469401.png) center right no-repeat;
+		                            .size(auto,12px);
+		                            display: block;
+		                            color: #999;
+		                            -webkit-background-size: auto 11px;
+		                            background-size: auto 11px;
+		                        }
+								
+								 .mui-pull-caption{
+									display: none;
+								}
+		                </style>
+				<div class="home_ant_juhuasuan">
+					<div class="tab row-s col-mar">
+						<a>
+							<h3 class="fl col-12-3">聚拼团</h3>
+							<div class="fr text-right col-12-9">
+								查看更多拼团&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+						</a>
+					</div>
+					<ul class="ullit row-s">
+						<a id="jutuan">
+							<script type="text/template" id="ju_class">
+								{{each julist as value i}}
+							<li>
+								<div class="img">
+									<img src="{{value.pict_url}}" alt="" />
+									<div class="name">
+										<b>拼团价</b>
+										<span><i>￥</i>{{value.orig_price}}</span>
+									</div>
+								</div>
+							</li>
+							
+							{{/each}}
+							</script>
+						</a>
+					</ul>
+				</div>
+			</div>
+			<div class="hr"></div>
+		</div>
+		<h3 class="home_h3 row-s">
+			<div class="col-mar">
+				<div class="col-12-4 text-left">
+					<i></i>领券直播
+				</div>
+				<div class="col-12-8 text-right" style="display: none;">
+					今日已为用户省钱
+					<span>25,145,080</span> 元
+				</div>
+			</div>
+		</h3>
+		<ul class="goods-two">
+			<div id="goodsbox">
+				<script type="text/template" id="m_goods">
+					{{each list as value i}}
+			<li class="row-s listpage1" data="{{value.origin_id}}" profit="{{value.ratio_price}}" type="{{value.type}}">
+				<a>
+					<p class="img"><img src="{{value.thumb}}" style="background: rgb(245, 245, 245); display: block;"/></p>
+					<div class="cent">
+						<h3>{{value.title}}</h3>
+						<div class="num col-aaa ">
+							<span> {{value.type=="12"?"天猫价":"淘宝价"}} &yen;{{parsefloat(value.coupon_price)}}</span>
+							<span class="fr">已售{{value.volume}}件</span>
+						</div>
+						<div class=" money col-money">
+							<p class="quan fr"><i>{{value.coupon_money}}元券</i></p>券后价
+							<span class=""><i>&yen;</i>{{subduction(value.coupon_price,value.coupon_money)}}</span>
+						</div>
+					</div>
+				</a>
+			</li>
+			{{/each}}
+			</script>
+			</div>
+			<div id="down" style="text-align: center;font-weight: bold;padding-bottom: 0.5rem;color: #666;display: none;font-size: 1rem;">上拉加载更多</div>
+		</ul>
+		<div style="padding-bottom: 3rem;"></div>
+		<script src="js/template-web.js"></script>
+		<script>
+			(function() {
+				var wgtVer;
+				mui.init({
+					swipeBack: false, //关闭-右滑关闭功能
+					pullRefresh: {
+						container: "#goodsbox", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						down: {
+							style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+							color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+							height: '50px', //可选,默认50px.下拉刷新控件的高度,
+							range: '100px', //可选 默认100px,控件可下拉拖拽的范围
+							offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+							auto: false, //可选,默认false.首次加载自动上拉刷新一次
+							callback: function() {
+								page = 1;
+								Http.post({
+									api: 'INDEX',
+									data: {
+										type: 1,
+										page: page
+									},
+									success: function(res) {
+										plus.nativeUI.closeWaiting();
+										goodslist = {
+											list: res.data
+										};
+										var html = template('m_goods', goodslist);
+										document.getElementById('goodsbox').innerHTML = html;
+										mui('#goodsbox').pullRefresh().endPulldown();
+										document.getElementById('down').style.display = "none";
+									},
+									one: function() {
+										plus.nativeUI.closeWaiting();
+										mui('#goodsbox').pullRefresh().endPulldown();
+										document.getElementById('down').style.display = "none";
+									}
+								})
+							}
+						},
+						up: {
+							height: 50, //可选.默认50.触发上拉加载拖动距离
+							auto: false, //可选,默认false.自动上拉加载一次
+							contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback: function() {
+
+								var _this = this;
+								Http.post({
+									api: 'INDEX',
+									data: {
+										type: 1,
+										page: ++page
+									},
+									success: function(res) {
+										plus.nativeUI.closeWaiting();
+										goodslist.list = goodslist.list.concat(res.data);
+										var goods = template('m_goods', goodslist);
+										mui('#goodsbox').pullRefresh().endPulldown();
+										document.getElementById('goodsbox').innerHTML = goods;
+										document.getElementById('down').style.display = "block";
+										document.getElementById('down').innerHTML = "上拉加载更多"
+										_this.endPullupToRefresh(false);
+
+									},
+									one: function() {
+										mui('#goodsbox').pullRefresh().endPulldown();
+										document.getElementById('down').style.display = "block";
+										document.getElementById('down').innerHTML = "没有更多数据了"
+										_this.endPullupToRefresh(false);
+										plus.nativeUI.toast('已经到最后一页了');
+									}
+								})
+							}
+						}
+					}
+				});
+				var page = 1;
+				var goodslist;
+				mui.plusReady(function() {
+					//var swiper = new Swiper('#cms_wap_coupon');
+					if (mui.os.ios) {
+						plus.navigator.setStatusBarBackground('#F7F7F7');
+					}
+//判断网络状态
+/*var el = document.body;  
+if (el.addEventListener) {   
+   window.addEventListener("offline", function () {  
+     alert("网络断开1");}, true);  
+}  
+else if (el.attachEvent) {  
+   window.attachEvent("onoffline", function () {  
+     alert("网络断开2");});  
+}  
+else {  
+   window.onoffline = function () {  
+     alert("网络断开3");};  
+}*/
+					/* userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create(
+							'html/auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+					} */
+					var aniShow = {};
+					util.initSubpage(aniShow);
+
+					var nview = plus.nativeObj.View.getViewById('tabBar'),
+						activePage = plus.webview.currentWebview(),
+						targetPage,
+						subpages = util.options.subpages,
+						//pageW = window.innerWidth,
+						pageW = window.screen.width,
+						currIndex = 0;
+
+					/**
+					 * 根据判断view控件点击位置判断切换的tab
+					 */
+					nview.addEventListener('click', function(e) {
+						var clientX = e.clientX;
+						//console.log(clientX+','+parseInt(pageW * 0.2));
+						if (clientX > 0 && clientX <= parseInt(pageW * 0.2)) {
+							currIndex = 0;
+						} else if (clientX > parseInt(pageW * 0.2) && clientX <= parseInt(pageW * 0.4)) {
+							currIndex = 1;
+						} else if (clientX > parseInt(pageW * 0.4) && clientX <= parseInt(pageW * 0.6)) {
+							currIndex = 2;
+						} else if (clientX > parseInt(pageW * 0.6) && clientX <= parseInt(pageW * 0.8)) {
+							currIndex = 3;
+						} else {
+							currIndex = 4;
+						}
+						// 匹配对应tab窗口	
+						if (currIndex > 0) {
+							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
+						} else {
+							targetPage = plus.webview.currentWebview();
+						}
+
+						if (targetPage == activePage) {
+							return;
+						}
+
+						if (currIndex >= 0) {
+							//底部选项卡切换
+
+							//console.log(currIndex);
+							util.toggleNview(currIndex);
+							/* if(currIndex>2)
+							{
+								userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+								if (!userinfo) {
+									var child = plus.webview.create(
+										'html/auth/login.html', 'login'); //直接用H5+API创建窗口
+									child.show();
+								}
+							} */
+
+							if (currIndex == 4) {
+								mui.fire(plus.webview.getWebviewById('html/tab-webview-my.html'), 'pageflowrefresh');
+							}
+							// 子页面切换
+							util.changeSubpage(targetPage, activePage, aniShow);
+							//更新当前活跃的页面
+							activePage = targetPage;
+						}
+					});
+
+					//版本控制
+					getVersion();
+
+					//获取数据
+					//轮播
+					mui.post(http + 'taobao-buy/nav-index', function(res) {
+						if (res.code == 0) {
+							var slidelist = {
+								slidelist: res.data
+							};
+							//console.log(JSON.stringify(res.data));
+							var html = template('s_box', slidelist);
+							document.getElementById('sliderbox').innerHTML = html;
+							var swiper = new Swiper('#navbox', {
+								pagination: {
+									el: '.swiper-pagination',
+								},
+								autoplay: {
+									delay: 1000,
+								}
+							});
+						}
+					});
+
+					//预加载搜索页
+					mui.preload({
+						url: 'html/home-search.html',
+						id: 'search',
+					})
+					//跳转
+					var searchPage = null;
+					mui('.header-mui-bar-nav').on('tap', '.ck-search', function(e) {
+
+						//获得搜索页
+						if (!searchPage) {
+							searchPage = plus.webview.getWebviewById('search');
+						};
+						//触发搜索页面的getItem事件 
+						mui.fire(searchPage, 'getItem', {
+							data: 'search'
+						});
+						mui.openWindow({
+							id: 'search'
+						})
+					});
+
+					mui.get(http + 'taobao-buy/get-custom-nav', function(res) {
+						if (res.code == 0) {
+
+							var Onearray = [];
+							var Twoarray = [];
+							var threearray = [];
+							var one = 0;
+							var two = 0;
+							var three = 0;
+							for (var i = 0; i < res.data.length; i++) {
+								if (res.data[i].position == "1" && one < 5) {
+									Onearray.push(res.data[i]);
+									one++;
+								}
+								if (res.data[i].position == "2") {
+									Twoarray.push(res.data[i]);
+									//two++;
+								}
+								if (res.data[i].position == "3" && three < 1) {
+									threearray.push(res.data[i]);
+									three++;
+									document.getElementById("Threehtm").style.backgroundImage = 'url(' + res.data[i].img + ')';
+									//alert(res.data[i].goods[1].title)
+									//console.log(JSON.stringify(res.data[i].goods));
+								}
+							}
+							var classlist = {
+								classlist: Onearray
+							};
+							var Twolist = {
+								Twolist: Twoarray
+							};
+							var Threelist = {
+								Threelist: threearray
+							};
+							var html = template('in_class', classlist);
+							document.getElementById('classhtm').innerHTML = html;
+							var html2 = template('Two_class', Twolist);
+							document.getElementById('cms_wap_coupon').innerHTML = html2;
+							//获取推荐产品广告
+							var html3 = template('Three_class', Threelist);
+							document.getElementById('Threehtm').innerHTML = html3;
+
+							var mySwiperEstimate = new Swiper('#cms_wap_coupon', {
+								createPagination: false,
+								slidesPerView: 2.5
+							});
+						}
+					}, 'json');
+					//预加载分类详情页
+
+					mui.preload({
+						url: 'html/list-class.html',
+						id: 'list-class',
+					});
+					//预加载详情页
+					mui.preload({
+						url: 'html/goods-webview.html',
+						id: 'goods-webview.html',
+					})
+					var listcolPage1 = null;
+					mui('#classhtm').on('tap', 'a', function() {
+						if (!listcolPage1) {
+							listcolPage1 = plus.webview.getWebviewById('list-class');
+						};
+						var data = this.getAttribute('data-col');
+						var cate = this.getAttribute('cate');
+						//触发搜索页面的getItem事件 
+						mui.fire(listcolPage1, 'getclass', {
+							data: data,
+							cate: cate,
+						});
+
+						setTimeout(function() {
+							mui.openWindow({
+								id: 'list-class',
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								},
+								cachemode: 'noCache'
+							});
+						}, 100)
+
+					});
+
+					mui('#cms_wap_coupon').on('tap', 'a', function() {
+						var type = this.getAttribute('type');
+						var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+						var id = this.getAttribute('data'); //获取要传的参数
+						var profit = this.getAttribute('profit');
+						//console.log(type+","+id+","+profit)
+						mui.fire(goodswebview, 'getItem', {
+							id: id,
+							profit: profit,
+							type: type
+						});
+						mui.openWindow({
+							id: 'goods-webview.html'
+						});
+
+					});
+
+					mui('#Threehtm').on('tap', 'a', function() {
+						var all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log( "窗口标识: "+all[i].id );
+								console.log( "当前Webview窗口："+all[i].getURL() );
+							}
+						var type = this.getAttribute('type');
+						var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+						var id = this.getAttribute('data'); //获取要传的参数
+						var profit = this.getAttribute('profit');
+						//console.log(type+","+id+","+profit)
+						mui.fire(goodswebview, 'getItem', {
+							id: id,
+							profit: profit,
+							type: type
+						});
+						mui.openWindow({
+							id: 'goods-webview.html'
+						});
+
+
+					});
+
+					Http.post({
+						api: 'INDEX',
+						data: {
+							type: 1,
+							page: 1
+						},
+						success: function(res) {
+							//rootdata.m_goods = res.data;
+							goodslist = {
+								list: res.data
+							};
+							var goods = template('m_goods', goodslist);
+							document.getElementById('goodsbox').innerHTML = goods;
+						}
+					});
+					mui('.home_ant_juhuasuan').on('tap', 'a', function(e) {
+						var userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+						if (!userinfo) {
+							mui.toast("请登录苦瓜APP后再使用该功能！")
+							return;
+						}
+						//plus.runtime.openURL("https://mo.m.taobao.com/optimus/jhspt2c?pid=mm_98877919_483450309_108800850320",
+						//	function(e) {}, "com.taobao.taobao");
+							plus.runtime.openURL('taobao://mo.m.taobao.com/optimus/jhspt2c?pid=mm_98877919_483450309_108800850320');
+					});
+
+					mui('#sliderbox').on('tap', 'a', function(e) {
+						var href = this.getAttribute('href');
+						plus.runtime.openURL(href,
+							function(e) {}, "com.taobao.taobao");
+					});
+
+					mui('#goodsbox').on('tap', 'li', function(e) {
+						var type = this.getAttribute('type');
+						var goodswebview = plus.webview.getWebviewById('goods-webview.html'); //获取预加载的b页面id  
+						var id = this.getAttribute('data'); //获取要传的参数
+						var profit = this.getAttribute('profit');
+						mui.fire(goodswebview, 'getItem', {
+							id: id,
+							profit: profit,
+							type: type
+						});
+						var all = plus.webview.all();
+							for (var i = 0; i < all.length; i++) {
+								console.log( "窗口标识: "+all[i].id );
+								console.log( "当前Webview窗口："+all[i].getURL() );
+							}
+						mui.openWindow({
+							id: 'goods-webview.html'
+						});
+
+					});
+					var julist = {
+						julist: null
+					};
+					Http.post({
+						api: 'JUTUAN',
+						success: function(res) {
+
+							var juarray = [];
+							for (var i = 0; i < 4; i++) {
+								juarray.push(res.data[i]);
+							}
+							var julist = {
+								julist: juarray
+							};
+							var html = template('ju_class', julist);
+							document.getElementById('jutuan').innerHTML = html;
+						}
+					});
+				});
+
+			}());
+
+			function copyToClip() { ///获取粘贴板内容
+				if (mui.os.ios) {
+					//ios
+					var UIPasteboard = plus.ios.importClass("UIPasteboard");
+					var generalPasteboard = UIPasteboard.generalPasteboard();
+					return generalPasteboard.plusCallMethod({
+						valueForPasteboardType: "public.utf8-plain-text"
+					});
+				} else {
+					var Context = plus.android.importClass("android.content.Context");
+					var main = plus.android.runtimeMainActivity();
+					var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+					return plus.android.invoke(clip, "getText");
+				}
+
+			}
+			document.addEventListener("resume", function() {
+				var arr = copyToClip();
+				//console.log(arr[0]);
+				//console.log(arr)
+				if (arr && arr.length > 8) {
+					
+					/*mui.openWindow({
+								url: 'html/pop/pop.html',
+								id: 'pop.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								},
+								extras: {
+									title: arr
+								}
+							})*/
+							//cleartext();
+							Http.post({
+								api: 'CREART-URL',
+								data: {
+									data: arr
+								},
+								success: function(res) {
+									var picurl = res.data.pict_url; //产品图
+									var title = res.data.title;
+									var url = res.data.coupon_short_url;
+									var shoptype = "";
+									//var price = (parseFloat(res.data.commission_rate) * parseFloat(res.data.zk_final_price) / 100).toFixed(2)
+									var price=res.data.commission_money;
+									cleartext();
+									console.log("成功")
+									mui.openWindow({
+										url: 'html/pop/pop.html',
+										id: 'pop.html',
+										styles: {
+											background: 'transparent'
+										},
+										show: {
+											aniShow: 'fade-in'
+										},
+										extras: {
+											picUrl: picurl,
+											title: title,
+											url: url,
+											shoptype: shoptype,
+											price: price
+										}
+									})
+								},
+								one: function(res) {
+									mui.toast(res.msg);
+									//alert(res.msg);
+								}
+								
+							})
+				}
+			}, false);
+			var getVersion = function() {
+				//installWgt("_doc/update/H5F21DD4B.wgt")
+				// ......
+				// 获取本地应用资源版本号
+				 plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+					wgtVer = inf.version;
+					checkUpdate();
+				});
+			}
+			// 检测更新
+			function checkUpdate() {
+				var newVer;
+				var updateurl;
+				wgtVer=wgtVer.replace(/\./g,"")
+				Http.post({
+					api: 'UPDATE-T',
+					success: function(res) {
+						if (plus.os.name == "iOS") {
+							newVer = res.data.iosVersion;
+							updateurl = res.data.iosUrl;
+						} else {
+							newVer = res.data.version;
+							updateurl = res.data.url;
+						}
+						if(updateurl&&wgtVer&&newVer&&(parseInt(wgtVer)<parseInt(newVer))){
+							//if(updateurl){
+							mui.openWindow({
+								url: 'html/pop/update.html',
+								id: 'update.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								},
+								extras: {
+									url: updateurl
+								}
+							})
+						} else {
+							console.log(wgtVer+","+newVer)
+							console.log('不需更新')
+
+						}
+					},
+					one: function(res) {
+						console.log("检测更新失败！", res.msg);
+						console.log(type + "," + wgtVer)
+					}
+				})
+			}
+
+			//清除粘贴板内容
+			function cleartext() {
+				if (mui.os.ios) { //ios
+					var UIPasteboard = plus.ios.importClass("UIPasteboard");
+					var generalPasteboard = UIPasteboard.generalPasteboard();
+					generalPasteboard.plusCallMethod({
+						setValue: '',
+						forPasteboardType: "public.utf8-plain-text"
+					});
+				} else {
+					var Context = plus.android.importClass("android.content.Context");
+					var main = plus.android.runtimeMainActivity();
+					var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);
+					plus.android.invoke(clip, "setText", '');
+				}
+			}
+			
+			
+		</script>
+
+	</body>
+</html>
+<script type="text/javascript">
+	// 	function initWidth() {
+	// 		//document.getElementById("contentImg").style.width = document.documentElement.clientWidth + 'px'
+	// 	}
+	// 
+	// 	function initFontSize() {
+	// 		const cw = document.documentElement.clientWidth
+	// 		// width: 375px -> fontSize:16px
+	// 		if (cw == 375) {
+	// 			document.documentElement.style.fontSize = '16px'
+	// 		} else {
+	// 			document.documentElement.style.fontSize = cw / 375 * 16 + 'px'
+	// 		}
+	// 	}
+	// 	initWidth()
+	// 	initFontSize()
+	// 	window.onresize = () => {
+	// 		initWidth()
+	// 		initFontSize()
+	// 	}
+	// 自适应布局JS
+	// 	! function(a) {
+	// 		a.HB_DISABLE_AJAX_FORCE_HTTPS = !0;
+	// 
+	// 		function b() {
+	// 			a.rem = f.getBoundingClientRect().width / 16, f.style.fontSize = a.rem + "px"
+	// 		}
+	// 		var c, d = a.navigator.appVersion.match(/iphone/gi) ? a.devicePixelRatio : 1,
+	// 			e = 1 / d,
+	// 			f = document.documentElement,
+	// 			g = document.createElement("meta");
+	// 		if (a.dpr = d, a.addEventListener("resize", function() {
+	// 				clearTimeout(c), c = setTimeout(b, 200)
+	// 			}, !1), a.addEventListener("pageshow", function(a) {
+	// 				a.persisted && (clearTimeout(c), c = setTimeout(b, 200))
+	// 			}, !1), f.setAttribute("data-dpr", d), g.setAttribute("name", "viewport"), g.setAttribute("content",
+	// 				"initial-scale=" + e + ", maximum-scale=" + e + ", minimum-scale=" + e + ", user-scalable=no, viewport-fit=cover"
+	// 			), f.firstElementChild) f.firstElementChild.appendChild(g);
+	// 		else {
+	// 			var h = document.createElement("div");
+	// 			h.appendChild(g), document.write(h.innerHTML)
+	// 		}
+	// 		b()
+	// }(window);
+	// 	!(function(doc, win) {
+	//     var docEle = doc.documentElement,
+	//         evt = "onorientationchange" in window ? "orientationchange" : "resize",
+	//         fn = function() {
+	//             var width = docEle.clientWidth;
+	//             width && (docEle.style.fontSize = 12 * (width / 320) + "px");
+	//         };
+	//      
+	//     win.addEventListener(evt, fn, false);
+	//     doc.addEventListener("DOMContentLoaded", fn, false);
+	//  
+	// }(document, window));
+	template.defaults.imports.subduction = function(str1, str2) {
+		return parseInt(str1) - parseInt(str2);
+	};
+/* 	template.defaults.imports.setimg = function(str1, str2,str3) {
+		 var filename = str2.substring(str2.lastIndexOf("/") + 1, str2.length);
+               
+                    return setImg(str3+str1,str2);
+               
+		
+	}; */
+	template.defaults.imports.parsefloat = function(str) {
+		return parseFloat(str);
+	};
+	template.defaults.imports.tofixed = function(str) {
+
+		return (parseFloat(str) / 10000).toFixed(1) + "万";
+	};
+</script>

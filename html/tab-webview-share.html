@@ -1,0 +1,627 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>一建分享</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style type="text/css">
+			html,body{
+				height: 100%;
+			}
+			.mui-content{
+				background: #fff;
+				/*height: 100%;*/
+			}
+			.mui-content .title{
+				background: #ff7421;
+				color: #eee;
+				font-size: 14px;
+				font-weight: 300;
+				height: 44px;
+				line-height: 44px;
+				padding-left: 15px;
+			}
+			.box{
+				width: 100%;
+				padding: 10px 10px;
+			}
+			.box>div{
+				float: left;
+			}
+			.box .left{
+				width: 44%;
+			}
+			.box .left img{
+				width: 100%;
+				border: 1px solid #ececec;
+			}
+			.box .right{
+				width: 56%;
+			}
+			.box .right img{
+				width: 23%;
+			}
+			.mui-checkbox input[type=checkbox], .mui-radio input[type=radio]{
+				width: 20px;
+				height: 20px;
+				right: 4px;
+				border-radius: 50%;
+			}
+			.mui-checkbox input[type=checkbox]:before{
+				content: '\e442';
+				color: #cdcdcd;
+				font-size: 20px;
+			}
+			.mui-checkbox input[type=checkbox]:checked:before{
+				color: #ff7321;
+			}
+			.right .mui-checkbox{
+				width: 50%;
+				display: inline-block;
+				padding-left: 8px;
+				/*margin-left: 3%;*/
+			}
+			.right .mui-checkbox img{
+				width: 100%;
+			}
+			.right .mui-checkbox input[type=checkbox], .mui-radio input[type=radio]{
+				top: 2px;
+				right: 2px;
+			}
+			.mui-preview-image.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #000;
+			}
+			.mui-preview-header,
+			.mui-preview-footer {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				z-index: 10;
+			}
+			.mui-preview-header {
+				height: 44px;
+				top: 0;
+			}
+			.mui-preview-footer {
+				height: 50px;
+				bottom: 0px;
+			}
+			.mui-preview-header .mui-preview-indicator {
+				display: block;
+				line-height: 25px;
+				color: #fff;
+				text-align: center;
+				margin: 15px auto 4;
+				width: 70px;
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 12px;
+				font-size: 16px;
+			}
+			.mui-preview-image {
+				display: none;
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			.mui-preview-image.mui-preview-in {
+				-webkit-animation-name: fadeIn;
+				animation-name: fadeIn;
+			}
+			.mui-preview-image.mui-preview-out {
+				background: none;
+				-webkit-animation-name: fadeOut;
+				animation-name: fadeOut;
+			}
+			.mui-preview-image.mui-preview-out .mui-preview-header,
+			.mui-preview-image.mui-preview-out .mui-preview-footer {
+				display: none;
+			}
+			.mui-zoom-scroller {
+				position: absolute;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				-webkit-backface-visibility: hidden;
+			}
+			.mui-zoom {
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+				display: inline-table;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.mui-preview-loading {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			.mui-preview-loading.mui-active {
+				display: block;
+			}
+			.mui-preview-loading .mui-spinner-white {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+				height: 50px;
+				width: 50px;
+			}
+			.mui-preview-image img.mui-transitioning {
+				-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+				transition: transform 0.5s ease, opacity 0.5s ease;
+			}
+			@-webkit-keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@-webkit-keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			.mui-content-padded{
+				margin: 0;
+			}
+			.button{
+				display: flex;
+				justify-content: space-between;
+				width: 260px;
+				margin:5px auto;
+			}
+			.button button{
+				width: 108px;
+				height: 35px;
+				line-height: 35px;
+				border-radius: 35px;
+				background-color: #ff3a13;
+				color: #fff;
+				border: none;
+				padding: 0;
+			}
+			.button .copy{
+				background: #ffac1e;
+			}
+			.con{
+				padding: 0 10px;
+			}
+			.text{
+				color: #444;
+				padding: 15px 5px;
+				border-top: 1px solid #ececec;
+				border-bottom: 1px solid #ececec;
+			}
+			.bot p{
+				line-height: 28px;
+			}
+			.bot p:nth-child(3){
+				line-height: normal;
+				padding-left: 7px;
+			}
+			.bot p:last-child{
+				font-size: 12px;
+				padding-left: 7px;
+			}
+			.share{
+				margin: auto
+			}
+			textarea{
+				padding:5px 5px 5px 5px;
+				margin-bottom: 0px;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <h1 class="mui-title">一键分享</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<script type="text/templete" id="list">
+				{{each collist as value i}}
+			<div class="box clearfix mui-content-padded">
+				<div class="left">
+					<div class="check mui-checkbox">
+						<input type="checkbox" class="check checked" name="checkbox{{value.origin_id}}" checked="true" value="{{value.thumb}}">
+						<img class="share" data-preview-src="" data-preview-group="{{i}}" src="{{value.thumb}}" style="height:183px; object-fit: cover;"/>
+					</div>
+				</div>
+				<div class="right">
+					{{each value.small_images as img index}}<div class="mui-checkbox"><input type="checkbox" class="check checked" value="{{img}}" name="checkbox{{value.origin_id}}" checked="true"><img data-preview-src="" data-preview-group="{{i}}" src="{{img}}"></div>{{/each}}
+				</div>
+			</div>
+			<div class="con"><textarea id="txt{{value.origin_id}}" name="reworkmes" rows="4">{{value.title}}&#10;淘口令:{{value.tbk_pwd}}&#10;短连接:{{value.coupon_short_url}}</textarea></div>
+			<div class="button">
+				<button class="share" data-col="{{value.origin_id}}">一键分享</button>
+			</div>
+			<div class="text"></div>
+			
+			{{/each}}
+		</script>	
+		</div>
+		<span id="pullrefresh2" style="background-color:#ffffff;"></span>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/random.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.previewImage();
+			var collist = {
+				collist: null
+			};
+				mui.init({
+					swipeBack:true,  //关闭-右滑关闭功能
+				    pullRefresh:{
+				   					container:"#pullrefresh2",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				   					down:{
+				   						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				   				        color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				   				        height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				   				        range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				   				        offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				   				        auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				   				        callback:function(){
+				   				        	page = 1;
+											Http.post({
+												api: 'GET-SHARE',
+												data: {
+													page: page
+												},
+												success: function(res) {
+													plus.nativeUI.closeWaiting();
+													collist = {
+														collist: res.data
+													};
+													var html = template('list', collist);
+													document.getElementById('pullrefresh').innerHTML = html;
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+												},
+												one: function() {
+													plus.nativeUI.closeWaiting();
+													//mui.toast(res.msg);
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+												},
+												error:function(res){
+														plus.nativeUI.closeWaiting();
+														mui.toast("请求超时")
+													}
+											})
+				   				        }
+				   					},
+				   					up:{
+				   						height:50,//可选.默认50.触发上拉加载拖动距离
+				   				        auto:false,//可选,默认false.自动上拉加载一次
+				   				        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				   				        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				   				        callback :function(){
+				   				        	var _this = this;
+											console.log("aaa");
+				   				        	Http.post({
+				   				        		api: 'GET-SHARE',
+				   				        		data: {
+				   				        			page: ++page
+				   				        		},
+				   				        		success: function(res) {
+				   				        			plus.nativeUI.closeWaiting();
+													if(res.code=="0")
+													{
+				   				        			collist.collist = collist.collist.concat(res.data);
+				   				        			//collist = {collist:res.data};
+				   				        			var html = template('list', collist);
+													}
+				   				        			document.getElementById('pullrefresh').innerHTML = html;
+				   				        			mui('#pullrefresh2').pullRefresh().endPulldown();
+				   				        			if(res.data!=""){
+				   				        			_this.endPullupToRefresh(false);
+				   				        			}
+				   				        			else{
+				   				        				_this.endPullupToRefresh(true);
+				   				        			}
+				   				        		},
+												one:function(){
+													mui('#pullrefresh2').pullRefresh().endPulldown();
+													_this.endPullupToRefresh(true);
+												},
+												error:function(res){
+														plus.nativeUI.closeWaiting();
+														mui.toast("请求超时")
+													}
+				   				        	})
+				   				        } 
+				   					}
+				   				}
+				});
+				document.addEventListener("pageflowrefresh", function (e) {
+		
+				    location.reload();
+				});
+				var page = 1;
+				var shares={};
+				//var sharedata = null;
+				mui.plusReady(function() {
+					/* userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+					if (!userinfo) {
+						var child = plus.webview.create(
+							'auth/login.html', 'login'); //直接用H5+API创建窗口
+						child.show();
+					} */
+					//添加getItem自定义事件监听
+					Http.post({
+						api: 'GET-SHARE',
+						data: {
+							page: page
+						},
+						success: function(res) {
+							if(res.code==0)
+							{
+							collist = {
+								collist: res.data
+							};
+							var html = template('list', collist);
+							document.getElementById('pullrefresh').innerHTML = html;
+							}
+							if(res.code==403){
+								
+								
+							}
+					
+						},
+						error: function(err) {
+							//mui.alert(err);
+						}
+					});
+					
+
+					plus.share.getServices(function(s) {
+					    for(var i in s){  
+					        var t = s[i];  
+					        shares[t.id] = t;  
+					    }  
+					}, function(e) {
+					    plus.nativeUI.alert("获取分享服务列表失败：" + e.message);
+					});
+					function shareAction(sb, bh,pic) {
+					    if(!sb||!sb.s){  
+					        console.log("无效的分享服务！");  
+					        return;  
+					    }  
+					    var msg={};
+					    msg = {content:'',extra:{scene:sb.x}};
+					    if(mui.os.android){
+					    	if(pic){
+					            msg.thumbs=[pic];  
+					            msg.pictures = [pic]
+					        } 
+					    }else{
+					    	msg.thumbs=['file://' + pic];  
+					        msg.pictures = ['file://' + pic];
+					    }
+					    
+					    // 发送分享  
+					    if ( sb.s.authenticated ) {  
+					    	plus.nativeUI.showWaiting('正在加载');
+					        console.log("---已授权---");  
+					        shareMessage(msg,sb.s);  
+					    } else {  
+					        console.log("---未授权---");  
+					        sb.s.authorize( function(){  
+					    		plus.nativeUI.showWaiting('正在加载');
+					            shareMessage(msg,sb.s);  
+					        },function(e){  
+					            console.log("认证授权失败："+e.code+" - "+e.message );  
+					              
+					        });  
+					    } 
+					};
+					function shareMessage(msg,s){
+					   
+						//只需要打开微信
+						if(msg.extra.scene=='WXSceneTimeline')
+						{
+							var url="weixin://";
+							plus.nativeUI.closeWaiting();
+								if (!url) { 
+									//没有安装微信
+									var r=confirm("您没有安装微信，请先安装微信!");
+									if (r==true){
+										location.href="http://weixin.qq.com/"
+									}
+								}else{
+									//安装微信
+									window.open("weixin://");
+								}
+						}
+						else{
+							plus.nativeUI.closeWaiting();
+							s.send( msg, function(){
+							    mui.toast( "分享到\""+s.description+"\"成功！ " );
+							}, function(e){
+							    mui.toast( "分享到"+s.description+"失败");
+							} );
+						}
+					}
+					
+					mui('.mui-content').on('tap', 'button', function() {
+						var userinfo = JSON.parse(plus.storage.getItem('userInfo'));
+						if(userinfo){
+							if(!userinfo.relation_id){
+								mui.openWindow({
+								url: 'pop/taobaoauth.html',
+								id: 'taobaoauth.html',
+								styles: {
+									background: 'transparent'
+								},
+								show: {
+									aniShow: 'fade-in'
+								}
+							})
+							return;
+							}
+						}else
+						{
+								var child = plus.webview.create('auth/login.html', 'login'); //直接用H5+API创建窗口
+								child.show();
+								return;
+						}
+						var data = this.getAttribute('data-col');
+						//复制文本
+						
+						var copy_content = document.getElementById("txt"+data).value;
+						if (mui.os.ios) {
+							//ios
+							var UIPasteboard = plus.ios.importClass("UIPasteboard");
+							var generalPasteboard = UIPasteboard.generalPasteboard();
+							//设置/获取文本内容:
+							generalPasteboard.plusCallMethod({
+								setValue: copy_content,
+								forPasteboardType: "public.utf8-plain-text"
+							});
+							generalPasteboard.plusCallMethod({
+								valueForPasteboardType: "public.utf8-plain-text"
+							});
+						} else {
+							//安卓
+							var context = plus.android.importClass("android.content.Context");
+							var main = plus.android.runtimeMainActivity();
+							var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+							plus.android.invoke(clip, "setText", copy_content);
+						}
+						plus.nativeUI.toast('文案复制成功');
+						
+						//获取勾选图片
+						var obj = document.getElementsByName("checkbox"+data);
+						var check_val = [];
+						for(k in obj){
+							if(obj[k].checked)
+								check_val.push(obj[k].value);
+						}
+						
+						var relativePath ='_downloads/creat-share.jpg';
+						setImgFromNet (check_val,relativePath,function(fileName){
+							plus.nativeUI.closeWaiting();
+							var picone = plus.io.convertLocalFileSystemURL(fileName);
+							plus.nativeUI.toast('图片下载完成，请在相册查看');
+							var shareBts=[];
+						    // 更新分享列表
+						    var ss=shares['weixin'];  
+						    ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),  
+						    shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));  
+						    // 弹出分享列表
+						    shareBts.length>0?plus.nativeUI.actionSheet({title:'分享海报',cancel:'取消',buttons:shareBts},function(e){
+						        (e.index>0)&&shareAction(shareBts[e.index-1],false,picone);
+						    }):plus.nativeUI.alert('当前环境无法支持分享链接操作!');
+						});
+					});
+					
+					//
+						function setImgFromNet (loadUrl,relativePath,callback) {
+					    //创建下载任务
+						var downLoader;
+						
+						for(var i=0;i<loadUrl.length;i++){
+							//console.log(loadUrl[i]);
+							if(i==0){
+							downLoader = plus.downloader.createDownload(loadUrl[i], {
+							method: 'GET',
+							filename: '_downloads/' + randomString(16)+".jpg"
+							}, function(download, status) {
+								var fileName = download.filename;
+								console.log('文件名:' + fileName);
+							   // console.log(download);
+								plus.gallery.save(fileName, function() {
+									callback(fileName);
+								});
+							});
+							console.log('文件名:' + i);
+							downLoader.start();
+							}
+							else{
+								downLoader = plus.downloader.createDownload(loadUrl[i], {
+								method: 'GET',
+								filename: '_downloads/' + randomString(16)+".jpg"
+								}, function(download, status) {
+									var fileName = download.filename;
+									console.log('文件名:' + fileName);
+								   // console.log(download);
+									plus.gallery.save(fileName, function() {
+										
+									});
+								});
+								console.log('文件名:' + i);
+								downLoader.start();
+							}
+						}
+						
+					}
+				});
+				
+
+				
+		</script>
+	</body>
+
+</html>
+
+
